@@ -147,8 +147,8 @@ in {
         "$mod,K, movefocus, u" # Move focus Up
         "$mod,L, movefocus, r" # Move focus Right
         "$shiftMod,H, focusmonitor, -1" # Focus previous monitor
-        "$shiftMod,J, layoutmsg, removemaster" # Remove from master
-        "$shiftMod,K, layoutmsg, addmaster" # Add to master
+        "$shiftMod,J, layoutmsg, togglesplit" # Toggle dwindle split direction
+        "$shiftMod,K, pseudo," # Toggle dwindle pseudotile
         "$shiftMod,L, focusmonitor, 1" # Focus next monitor
 
         # Utilities

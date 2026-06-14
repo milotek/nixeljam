@@ -18,6 +18,13 @@
   };
 
   programs.zsh = {
+    plugins = [
+      {
+        name = "powerlevel10k";
+        src = pkgs.zsh-powerlevel10k;
+        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      }
+    ];
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
@@ -53,6 +60,9 @@
       tree = "eza --icons=always --tree --no-quotes";
       cat = "bat --theme=base16 --color=always --paging=never --tabs=2 --wrap=never --plain";
       mkdir = "mkdir -p";
+
+      # NixOS
+      rebuild = "builtin cd ~/.config/nixos && git add . && sudo nixos-rebuild switch --flake ~/.config/nixos#pc";
 
       # Shortcuts
       spt = "spotatui";
@@ -91,6 +101,11 @@
     initContent =
       # bash
       ''
+        # Powerlevel10k instant prompt — must be near the top of initContent
+        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+        fi
+
         bindkey -e
 
         # Open command in VIM
@@ -191,6 +206,8 @@
           print -n "\e]133;C\e\\"
         }
 
+        # Source p10k config — run 'p10k configure' to generate ~/.p10k.zsh
+        [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
       '';
   };
 }

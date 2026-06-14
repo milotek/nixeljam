@@ -22,7 +22,7 @@
       services.weatherLocation = "Paris";
       general = {
         apps = {
-          terminal = ["ghostty"];
+          terminal = ["ghostty" "-e"];
           audio = ["pavucontrol"];
           explorer = ["thunar"];
         };

@@ -19,7 +19,6 @@ in {
     ./animations.nix
     ./bindings.nix
     ./polkitagent.nix
-    ./keyboard-backlight.nix # CHANGEME: This is for omen laptop only
   ];
 
   home.packages = with pkgs; [
@@ -63,7 +62,8 @@ in {
       ];
 
       monitor = [
-        ",prefered,auto,1" # default
+        "HDMI-A-1,2560x1440@144,0x0,1"
+        "DP-1,2560x1440@144,2560x0,1"
       ];
 
       env = [
@@ -92,7 +92,7 @@ in {
         gaps_in = gaps-in;
         gaps_out = gaps-out;
         border_size = border-size;
-        layout = "master";
+        layout = "dwindle";
         "col.inactive_border" = lib.mkForce background;
       };
 
@@ -114,10 +114,9 @@ in {
         };
       };
 
-      master = {
-        new_status = "slave";
-        allow_small_split = true;
-        mfact = 0.5;
+      dwindle = {
+        pseudotile = false;
+        preserve_split = true;
       };
 
       gesture = "3, horizontal, workspace";

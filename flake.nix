@@ -34,12 +34,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    dotfiles = {
+      url = "github:milotek/dotfiles";
+      flake = false;
+    };
+
     # Server
     nixarr.url = "github:rasmus-kirk/nixarr";
     default-creds.url = "github:anotherhadi/default-creds";
     blog.url = "github:anotherhadi/blog";
     awesome-wallpapers.url = "github:anotherhadi/awesome-wallpapers";
     iknowyou.url = "github:anotherhadi/iknowyou";
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
   };
 
   outputs = inputs @ {
@@ -68,9 +75,10 @@
       {
         formatter.${system} = pkgs.alejandra;
         nixosConfigurations = {
-          h-laptop = import ./hosts/laptop/flake.nix args;
-          h-work = import ./hosts/work/flake.nix args;
-          jack = import ./hosts/server/flake.nix args;
+          pc = import ./hosts/pc/flake.nix args;
+          laptop = import ./hosts/laptop/flake.nix args;
+          work = import ./hosts/work/flake.nix args;
+          server = import ./hosts/server/flake.nix args;
         };
       }
     ];

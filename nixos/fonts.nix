@@ -19,6 +19,8 @@
       nerd-fonts.meslo-lg
       openmoji-color
       twemoji-color-font
+      liberation_ttf
+      monaspace
     ];
 
     enableDefaultPackages = false;

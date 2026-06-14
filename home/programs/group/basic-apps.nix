@@ -18,6 +18,10 @@
     blanket # Listen to different sounds
     signal-desktop # Messaging app
     librewolf # Backup browser
+    google-chrome # Primary browser
+    pkgs.sublime4 # Text editor
+    discord # Chat
+    obs-studio # Streaming/recording
 
     # I love TUIs
     caligula # User-friendly, lightweight TUI for disk imaging (ISO, USB BOOT)

@@ -339,6 +339,22 @@
         "type": "github"
       }
     },
+    "dotfiles": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780051759,
+        "narHash": "sha256-HjbKCjs7Nh1cnByyKHRVOxHVRJ1qtpkmoqk+22L4Ay8=",
+        "owner": "milotek",
+        "repo": "dotfiles",
+        "rev": "b7986d44718907a73ea64f27bdfc71c831c05546",
+        "type": "github"
+      },
+      "original": {
+        "owner": "milotek",
+        "repo": "dotfiles",
+        "type": "github"
+      }
+    },
     "firefox-gnome-theme": {
       "flake": false,
       "locked": {
@@ -999,6 +1015,21 @@
         "type": "github"
       }
     },
+    "nix-flatpak": {
+      "locked": {
+        "lastModified": 1780908363,
+        "narHash": "sha256-llGS4y3Qh1eUkli3/Y2VY9FV3GOUKFZR1E2BDftt45Q=",
+        "owner": "gmodena",
+        "repo": "nix-flatpak",
+        "rev": "1df08625f0f8c7d6e300a0e5df7955bbb877d809",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gmodena",
+        "repo": "nix-flatpak",
+        "type": "github"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -1521,10 +1552,12 @@
         "caelestia-cli": "caelestia-cli",
         "caelestia-shell": "caelestia-shell_2",
         "default-creds": "default-creds",
+        "dotfiles": "dotfiles",
         "helium-browser": "helium-browser",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "iknowyou": "iknowyou",
+        "nix-flatpak": "nix-flatpak",
         "nix-index-database": "nix-index-database",
         "nixarr": "nixarr",
         "nixos-hardware": "nixos-hardware",

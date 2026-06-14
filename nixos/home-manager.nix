@@ -13,6 +13,7 @@
       pkgs-stable = import inputs.nixpkgs-stable {
         system = pkgs.stdenv.hostPlatform.system;
         config.allowUnfree = true;
+        config.permittedInsecurePackages = [ "openssl-1.1.1w" ];
       };
       pkgs-nur-hadi = inputs.nur-anotherhadi.packages.${pkgs.stdenv.hostPlatform.system};
     };

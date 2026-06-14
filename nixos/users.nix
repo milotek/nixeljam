@@ -16,6 +16,8 @@ in {
       extraGroups = [
         "networkmanager"
         "wheel"
+        "video" # KMS/DRM access for Sunshine screen capture
+        "input" # Input device access for Sunshine
       ];
     };
   };
