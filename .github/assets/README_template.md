@@ -1,29 +1,31 @@
 <div align="center">
-    <img alt="nixy logo" src="./.github/assets/logo.png" width="120px" />
+    <img alt="nixeljam logo" src="./.github/assets/logo.png" width="120px" />
 </div>
 
 <br>
 
-# Nixy
+# Nixeljam
 
 <br>
 <div align="center">
-    <a href="https://github.com/anotherhadi/nixy/stargazers">
-        <img src="https://img.shields.io/github/stars/anotherhadi/nixy?color={primarycolor}&labelColor={backgroundcolor}&style=for-the-badge&logo=starship&logoColor={primarycolor}">
+    <a href="https://github.com/milotek/nixeljam/stargazers">
+        <img src="https://img.shields.io/github/stars/milotek/nixeljam?color={primarycolor}&labelColor={backgroundcolor}&style=for-the-badge&logo=starship&logoColor={primarycolor}">
     </a>
-    <a href="https://github.com/anotherhadi/nixy/">
-        <img src="https://img.shields.io/github/repo-size/anotherhadi/nixy?color={primarycolor}&labelColor={backgroundcolor}&style=for-the-badge&logo=github&logoColor={primarycolor}">
+    <a href="https://github.com/milotek/nixeljam/">
+        <img src="https://img.shields.io/github/repo-size/milotek/nixeljam?color={primarycolor}&labelColor={backgroundcolor}&style=for-the-badge&logo=github&logoColor={primarycolor}">
     </a>
     <a href="https://nixos.org">
         <img src="https://img.shields.io/badge/NixOS-unstable-blue.svg?style=for-the-badge&labelColor={backgroundcolor}&logo=NixOS&logoColor={primarycolor}&color={primarycolor}">
     </a>
-    <a href="https://github.com/anotherhadi/nixy/blob/main/LICENSE">
+    <a href="https://github.com/milotek/nixeljam/blob/main/LICENSE">
         <img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&colorA={backgroundcolor}&colorB={primarycolor}&logo=unlicense&logoColor={primarycolor}"/>
     </a>
 </div>
 <br>
 
-**Nixy simplifies and unifies** the Hyprland ecosystem with a modular, easily
+**Nixeljam** is my NixOS configuration. It is based on [Nixy](https://github.com/anotherhadi/nixy/).
+
+> **Nixy simplifies and unifies** the Hyprland ecosystem with a modular, easily
 customizable setup. It provides a structured way to manage your system
 configuration and dotfiles with minimal effort. It includes _home-manager_,
 _secrets_, and _custom theming_ all in one place.
@@ -81,11 +83,11 @@ This folder contains server-related nixos modules. (bitwarden, nextcloud, ...)
 
 ## Installation
 
-1. [Fork](https://github.com/anotherhadi/nixy/fork) this repo and clone it to
+1. [Fork](https://github.com/milotek/nixeljam/fork) this repo and clone it to
    your system:
 
 ```sh
-git clone https://github.com/anotherhadi/nixy ~/.config/nixos
+git clone https://github.com/milotek/nixeljam ~/.config/nixos
 ```
 
 2. Copy the `hosts/laptop` folder, rename it to match your system’s hostname,
@@ -128,7 +130,5 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 ---
 
 <div align="center">
-  <a href="https://github.com/anotherhadi/nixy">github</a> |
-  <a href="https://gitlab.com/anotherhadi_mirror/nixy">gitlab (mirror)</a> |
-  <a href="https://git.hadi.icu/anotherhadi/nixy">gitea (mirror)</a>
+  <a href="https://github.com/milotek/nixeljam">github</a>
 </div
