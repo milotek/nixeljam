@@ -115,7 +115,6 @@ in {
       };
 
       dwindle = {
-        pseudotile = false;
         preserve_split = true;
       };
 
