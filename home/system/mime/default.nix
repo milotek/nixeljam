@@ -20,7 +20,7 @@ with lib; let
     pdf = ["zathura.desktop"];
     terminal = ["ghostty.desktop"];
     archive = ["xarchiver.desktop"];
-    browser = ["helium.desktop"];
+    browser = ["google-chrome.desktop"];
   };
 
   mimeMap = {

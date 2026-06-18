@@ -12,6 +12,7 @@
     ../../nixos/users.nix
     ../../nixos/ssh.nix
     ../../server-modules/fail2ban.nix
+    ../../server-modules/copyparty.nix
 
     ./disko.nix
     ./hardware-configuration.nix
@@ -40,7 +41,7 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINfO5Sf5oDj52b+nKqi5EbW0ZxsfBpMPIZPxG6pYgtmf milo@milotek.dev"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEX5YUtG4lyBcGJPe2ze+MJZ6Lv/L8evoCR3ASw2fFVo milo@milotek.dev"
   ];
-  services.openssh.settings.PasswordAuthentication = lib.mkForce false;
+  services.openssh.settings.PasswordAuthentication = lib.mkForce true;
 
   environment.systemPackages = with pkgs; [wget curl git vim htop];
 
