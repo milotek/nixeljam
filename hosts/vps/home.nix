@@ -1,18 +1,15 @@
-# Minimal environment for the restricted work laptop.
-# Intentionally light — no Hyprland, no gaming, no nixy dashboard.
 {config, ...}: {
   imports = [
-    ../../home/programs/nvf
     ../../home/programs/shell
     ../../home/programs/git
     ../../home/programs/nix-utils
-    ../../home/programs/group/dev.nix
     ./variables.nix
+    ./secrets
   ];
 
   home = {
     inherit (config.var) username;
-    homeDirectory = "/Users/" + config.var.username;
+    homeDirectory = "/home/" + config.var.username;
     stateVersion = "24.05";
   };
 

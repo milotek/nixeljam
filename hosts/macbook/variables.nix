@@ -7,13 +7,17 @@
   };
 
   config.var = {
+    hostname = "milotek-macbook";
     username = "milotek";
     configDirectory = "/Users/milotek/.config/nixos";
 
+    timeZone = "Europe/London";
+
     git = {
       username = "Milo Tekchandani";
-      # CHANGEME: swap for your work email if needed
       email = "milo@milotek.dev";
     };
+
+    autoGarbageCollector = true;
   };
 }

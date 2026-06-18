@@ -1,11 +1,11 @@
-# Minimal environment for the restricted work laptop.
-# Intentionally light — no Hyprland, no gaming, no nixy dashboard.
 {config, ...}: {
   imports = [
     ../../home/programs/nvf
     ../../home/programs/shell
     ../../home/programs/git
+    ../../home/programs/git/lazygit.nix
     ../../home/programs/nix-utils
+    ../../home/programs/yazi
     ../../home/programs/group/dev.nix
     ./variables.nix
   ];

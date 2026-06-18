@@ -8,11 +8,9 @@
 
   config.var = {
     username = "milotek";
-    configDirectory = "/Users/milotek/.config/nixos";
 
     git = {
       username = "Milo Tekchandani";
-      # CHANGEME: swap for your work email if needed
       email = "milo@milotek.dev";
     };
   };

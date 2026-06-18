@@ -17,6 +17,16 @@
     helium-browser.url = "github:oxcl/nix-flake-helium-browser";
     nur-anotherhadi.url = "github:anotherhadi/nur-packages";
 
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,6 +44,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Managed separately via chezmoi — sourced here for nix-managed programs that
+    # need access to dotfiles (e.g. wallpapers, config snippets).
     dotfiles = {
       url = "github:milotek/dotfiles";
       flake = false;
@@ -54,17 +66,22 @@
     nixpkgs-stable,
     ...
   }: let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+    linuxSystem = "x86_64-linux";
+    darwinSystem = "aarch64-darwin";
+    pkgs = nixpkgs.legacyPackages.${linuxSystem};
+    # Args passed to Linux NixOS / standalone-HM host flakes.
     args = {
-      inherit
-        inputs
-        nixpkgs
-        system
-        pkgs
-        ;
-      pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-      pkgs-nur-hadi = inputs.nur-anotherhadi.packages.${system};
+      inherit inputs nixpkgs;
+      system = linuxSystem;
+      inherit pkgs;
+      pkgs-stable = nixpkgs-stable.legacyPackages.${linuxSystem};
+      pkgs-nur-hadi = inputs.nur-anotherhadi.packages.${linuxSystem};
+    };
+    # Args passed to Darwin (nix-darwin / standalone-HM on macOS) host flakes.
+    darwinArgs = {
+      inherit inputs nixpkgs;
+      system = darwinSystem;
+      pkgs = nixpkgs.legacyPackages.${darwinSystem};
     };
     merge = nixpkgs.lib.foldl nixpkgs.lib.recursiveUpdate {};
   in
@@ -73,12 +90,26 @@
       (import ./home/programs/group/flake.nix args)
       (import ./home/programs/nixy/flake.nix args)
       {
-        formatter.${system} = pkgs.alejandra;
+        formatter.${linuxSystem} = pkgs.alejandra;
+        formatter.${darwinSystem} = nixpkgs.legacyPackages.${darwinSystem}.alejandra;
+
+        # NixOS hosts — deploy with: nixos-rebuild switch --flake .#<name>
         nixosConfigurations = {
-          pc = import ./hosts/pc/flake.nix args;
-          laptop = import ./hosts/laptop/flake.nix args;
-          work = import ./hosts/work/flake.nix args;
+          pc = import ./hosts/pc/flake.nix args; # milotek-pc-linux
+          minipc = import ./hosts/minipc/flake.nix args; # milotek-minipc
+          vps = import ./hosts/vps/flake.nix args; # milotek-vps
           server = import ./hosts/server/flake.nix args;
+        };
+
+        # nix-darwin hosts — deploy with: darwin-rebuild switch --flake .#<name>
+        darwinConfigurations = {
+          macbook = import ./hosts/macbook/flake.nix darwinArgs; # milotek-macbook
+        };
+
+        # Standalone Home Manager — deploy with: home-manager switch --flake .#<key>
+        homeConfigurations = {
+          "milotek@milotek-pc-windows" = import ./hosts/wsl/flake.nix args;
+          "milotek@milotek-mac" = import ./hosts/work/flake.nix darwinArgs;
         };
       }
     ];
