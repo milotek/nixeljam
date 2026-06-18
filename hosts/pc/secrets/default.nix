@@ -26,6 +26,9 @@ in {
       signing-pub-key = {
         path = "${home}/.ssh/key.pub";
       };
+      oracle-key = {
+        path = "${home}/.ssh/oracle";
+      };
     };
   };
 

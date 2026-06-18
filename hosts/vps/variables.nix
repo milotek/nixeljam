@@ -3,6 +3,8 @@
   lib,
   ...
 }: {
+  imports = [../../themes/pixeljam.nix];
+
   config.var = {
     hostname = "milotek-vps";
     username = "milotek";
