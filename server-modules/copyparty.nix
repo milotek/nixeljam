@@ -12,6 +12,7 @@
     exec ${pkgs.copyparty}/bin/copyparty \
       -i 127.0.0.1 \
       -p 3923 \
+      --xff-src 127.0.0.1 \
       -a milotek:"$pw" \
       -v /var/lib/copyparty:files:rwmd,milotek
   '';
