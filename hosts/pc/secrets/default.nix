@@ -35,6 +35,7 @@ in {
   home.file.".config/nixos/.sops.yaml".text = ''
     keys:
       - &primary age124lwwy8q48a6flvqnzcwc4a4n7q4ugl8a0qffzxj4m79z0qxk95s3695x5
+      - &vps_host age1hxapnd4kqzcu3apsdy9zx6nwpwg0ztjlsguhkq553fnc7cmlzsqqeyq260
     creation_rules:
       - path_regex: hosts/pc/secrets/secrets.yaml$
         key_groups:
@@ -48,6 +49,11 @@ in {
         key_groups:
           - age:
             - *primary
+      - path_regex: hosts/vps/secrets/secrets.yaml$
+        key_groups:
+          - age:
+            - *primary
+            - *vps_host
   '';
 
   systemd.user.services.mbsync.Unit.After = ["sops-nix.service"];

@@ -4,7 +4,8 @@
     ../../home/programs/git
     ../../home/programs/nix-utils
     ./variables.nix
-    ./secrets
+    # ./secrets is a system-level sops module (imported by configuration.nix),
+    # not a home-manager one — don't import it here.
   ];
 
   home = {

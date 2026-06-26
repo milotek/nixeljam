@@ -23,6 +23,8 @@
 
     autoUpgrade = false;
     autoGarbageCollector = true;
+
+    domain = "tek.rip";
   };
 
   options = {

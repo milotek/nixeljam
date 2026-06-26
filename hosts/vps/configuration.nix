@@ -12,6 +12,7 @@
     ../../nixos/users.nix
     ../../nixos/ssh.nix
     ../../server-modules/fail2ban.nix
+    ../../server-modules/caddy.nix
     ../../server-modules/copyparty.nix
 
     ./disko.nix
