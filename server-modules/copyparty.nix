@@ -14,7 +14,7 @@
       -p 3923 \
       --xff-src 127.0.0.1 \
       -a milotek:"$pw" \
-      -v /var/lib/copyparty:files:rwmd,milotek
+      -v /var/lib/copyparty:files:r:rwmd,milotek
   '';
 in {
   users.users.copyparty = {
