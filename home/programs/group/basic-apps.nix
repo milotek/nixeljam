@@ -18,7 +18,7 @@
     blanket # Listen to different sounds
     signal-desktop # Messaging app
     firefox # Backup browser
-pkgs.sublime4 # Text editor
+
     discord # Chat
     obs-studio # Streaming/recording
     blender # 3D creation suite
