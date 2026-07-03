@@ -1,7 +1,7 @@
 {config, ...}: {
   imports = [
     # Programs
-    ../../home/programs/helium
+    ../../home/programs/chrome
     ../../home/programs/proton
     ../../home/programs/proton/auto-start-vpn.nix
     ../../home/programs/ghostty

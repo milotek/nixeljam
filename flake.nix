@@ -14,8 +14,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
     nvf.url = "github:notashelf/nvf";
     notashelf-tuigreet.url = "github:NotAShelf/tuigreet";
-    helium-browser.url = "github:oxcl/nix-flake-helium-browser";
-    nur-anotherhadi.url = "github:anotherhadi/nur-packages";
+nur-anotherhadi.url = "github:anotherhadi/nur-packages";
 
     nix-darwin = {
       url = "github:LnL7/nix-darwin";

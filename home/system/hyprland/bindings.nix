@@ -26,8 +26,8 @@
     '';
 in {
   wayland.windowManager.hyprland.settings = {
-    "$mod" = "SUPER";
-    "$shiftMod" = "SUPER_SHIFT";
+    "$mod" = "CTRL";
+    "$shiftMod" = "CTRL_SHIFT";
 
     bind =
       [
@@ -53,12 +53,12 @@ in {
             {
               key = "c";
               desc = "Proton Calendar";
-              cmd = "${config.programs.helium.package}/bin/helium 'https://calendar.proton.me/'";
+              cmd = "${config.programs.chromium.package}/bin/google-chrome-stable 'https://calendar.proton.me/'";
             }
             {
               key = "m";
               desc = "Proton Mail";
-              cmd = "${config.programs.helium.package}/bin/helium 'https://mail.proton.me/'";
+              cmd = "${config.programs.chromium.package}/bin/google-chrome-stable 'https://mail.proton.me/'";
             }
             {
               key = "o";
@@ -77,18 +77,18 @@ in {
             }
             {
               key = "b";
-              desc = "Helium";
-              cmd = "${config.programs.helium.package}/bin/helium";
+              desc = "Chrome";
+              cmd = "${config.programs.chromium.package}/bin/google-chrome-stable";
             }
             {
               key = "i";
-              desc = "Helium (Incognito)";
-              cmd = "${config.programs.helium.package}/bin/helium --incognito";
+              desc = "Chrome (Incognito)";
+              cmd = "${config.programs.chromium.package}/bin/google-chrome-stable --incognito";
             }
           ])
         )
 
-        "$mod,B, exec, uwsm app -- ${config.programs.helium.package}/bin/helium" # Browser
+        "$mod,B, exec, uwsm app -- ${config.programs.chromium.package}/bin/google-chrome-stable" # Browser
 
         # Power
         "$mod, X, global, caelestia:session" # Powermenu
@@ -137,7 +137,8 @@ in {
         "$mod, D, exec, caelestia shell drawers toggle dashboard" # Dashboard
 
         # Windows
-        "$mod,Q, killactive," # Close window
+        "$mod,Q, killactive," # Quit (close window)
+        "$mod,W, killactive," # Close tab/window
         "$mod,F, fullscreen" # Toggle Fullscreen
         "$shiftMod,F, togglefloating," # Toggle Floating
 

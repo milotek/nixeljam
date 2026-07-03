@@ -13,9 +13,10 @@
     ../../nixos/utils.nix
     ../../nixos/hyprland.nix
     ../../nixos/usbguard.nix
-    ../../home/programs/helium/system.nix # I hate browser's configuration..
-    ../../nixos/gaming.nix
+../../nixos/gaming.nix
     ../../nixos/ssh.nix
+    ../../nixos/docker.nix
+    ../../nixos/ollama.nix
 
     # You should let those lines as is
     ./hardware-configuration.nix

@@ -12,8 +12,6 @@
     ../../nixos/users.nix
     ../../nixos/utils.nix
     ../../nixos/hyprland.nix
-    ../../home/programs/helium/system.nix # I hate browser's configuration..
-
     # You should let those lines as is
     ./hardware-configuration.nix
     ./variables.nix
