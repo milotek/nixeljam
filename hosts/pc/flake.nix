@@ -13,7 +13,7 @@ nixpkgs.lib.nixosSystem {
     inputs.home-manager.nixosModules.home-manager
     inputs.stylix.nixosModules.stylix
     inputs.nix-index-database.nixosModules.default
-inputs.nix-flatpak.nixosModules.nix-flatpak
+    inputs.nix-flatpak.nixosModules.nix-flatpak
     ./configuration.nix
   ];
 }

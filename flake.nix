@@ -58,6 +58,7 @@ nur-anotherhadi.url = "github:anotherhadi/nur-packages";
     iknowyou.url = "github:anotherhadi/iknowyou";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak";
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
   };
 
   outputs = inputs @ {

@@ -17,6 +17,7 @@
     ../../home/programs/blender
     ../../home/programs/godot
     ../../home/programs/spotatui
+    ../../home/programs/spotify
     ../../home/programs/yazi
     ../../home/programs/opencode
     ../../home/programs/ai
