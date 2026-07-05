@@ -5,6 +5,7 @@
 (with pkgs; [
   go
   claude-code
+  godot
 ])
 ++ (with pkgs-stable; [
   nodejs
