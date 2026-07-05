@@ -29,6 +29,7 @@ in {
       oracle-key = {
         path = "${home}/.ssh/oracle";
       };
+      router-api-key = {};
     };
   };
 
