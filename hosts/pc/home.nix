@@ -18,6 +18,7 @@
     ../../home/programs/spotatui
     ../../home/programs/yazi
     ../../home/programs/opencode
+    ../../home/programs/rofi
 
     ../../home/programs/group/basic-apps.nix
     ../../home/programs/group/cybersecurity.nix
