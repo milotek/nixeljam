@@ -15,6 +15,7 @@
     ../../home/programs/nightshift
     ../../home/programs/nix-utils
     ../../home/programs/blender
+    ../../home/programs/godot
     ../../home/programs/spotatui
     ../../home/programs/yazi
     ../../home/programs/opencode
