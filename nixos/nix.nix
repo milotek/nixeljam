@@ -25,9 +25,6 @@ in {
   nixpkgs.config = {
     allowUnfree = true;
     allowBroken = false;
-    permittedInsecurePackages = [
-      "openssl-1.1.1w"
-    ];
   };
   nix = {
     nixPath = ["nixpkgs=${inputs.nixpkgs}"];

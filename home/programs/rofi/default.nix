@@ -1,9 +1,9 @@
-# Rofi application launcher / switcher (Wayland build).
+# Rofi application launcher / switcher.
 # Theming (colors/font) is handled automatically by stylix's rofi target.
 {pkgs, ...}: {
   programs.rofi = {
     enable = true;
-    package = pkgs.rofi-wayland;
+    package = pkgs.rofi;
     extraConfig = {
       modi = "drun,run,window";
       show-icons = true;
