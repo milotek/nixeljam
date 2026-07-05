@@ -26,8 +26,8 @@
     '';
 in {
   wayland.windowManager.hyprland.settings = {
-    "$mod" = "CTRL";
-    "$shiftMod" = "CTRL_SHIFT";
+    "$mod" = "SUPER";
+    "$shiftMod" = "SUPER_SHIFT";
 
     bind =
       [
@@ -137,7 +137,7 @@ in {
         "$mod, D, exec, caelestia shell drawers toggle dashboard" # Dashboard
 
         # Windows
-        "$mod,Q, killactive," # Quit (close window)
+        "$mod,Q, killactive," # Close window
         "$mod,W, killactive," # Close tab/window
         "$mod,F, fullscreen" # Toggle Fullscreen
         "$shiftMod,F, togglefloating," # Toggle Floating
