@@ -16,6 +16,7 @@
     ../../home/programs/nix-utils
     ../../home/programs/blender
     ../../home/programs/godot
+    ../../home/programs/roblox
     ../../home/programs/spotatui
     ../../home/programs/spotify
     ../../home/programs/yazi
