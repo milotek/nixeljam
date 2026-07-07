@@ -53,14 +53,17 @@
 
     fonts = {
       monospace = {
-        package = pkgs.maple-mono.NF;
-        name = "Maple Mono NF";
+        package = pkgs.fira-mono;
+        name = "Fira Mono";
       };
       sansSerif = {
         package = pkgs.source-sans-pro;
         name = "Source Sans Pro";
       };
-      serif = config.stylix.fonts.sansSerif;
+      serif = {
+        package = pkgs.montserrat;
+        name = "Montserrat";
+      };
       emoji = {
         package = pkgs.noto-fonts-color-emoji;
         name = "Noto Color Emoji";

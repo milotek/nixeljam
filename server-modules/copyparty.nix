@@ -13,6 +13,7 @@
       -i 127.0.0.1 \
       -p 3923 \
       --rproxy 1 \
+      --css-browser /files/.theme.css \
       -a milotek:"$pw" \
       -v /var/lib/copyparty:files:r:rwmd,milotek
   '';
@@ -33,6 +34,9 @@ in {
     wantedBy = ["multi-user.target"];
     after = ["network.target"];
     serviceConfig = {
+      ExecStartPre = pkgs.writeShellScript "copyparty-prestart" ''
+        install -m 644 ${./copyparty-theme.css} /var/lib/copyparty/.theme.css
+      '';
       ExecStart = start;
       User = "copyparty";
       Group = "copyparty";
