@@ -42,7 +42,7 @@ in {
       ExecStart = start;
       User = "copyparty";
       Group = "copyparty";
-      StateDirectory = "copyparty";
+      StateDirectory = [ "copyparty" "copyparty-public" ];
       Restart = "on-failure";
       RestartSec = "5s";
     };
