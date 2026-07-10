@@ -30,6 +30,8 @@ in {
         path = "${home}/.ssh/oracle";
       };
       router-api-key = {};
+      # copyparty (files.tek.rip) WebDAV password, consumed by the rclone mount.
+      copyparty-password = {};
     };
   };
 

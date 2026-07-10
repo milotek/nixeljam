@@ -21,6 +21,7 @@
     ../../home/programs/spotify
     ../../home/programs/yazi
     ../../home/programs/opencode
+    ../../home/programs/rclone
     ../../home/programs/ai
     ../../home/programs/rofi
 
