@@ -61,9 +61,6 @@
       cat = "bat --theme=base16 --color=always --paging=never --tabs=2 --wrap=never --plain";
       mkdir = "mkdir -p";
 
-      # NixOS
-      rebuild = "builtin cd ~/.config/nixos && git add . && sudo nixos-rebuild switch --flake ~/.config/nixos#pc";
-
       # Shortcuts
       spt = "spotatui";
       v = "nvim";
