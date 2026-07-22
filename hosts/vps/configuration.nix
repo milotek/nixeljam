@@ -38,12 +38,14 @@
     LC_TIME = config.var.extraLocale;
   };
 
-  # ssh.nix carries the upstream template's key — replace with ours.
-  users.users."${config.var.username}".openssh.authorizedKeys.keys = lib.mkForce [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINfO5Sf5oDj52b+nKqi5EbW0ZxsfBpMPIZPxG6pYgtmf milo@milotek.dev"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEX5YUtG4lyBcGJPe2ze+MJZ6Lv/L8evoCR3ASw2fFVo milo@milotek.dev"
+  # Reverse-tunnel keys from the desktops: forwarding only, one exposed port each.
+  users.users."${config.var.username}".openssh.authorizedKeys.keys = [
+    ''restrict,port-forwarding,permitlisten="*:2222" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJkXUvwdZwGo6J6Qg6ag/0UelloJD+wx25zQ8kksxGAY pc-tunnel''
   ];
-  services.openssh.settings.PasswordAuthentication = lib.mkForce true;
+
+  # Let the tunnels bind a public port, and open them.
+  services.openssh.settings.GatewayPorts = "clientspecified";
+  networking.firewall.allowedTCPPorts = [2222 2223];
 
   environment.systemPackages = with pkgs; [wget curl git vim htop];
 

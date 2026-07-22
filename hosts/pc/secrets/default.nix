@@ -39,11 +39,17 @@ in {
     keys:
       - &primary age124lwwy8q48a6flvqnzcwc4a4n7q4ugl8a0qffzxj4m79z0qxk95s3695x5
       - &vps_host age1hxapnd4kqzcu3apsdy9zx6nwpwg0ztjlsguhkq553fnc7cmlzsqqeyq260
+      - &pc_host age1fed7tsfrfvmee26qe604g4t5ptcugr78hkfrp6f2ld0ct3zu9yqqzmxnr7
     creation_rules:
       - path_regex: hosts/pc/secrets/secrets.yaml$
         key_groups:
           - age:
             - *primary
+      - path_regex: hosts/pc/secrets/system-secrets.yaml$
+        key_groups:
+          - age:
+            - *primary
+            - *pc_host
       - path_regex: hosts/laptop/secrets/secrets.yaml$
         key_groups:
           - age:

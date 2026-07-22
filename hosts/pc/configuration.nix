@@ -18,10 +18,19 @@
     ../../nixos/docker.nix
     ../../nixos/ollama.nix
 
+    ../../nixos/reverse-tunnel.nix
+
     # You should let those lines as is
     ./hardware-configuration.nix
     ./variables.nix
   ];
+
+  # Reachable at: ssh -p 2222 milotek@tek.rip
+  custom.reverseTunnel = {
+    enable = true;
+    remotePort = 2222;
+    sopsFile = ./secrets/system-secrets.yaml;
+  };
 
   # USBGuard: currently set to allow all devices.
   # Once stable, run `sudo usbguard generate-policy` with all devices plugged in,

@@ -28,9 +28,9 @@ in {
     };
   };
 
-  # Add my public SSH key to my user
+  # Single key used everywhere (matches ~/.ssh/key).
   users.users."${username}".openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPG9SE80ZyBcXZK/f5ypSKudaM5Jo3XtQikCnGo0jI5E hadi@nixy"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEX5YUtG4lyBcGJPe2ze+MJZ6Lv/L8evoCR3ASw2fFVo milo@milotek.dev"
   ];
 
   services.cloudflared.tunnels."${config.var.tunnelId}".ingress."ssh.${config.var.domain}" = "ssh://localhost:22";
