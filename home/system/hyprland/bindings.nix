@@ -157,6 +157,7 @@ in {
         "$shiftMod, S, global, caelestia:screenshotFreeze" # Capture region (freeze)
         ", Print, global, caelestia:screenshotFreeze" # Capture region (freeze)
         "$shiftMod+Alt, S, global, caelestia:screenshot" # Capture region
+        ", Page_Down, exec, ${pkgs.procps}/bin/pkill -USR1 -f gpu-screen-recorder" # Save last 30s clip (ShadowPlay-style)
       ]
       ++ (builtins.concatLists (
         builtins.genList (
