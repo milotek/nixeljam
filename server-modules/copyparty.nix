@@ -16,7 +16,7 @@
       --css-browser /public/theme.css \
       -a milotek:"$pw" \
       -v /var/lib/copyparty-public:public:r \
-      -v /var/lib/copyparty:files:rwmd,milotek
+      -v /var/lib/copyparty::rwmd,milotek
   '';
 in {
   users.users.copyparty = {
