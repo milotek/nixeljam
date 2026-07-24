@@ -26,8 +26,8 @@
   ];
 
   # Reachable via the VPS at:
-  #   ssh -p 2222 milotek@tek.rip     (public port)
-  #   https://remote.pc.tek.rip       (noVNC desktop, fronted by the VPS's caddy)
+  #   ssh -p 2222 <user>@<vps>          (public port)
+  #   https://remote.<host>.<domain>    (noVNC desktop, fronted by the VPS's caddy)
   custom.reverseTunnel = {
     enable = true;
     sopsFile = ./secrets/system-secrets.yaml;

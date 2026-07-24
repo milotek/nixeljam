@@ -4,7 +4,7 @@
 # and websockify serves the noVNC web client on localhost:6080, bridging the
 # browser's WebSocket to that VNC port. The host's reverse tunnel
 # (nixos/reverse-tunnel.nix) forwards 6080 up to the VPS, where caddy fronts it
-# at https://remote.<host>.tek.rip.
+# at https://remote.<host>.<domain>.
 #
 # Nothing here listens beyond 127.0.0.1, so the only public entry point is
 # caddy on the VPS (TLS + basic auth). wayvnc attaches to the running

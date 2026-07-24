@@ -23,7 +23,7 @@ in {
     enable = lib.mkEnableOption "reverse SSH tunnel(s) to the VPS";
     remote = lib.mkOption {
       type = lib.types.str;
-      default = "milotek@tek.rip";
+      default = "${config.var.username}@tek.rip";
       description = "user@host of the VPS to dial.";
     };
     sopsFile = lib.mkOption {
