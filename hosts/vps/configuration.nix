@@ -38,9 +38,10 @@
     LC_TIME = config.var.extraLocale;
   };
 
-  # Reverse-tunnel keys from the desktops: forwarding only, one exposed port each.
+  # Reverse-tunnel key from the PC: forwarding only. It may bind the public SSH
+  # port (2222) and the private noVNC port (localhost:6080, fronted by caddy).
   users.users."${config.var.username}".openssh.authorizedKeys.keys = [
-    ''restrict,port-forwarding,permitlisten="*:2222" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJkXUvwdZwGo6J6Qg6ag/0UelloJD+wx25zQ8kksxGAY pc-tunnel''
+    ''restrict,port-forwarding,permitlisten="*:2222",permitlisten="localhost:6080" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJkXUvwdZwGo6J6Qg6ag/0UelloJD+wx25zQ8kksxGAY pc-tunnel''
   ];
 
   # Let the tunnels bind a public port, and open them.

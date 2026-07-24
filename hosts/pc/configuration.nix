@@ -25,11 +25,26 @@
     ./variables.nix
   ];
 
-  # Reachable at: ssh -p 2222 milotek@tek.rip
+  # Reachable via the VPS at:
+  #   ssh -p 2222 milotek@tek.rip     (public port)
+  #   https://remote.pc.tek.rip       (noVNC desktop, fronted by the VPS's caddy)
   custom.reverseTunnel = {
     enable = true;
-    remotePort = 2222;
     sopsFile = ./secrets/system-secrets.yaml;
+    forwards = [
+      # sshd: public port on the VPS.
+      {
+        remoteBind = "*";
+        remotePort = 2222;
+        localPort = 22;
+      }
+      # noVNC web client: private port on the VPS, fronted by caddy over TLS.
+      {
+        remoteBind = "localhost";
+        remotePort = 6080;
+        localPort = 6080;
+      }
+    ];
   };
 
   # USBGuard: currently set to allow all devices.

@@ -33,6 +33,7 @@
     # System (Desktop environment like stuff)
     ../../home/system/hyprland
     ../../home/system/gpu-screen-recorder
+    ../../home/system/remote-desktop
     ../../home/system/caelestia-shell
     ../../home/system/hyprpaper
     ../../home/system/mime
