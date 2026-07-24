@@ -15,6 +15,7 @@
     ../../server-modules/fail2ban.nix
     ../../server-modules/caddy.nix
     ../../server-modules/copyparty.nix
+    ../../server-modules/hermes.nix
 
     ./disko.nix
     ./hardware-configuration.nix
