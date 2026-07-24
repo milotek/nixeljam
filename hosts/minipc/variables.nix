@@ -8,7 +8,7 @@
   ];
 
   config.var = {
-    hostname = "milotek-minipc";
+    hostname = "minipc";
     username = "milotek";
     configDirectory = "/home/" + config.var.username + "/.config/nixos";
 

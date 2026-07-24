@@ -94,10 +94,11 @@ nur-anotherhadi.url = "github:anotherhadi/nur-packages";
         formatter.${darwinSystem} = nixpkgs.legacyPackages.${darwinSystem}.alejandra;
 
         # NixOS hosts — deploy with: nixos-rebuild switch --flake .#<name>
+        # Attr name == networking.hostName for each host (e.g. `.#pc` -> host `pc`).
         nixosConfigurations = {
-          pc = import ./hosts/pc/flake.nix args; # milotek-pc-linux
-          minipc = import ./hosts/minipc/flake.nix args; # milotek-minipc
-          vps = import ./hosts/vps/flake.nix args; # milotek-vps
+          pc = import ./hosts/pc/flake.nix args;
+          minipc = import ./hosts/minipc/flake.nix args;
+          vps = import ./hosts/vps/flake.nix args;
           server = import ./hosts/server/flake.nix args;
         };
 

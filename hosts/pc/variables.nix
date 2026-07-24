@@ -9,7 +9,7 @@
   ];
 
   config.var = {
-    hostname = "milotek-pc-linux";
+    hostname = "pc";
     username = "milotek";
     configDirectory = "/home/" + config.var.username + "/.config/nixos"; # The path of the nixos configuration directory
 
