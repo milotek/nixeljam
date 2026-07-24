@@ -1,7 +1,7 @@
 # ShadowPlay-like instant replay via gpu-screen-recorder.
 #
 # An always-on replay daemon continuously buffers the last N seconds of the
-# primary monitor (HDMI-A-1) in RAM using NVENC. Pressing the save key (see
+# primary monitor in RAM using NVENC. Pressing the save key (see
 # home/system/hyprland/bindings.nix) sends SIGUSR1 to flush that buffer to a
 # clip file in ~/Videos/Recordings/Clips/.
 {
@@ -10,13 +10,28 @@
   ...
 }: let
   clipsDir = "${config.home.homeDirectory}/Videos/Recordings/Clips";
-  monitor = "HDMI-A-1"; # Primary AORUS FI27Q-X; Wayland can't follow focus in a persistent buffer
   replaySeconds = 30;
 
   # Runs after each save with the saved file path as $1; gives ShadowPlay-style feedback.
   onSave = pkgs.writeShellScript "gsr-clip-saved" ''
     ${pkgs.libnotify}/bin/notify-send -a "Clips" -i video-x-generic \
       "Clip saved" "$(${pkgs.coreutils}/bin/basename "$1")"
+  '';
+
+  # Resolve the primary monitor (the one at 0,0) at start, then record it.
+  run = pkgs.writeShellScript "gsr-replay" ''
+    mon=$(/run/current-system/sw/bin/hyprctl monitors -j \
+      | ${pkgs.jq}/bin/jq -r 'first(.[] | select(.x==0 and .y==0) | .name) // "screen"')
+    exec /run/current-system/sw/bin/gpu-screen-recorder \
+      -w "$mon" \
+      -f 60 \
+      -q very_high \
+      -c mp4 \
+      -a "default_output|default_input" \
+      -r ${toString replaySeconds} \
+      -replay-storage ram \
+      -sc ${onSave} \
+      -o ${clipsDir}
   '';
 in {
   home.packages = [pkgs.gpu-screen-recorder];
@@ -31,18 +46,7 @@ in {
     Service = {
       Type = "simple";
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${clipsDir}";
-      ExecStart = ''
-        ${pkgs.gpu-screen-recorder}/bin/gpu-screen-recorder \
-          -w ${monitor} \
-          -f 60 \
-          -q very_high \
-          -c mp4 \
-          -a "default_output|default_input" \
-          -r ${toString replaySeconds} \
-          -replay-storage ram \
-          -sc ${onSave} \
-          -ro ${clipsDir}
-      '';
+      ExecStart = "${run}";
       Restart = "on-failure";
       RestartSec = 5;
     };
