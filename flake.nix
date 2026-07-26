@@ -93,8 +93,6 @@ nur-anotherhadi.url = "github:anotherhadi/nur-packages";
         formatter.${linuxSystem} = pkgs.alejandra;
         formatter.${darwinSystem} = nixpkgs.legacyPackages.${darwinSystem}.alejandra;
 
-        # NixOS hosts — deploy with: nixos-rebuild switch --flake .#<name>
-        # Attr name == networking.hostName for each host (e.g. `.#pc` -> host `pc`).
         nixosConfigurations = {
           pc = import ./hosts/pc/flake.nix args;
           minipc = import ./hosts/minipc/flake.nix args;
