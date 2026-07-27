@@ -6,7 +6,7 @@
   imports = [../../themes/pixeljam.nix];
 
   config.var = {
-    hostname = "milotek-vps";
+    hostname = "vps";
     username = "milotek";
     configDirectory = "/home/" + config.var.username + "/.config/nixos";
 
