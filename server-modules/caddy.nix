@@ -11,6 +11,20 @@
     virtualHosts."files.${config.var.domain}".extraConfig = ''
       reverse_proxy localhost:3923
     '';
+
+    # PC's desktop: noVNC is tunnelled up to localhost:6080 by the PC's reverse
+    # tunnel. This port is public, so gate it behind basic auth (the VNC side
+    # itself is unauthenticated but only reachable via this tunnel).
+    #
+    # Regenerate the hash to change the password:
+    #   mkpasswd -m bcrypt -R 14 'yourpassword'
+    virtualHosts."remote.pc.${config.var.domain}".extraConfig = ''
+      basic_auth {
+        milotek $2b$14$6JMWyRdzROc3BeBMr3hD0OmV/MTQxKt8ZQRVvoMyZsErH/MlwC0GW
+      }
+      redir / /vnc.html
+      reverse_proxy localhost:6080
+    '';
   };
 
   # 80 lets Caddy solve the ACME challenge and redirect http -> https; 443 serves the site.
