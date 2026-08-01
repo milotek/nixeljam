@@ -23,8 +23,6 @@
     ./secrets
   ];
 
-  services.tailscale.enable = true;
-
   # Reachable via the VPS at:  ssh -p 2223 <user>@tek.rip
   # Dials out to the VPS and exposes this host's sshd on the VPS's public
   # port 2223. Uses the primary milo@milotek.dev key (stored as the
