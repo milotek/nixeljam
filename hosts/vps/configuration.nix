@@ -38,11 +38,9 @@
     LC_TIME = config.var.extraLocale;
   };
 
-  # Reverse-tunnel key from the PC: forwarding only. It may bind the public SSH
-  # port (2222) and the private noVNC port (localhost:6080, fronted by caddy).
-  users.users."${config.var.username}".openssh.authorizedKeys.keys = [
-    ''restrict,port-forwarding,permitlisten="*:2222",permitlisten="localhost:6080" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJkXUvwdZwGo6J6Qg6ag/0UelloJD+wx25zQ8kksxGAY pc-tunnel''
-  ];
+  # Reverse tunnels from pc (2222 + noVNC 6080) and minipc (2223) both dial in
+  # with the primary milo@milotek.dev key, which nixos/ssh.nix already authorizes
+  # with full access - so no dedicated forwarding-only keys are needed here.
 
   # Let the tunnels bind a public port, and open them.
   services.openssh.settings.GatewayPorts = "clientspecified";
