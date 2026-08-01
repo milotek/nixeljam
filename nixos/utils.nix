@@ -62,7 +62,10 @@ in {
       resyncTimer = "10m";
     };
   };
-  console.keyMap = keyboardLayout;
+  # Derive the console keymap from the xkb layout via ckbcomp. The console keymap
+  # names differ from xkb (e.g. xkb "gb" -> console "uk"), so mapping directly
+  # would fail loadkeys; useXkbConfig keeps them consistent.
+  console.useXkbConfig = true;
 
   environment.variables = {
     XDG_DATA_HOME = "$HOME/.local/share";

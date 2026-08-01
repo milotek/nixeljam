@@ -8,7 +8,7 @@ It can be used in three ways: run it directly, import it into another flake's ho
 No installation needed:
 
 ```sh
-nix run github:anotherhadi/nixy#nvim
+nix run github:milotek/nixeljam#nvim
 ```
 
 ## Use in another flake
@@ -16,14 +16,14 @@ nix run github:anotherhadi/nixy#nvim
 Add this repo as an input:
 
 ```nix
-inputs.nixy.url = "github:anotherhadi/nixy";
+inputs.nixeljam.url = "github:milotek/nixeljam";
 ```
 
 Then import the home-manager module in your home configuration:
 
 ```nix
 { inputs, ... }: {
-  imports = [ inputs.nixy.homeManagerModules.nvim ];
+  imports = [ inputs.nixeljam.homeManagerModules.nvim ];
 }
 ```
 

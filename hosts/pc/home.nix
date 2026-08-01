@@ -20,6 +20,7 @@
     ../../home/programs/spotatui
     ../../home/programs/spotify
     ../../home/programs/yazi
+    ../../home/programs/zellij
     ../../home/programs/opencode
     ../../home/programs/rclone
     ../../home/programs/ai

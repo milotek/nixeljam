@@ -1,6 +1,7 @@
 {config, ...}: {
   imports = [
     # Programs
+    ../../home/programs/chrome
     ../../home/programs/ghostty
     ../../home/programs/nvf
     ../../home/programs/shell
@@ -14,9 +15,7 @@
     ../../home/programs/group/dev.nix
 
     # Desktop
-    ../../home/system/hyprland
-    ../../home/system/caelestia-shell
-    ../../home/system/hyprpaper
+    ../../home/system/sway
     ../../home/system/mime
     ../../home/system/udiskie
 

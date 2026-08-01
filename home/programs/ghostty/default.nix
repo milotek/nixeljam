@@ -27,7 +27,7 @@ in {
       copy-on-select = "clipboard";
       app-notifications = false;
 
-      font-thickening = true;
+      font-thicken = true;
 
       cursor-style = "bar";
       cursor-style-blink = true;

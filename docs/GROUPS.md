@@ -1,44 +1,43 @@
 # Groups
 
-Groups are curated sets of packages exposed as flake outputs. Each group has two forms:
+Groups are curated sets of packages exposed as flake outputs.
 
-- **`homeManagerModules.<group>`** — full home-manager module (packages + files + systemd units)
-- **`packages.<group>`** — standalone environment for `nix shell` (packages only)
+- **`packages.<group>`** — standalone environment for `nix shell`
 
 ## Available groups
 
 - dev (go, bun, air, ...)
 - cybersecurity (nmap, john, dirb, ffuf, ...)
 
-For the Cybersecurity group, the home-manager module also sets up:
+Inside this config, the Cybersecurity home-manager import also sets up:
 
 - `~/Cyber/wordlists/` with SecLists, fuzz4bounty, and hashcat rules
 - `~/Cyber/tmp/` as a temporary workspace
+
+## Quick shell without installing
+
+```sh
+nix shell github:milotek/nixeljam#cybersecurity
+nix shell github:milotek/nixeljam#dev
+```
+
+This drops you into a shell with all tools in `PATH`.
+No home-manager required, and no wordlists or systemd units are installed.
 
 ## Use in another flake
 
 Add this repo as an input:
 
 ```nix
-inputs.nixy.url = "github:anotherhadi/nixy";
+inputs.nixeljam.url = "github:milotek/nixeljam";
 ```
 
-Import the home-manager module in your home configuration:
+Expose a package from the input, for example in a dev shell:
 
 ```nix
-{ inputs, ... }: {
-  imports = [
-    inputs.nixy.homeManagerModules.cybersecurity
-    # inputs.nixy.homeManagerModules.dev
-  ];
+{ inputs, pkgs, ... }: {
+  devShells.x86_64-linux.default = pkgs.mkShell {
+    packages = [ inputs.nixeljam.packages.x86_64-linux.dev ];
+  };
 }
 ```
-
-## Quick shell without installing
-
-```sh
-nix shell github:anotherhadi/nixy#cybersecurity
-nix shell github:anotherhadi/nixy#dev
-```
-
-This drops you into a shell with all tools in `PATH`. No home-manager required, no wordlists or systemd units.

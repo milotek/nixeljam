@@ -31,5 +31,7 @@
   environment.systemPackages = with pkgs; [
     moonlight-qt
     vinegar
+    prismlauncher # Minecraft instance/mod launcher
+    modrinth-app # Modrinth's Minecraft launcher
   ];
 }

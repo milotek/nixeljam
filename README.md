@@ -100,8 +100,8 @@ This folder contains server-related nixos modules. (bitwarden, nextcloud, ...)
 git clone https://github.com/milotek/nixeljam ~/.config/nixos
 ```
 
-2. Copy the `hosts/laptop` folder, rename it to match your system’s hostname,
-   and update `variables.nix` with your machine’s settings.
+2. Copy the closest existing host folder, rename it to the bare flake host name
+   you want to use, and update `variables.nix` with your machine's settings.
 3. Copy your `hardware-configuration.nix` into your new host's folder to ensure
    proper hardware support.
 4. Register your new host in `flake.nix` by adding it under nixosConfigurations.
@@ -119,10 +119,11 @@ git clone https://github.com/milotek/nixeljam ~/.config/nixos
 > When you add new files, don't forget to run `git add .` to add them to the git
 > repository
 
-5. Build the system
+5. Build the system using the same bare host name that you registered in
+   `flake.nix`.
 
 ```sh
-sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
+sudo nixos-rebuild switch --flake ~/.config/nixos#pc
 ```
 
 ## Documentation

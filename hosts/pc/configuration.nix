@@ -12,8 +12,9 @@
     ../../nixos/users.nix
     ../../nixos/utils.nix
     ../../nixos/hyprland.nix
+    ../../nixos/ydotool.nix
     ../../nixos/usbguard.nix
-../../nixos/gaming.nix
+    ../../nixos/gaming.nix
     ../../nixos/ssh.nix
     ../../nixos/docker.nix
     ../../nixos/ollama.nix

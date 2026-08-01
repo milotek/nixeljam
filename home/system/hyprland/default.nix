@@ -41,6 +41,18 @@ in {
     dconf
     wayland-utils
     wayland-protocols
+    (pkgs.writeShellApplication {
+      name = "autoclicker";
+      runtimeInputs = [pkgs.coreutils pkgs.ydotool];
+      text = ''
+        interval="''${1:-0.1}"
+
+        while :; do
+          ydotool click 0xC0
+          sleep "$interval"
+        done
+      '';
+    })
   ];
 
   wayland.windowManager.hyprland = {

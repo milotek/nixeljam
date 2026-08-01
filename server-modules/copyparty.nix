@@ -1,7 +1,9 @@
 # copyparty — browser-accessible file server with upload support.
 # Bound to localhost; exposed publicly via the Caddy reverse proxy (caddy.nix)
 # at https://files.<domain>. No firewall port is opened here.
-# The login password lives in sops: `sops hosts/vps/secrets/secrets.yaml` -> copyparty-password
+# Login passwords live in sops: `sops hosts/vps/secrets/secrets.yaml`
+#   copyparty-password        -> milotek (rwmd, full access)
+#   copyparty-guest-password  -> guest   (r, read-only)
 {
   config,
   pkgs,
@@ -9,12 +11,14 @@
 }: let
   start = pkgs.writeShellScript "copyparty-start" ''
     pw="$(cat ${config.sops.secrets.copyparty-password.path})"
+    guest_pw="$(cat ${config.sops.secrets.copyparty-guest-password.path})"
     exec ${pkgs.copyparty}/bin/copyparty \
       -i 127.0.0.1 \
       -p 3923 \
       --rproxy 1 \
       -a milotek:"$pw" \
-      -v /var/lib/copyparty::rwmd,milotek
+      -a guest:"$guest_pw" \
+      -v /var/lib/copyparty::rwmd,milotek:r,guest
   '';
 in {
   users.users.copyparty = {
@@ -24,6 +28,11 @@ in {
   users.groups.copyparty = {};
 
   sops.secrets.copyparty-password = {
+    owner = "copyparty";
+    mode = "0400";
+  };
+
+  sops.secrets.copyparty-guest-password = {
     owner = "copyparty";
     mode = "0400";
   };
