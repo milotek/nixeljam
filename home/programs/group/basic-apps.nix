@@ -17,7 +17,6 @@
     onlyoffice-desktopeditors # Office suite
     blanket # Listen to different sounds
     signal-desktop # Messaging app
-    firefox # Backup browser
 
     discord # Chat
     obs-studio # Streaming/recording

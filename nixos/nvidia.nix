@@ -29,7 +29,6 @@ in {
     __GL_GSYNC_ALLOWED = "1"; # Enable G-Sync if available
     __GL_VRR_ALLOWED = "1"; # Enable VRR (Variable Refresh Rate)
     NVD_BACKEND = "direct"; # Configuration for new driver
-    MOZ_ENABLE_WAYLAND = "1"; # Wayland support for Firefox
   };
 
   # Configuration for proprietary packages
