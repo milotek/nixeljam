@@ -58,7 +58,7 @@
       cd = "z";
       ls = "eza --icons=always --no-quotes";
       tree = "eza --icons=always --tree --no-quotes";
-      cat = "bat --theme=base16 --color=always --paging=never --tabs=2 --wrap=never --plain";
+      cat = "bat --theme=base16 --paging=never --tabs=2 --wrap=never --plain";
       mkdir = "mkdir -p";
 
       # Shortcuts
