@@ -12,6 +12,10 @@
       reverse_proxy localhost:3923
     '';
 
+    virtualHosts."music.${config.var.domain}".extraConfig = ''
+      reverse_proxy localhost:4533
+    '';
+
     # PC's desktop: noVNC is tunnelled up to localhost:6080 by the PC's reverse
     # tunnel. This port is public, so gate it behind basic auth (the VNC side
     # itself is unauthenticated but only reachable via this tunnel).
