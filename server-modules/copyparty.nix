@@ -16,6 +16,7 @@
       -i 127.0.0.1 \
       -p 3923 \
       --rproxy 1 \
+      --daw \
       -a milotek:"$pw" \
       -a guest:"$guest_pw" \
       -v /var/lib/copyparty::rwmd,milotek:r,guest
