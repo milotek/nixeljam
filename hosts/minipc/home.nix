@@ -15,7 +15,9 @@
     ../../home/programs/group/dev.nix
 
     # Desktop
-    ../../home/system/sway
+    ../../home/system/hyprland
+    ../../home/system/caelestia-shell
+    ../../home/system/hyprpaper
     ../../home/system/mime
     ../../home/system/udiskie
 
