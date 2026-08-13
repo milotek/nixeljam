@@ -16,6 +16,16 @@
       reverse_proxy localhost:4533
     '';
 
+    # slskd web UI (Soulseek). Gated by slskd's own login (creds in sops).
+    virtualHosts."slsk.${config.var.domain}".extraConfig = ''
+      reverse_proxy localhost:5030
+    '';
+
+    # Home Assistant. Gated by its own onboarding login.
+    virtualHosts."home.${config.var.domain}".extraConfig = ''
+      reverse_proxy localhost:8123
+    '';
+
     # PC's desktop: noVNC is tunnelled up to localhost:6080 by the PC's reverse
     # tunnel. This port is public, so gate it behind basic auth (the VNC side
     # itself is unauthenticated but only reachable via this tunnel).

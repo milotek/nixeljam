@@ -19,6 +19,8 @@
     ../../server-modules/fail2ban.nix
     ../../server-modules/copyparty.nix
     ../../server-modules/navidrome.nix
+    ../../server-modules/slskd.nix
+    ../../server-modules/home-assistant.nix
 
     ./hardware-configuration.nix
     ./variables.nix
@@ -44,6 +46,16 @@
         remoteBind = "localhost";
         remotePort = 4533;
         localPort = 4533;
+      }
+      {
+        remoteBind = "localhost";
+        remotePort = 5030;
+        localPort = 5030;
+      }
+      {
+        remoteBind = "localhost";
+        remotePort = 8123;
+        localPort = 8123;
       }
     ];
   };
