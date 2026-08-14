@@ -8,6 +8,7 @@
     sttr # A minimalist CyberChef-like, cross-platform CLI app for performing various operations on strings
     slides # A terminal-based presentation tool that allows you to create and deliver presentations directly from the command line
     pom # Pomodoro timer in your terminal
+    wiremix # Simple TUI mixer for PipeWire
     tabiew # A terminal-based CSV viewer and manipulator
     jless # A pager for JSON
     pkgs.nur.repos.anotherhadi.usbguard-tui # TUI for managing USBGuard rules

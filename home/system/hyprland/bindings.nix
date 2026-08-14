@@ -54,12 +54,12 @@ in {
             {
               key = "c";
               desc = "Proton Calendar";
-              cmd = "${config.programs.helium.package}/bin/helium 'https://calendar.proton.me/'";
+              cmd = "${config.programs.chromium.package}/bin/google-chrome-stable 'https://calendar.proton.me/'";
             }
             {
               key = "m";
               desc = "Proton Mail";
-              cmd = "${config.programs.helium.package}/bin/helium 'https://mail.proton.me/'";
+              cmd = "${config.programs.chromium.package}/bin/google-chrome-stable 'https://mail.proton.me/'";
             }
             {
               key = "o";
@@ -78,18 +78,18 @@ in {
             }
             {
               key = "b";
-              desc = "Helium";
-              cmd = "${config.programs.helium.package}/bin/helium";
+              desc = "Chrome";
+              cmd = "${config.programs.chromium.package}/bin/google-chrome-stable";
             }
             {
               key = "i";
-              desc = "Helium (Incognito)";
-              cmd = "${config.programs.helium.package}/bin/helium --incognito";
+              desc = "Chrome (Incognito)";
+              cmd = "${config.programs.chromium.package}/bin/google-chrome-stable --incognito";
             }
           ])
         )
 
-        "$mod,B, exec, uwsm app -- ${config.programs.helium.package}/bin/helium" # Browser
+        "$mod,B, exec, uwsm app -- ${config.programs.chromium.package}/bin/google-chrome-stable" # Browser
 
         # Power
         (
