@@ -33,10 +33,13 @@ in {
     };
     Service = {
       Type = "notify";
-      Environment = ["PATH=${lib.makeBinPath [pkgs.fuse3]}"];
+      # rclone needs the *setuid* fusermount3 from /run/wrappers/bin (the plain
+      # pkgs.fuse3 binary fails with "Operation not permitted"), and coreutils
+      # for the `cat` that reads the sops secret in the mount script.
+      Environment = ["PATH=/run/wrappers/bin:${lib.makeBinPath [pkgs.coreutils pkgs.fuse3]}"];
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
       ExecStart = "${mount}";
-      ExecStop = "${pkgs.fuse3}/bin/fusermount3 -u ${mountPoint}";
+      ExecStop = "/run/wrappers/bin/fusermount3 -u ${mountPoint}";
       Restart = "on-failure";
       RestartSec = "10";
     };
