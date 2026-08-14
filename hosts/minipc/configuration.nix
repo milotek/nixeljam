@@ -13,6 +13,7 @@
     ../../nixos/ssh.nix
     ../../nixos/ydotool.nix
     ../../nixos/reverse-tunnel.nix
+    ../../nixos/tailscale.nix
 
     # Self-hosted services — add more from server-modules/ as needed
     ../../server-modules/adguardhome.nix

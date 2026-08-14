@@ -20,6 +20,7 @@
     ../../nixos/ollama.nix
 
     ../../nixos/reverse-tunnel.nix
+    ../../nixos/tailscale.nix
 
     # You should let those lines as is
     ./hardware-configuration.nix
