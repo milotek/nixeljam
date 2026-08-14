@@ -25,8 +25,23 @@ That plan file is authoritative. Read it first.
 - [ ] **Phase 1 — shared modules**: port `nixos/` (reverse-tunnel, tailscale, ssh, ydotool, gaming, ollama,
       user-password, usbguard — NOT omen) and `themes/` (pixeljam, catppuccin; nixy.nix has a 9-line local diff).
       Diff ours vs upstream where both exist; keep ours only on real local change.
+- [x] **Phase 1 — shared modules** (done):
+      - nixos/ ours-only ported verbatim: gaming, ollama, reverse-tunnel, ssh, tailscale, user-password, ydotool.
+      - nixos/nvidia.nix: took OURS wholesale (v6 base is laptop PRIME-offload; our pc is desktop dedicated GPU).
+      - nixos/nix.nix: merged our sudo NOPASSWD-nixos-rebuild rule + timestamp_timeout onto v6 base.
+      - nixos/utils.nix: replaced v6 `console.keyMap` with `console.useXkbConfig=true` (gb→uk fix); added EDITOR=nvim.
+      - themes/: ported pixeljam + catppuccin; fixed both to v6 theme schema (bar-height, dropped fetch/bar-thickness).
+      - Kept v6 base for: amd-graphics, audio, bluetooth, docker, fonts, hyprland, systemd-boot, tuigreet, usbguard,
+        users, home-manager(deferred). See DROPPED list below.
+      - DEFERRED: nixos/home-manager.nix extraSpecialArgs — v6 passes pkgs-unstable; old passed pkgs-stable +
+        pkgs-nur-hadi. Resolve in Phase 2 once we know which home modules reference those. gaming.nix needs the
+        `nix-flatpak` flake input+module wired on pc.
+      - DROPPED local tweaks (reconsider only if something breaks): wheelNeedsPassword=false (redundant + less
+        secure, replaced by targeted NOPASSWD rule); fcitx5 input method (CJK, unused); docker_29 pin (kept v6
+        default + lazydocker); wireplumber camera-disable; hyprland flake input (kept nixpkgs hyprland);
+        source-sans/extra-cachix substituters. themes/nixy.nix local diff not ported (no host uses nixy theme).
 - [ ] **Phase 2 — pc**: host files + secrets + home modules. Do the gui/tui split and grab-bag breakup here.
-      Build `.#pc`.
+      Build `.#pc`. pc also needs: users groups video+input (Sunshine) in host config; nix-flatpak input for gaming.nix.
 - [ ] **Phase 3 — minipc**: host files + secrets + self-hosted server-modules
       (caddy/copyparty/home-assistant/navidrome/slskd) + reverse tunnel. Omit creative tooling. Build `.#minipc`.
 - [ ] **Phase 4 — vps**: last. caddy.nix + fail2ban.nix + disko + GatewayPorts/firewall. Build `.#vps`.

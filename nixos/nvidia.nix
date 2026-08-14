@@ -5,47 +5,52 @@
   config,
   ...
 }: let
+  # Using beta driver for recent GPUs like RTX 4070
   nvidiaDriverChannel = config.boot.kernelPackages.nvidiaPackages.production;
 in {
-  services.xserver.videoDrivers = ["nvidia"];
+  # Video drivers configuration for Xorg and Wayland
+  services.xserver.videoDrivers = ["nvidia"]; # Simplified - other modules are loaded automatically
 
+  # Kernel parameters for better Wayland and Hyprland integration
   boot.kernelParams = [
+    "nvidia-drm.modeset=1" # Enable mode setting for Wayland
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1" # Improves resume after sleep
   ];
 
+  # Blacklist nouveau to avoid conflicts
+  boot.blacklistedKernelModules = ["nouveau"];
+
+  # Environment variables for better compatibility
   environment.variables = {
-    LIBVA_DRIVER_NAME = "nvidia";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    __GL_GSYNC_ALLOWED = "1";
-    __GL_VRR_ALLOWED = "1";
-    NVD_BACKEND = "direct";
+    LIBVA_DRIVER_NAME = "nvidia"; # Hardware video acceleration
+    GBM_BACKEND = "nvidia-drm"; # Graphics backend for Wayland
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia"; # Use Nvidia driver for GLX
+    NIXOS_OZONE_WL = "1"; # Wayland support for Electron apps
+    __GL_GSYNC_ALLOWED = "1"; # Enable G-Sync if available
+    __GL_VRR_ALLOWED = "1"; # Enable VRR (Variable Refresh Rate)
+    NVD_BACKEND = "direct"; # Configuration for new driver
   };
 
-  nixpkgs.config.nvidia.acceptLicense = true;
+  # Configuration for proprietary packages
+  nixpkgs.config = {
+    nvidia.acceptLicense = true;
+  };
 
+  # Nvidia configuration
   hardware = {
     nvidia = {
-      open = true; # Open kernel modules, recommended for Turing and newer (RTX 4070 = Ada Lovelace)
-      nvidiaSettings = true;
+      open = false; # Proprietary driver for better performance
+      nvidiaSettings = true; # Nvidia settings utility
       powerManagement = {
         enable = true;
-        finegrained = true;
+        finegrained = false;
       };
       modesetting.enable = true;
       package = nvidiaDriverChannel;
-      # forceFullCompositionPipeline = true; # Only useful when display is connected directly to Nvidia GPU, not in PRIME offload mode
-
-      prime = {
-        offload = {
-          enable = true;
-          enableOffloadCmd = true;
-        };
-        sync.enable = false; # offload mode is better for battery life
-        amdgpuBusId = "PCI:5:0:0";
-        nvidiaBusId = "PCI:1:0:0";
-      };
+      forceFullCompositionPipeline = true;
     };
 
+    # Enhanced graphics support
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -53,8 +58,10 @@ in {
         nvidia-vaapi-driver
         libva-vdpau-driver
         libvdpau-va-gl
+        mesa
         egl-wayland
         vulkan-loader
+        vulkan-validation-layers
         libva
       ];
     };
@@ -68,9 +75,13 @@ in {
     ];
   };
 
+  # Additional useful packages
   environment.systemPackages = with pkgs; [
     vulkan-tools
     mesa-demos
-    libva-utils
+    libva-utils # VA-API debugging tools
   ];
+
+  # Enable Nvidia container toolkit for GPU acceleration in containers (docker)
+  hardware.nvidia-container-toolkit.enable = false;
 }

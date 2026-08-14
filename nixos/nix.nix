@@ -10,6 +10,25 @@ in {
     allowUnfree = true;
     allowBroken = false;
   };
+
+  # Ask for password once per SSH session (tied to the tty, expires when session closes)
+  security.sudo.extraConfig = ''
+    Defaults timestamp_type=tty,timestamp_timeout=-1
+  '';
+
+  # Passwordless nixos-rebuild for the primary user (convenience on the rebuild workflow).
+  security.sudo.extraRules = [
+    {
+      users = [config.var.username];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nixos-rebuild";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
+  ];
+
   nix = {
     nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     channel.enable = false;
