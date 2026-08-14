@@ -7,6 +7,7 @@
     ../../nixos/users.nix
     ../../nixos/utils.nix
     ../../nixos/amd-graphics.nix
+    ../../nixos/tailscale.nix
 
     # NixOS server modules
     ../../server-modules/ssh.nix

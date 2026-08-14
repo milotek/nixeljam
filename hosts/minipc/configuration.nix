@@ -13,10 +13,15 @@
     ../../nixos/ssh.nix
     ../../nixos/ydotool.nix
     ../../nixos/reverse-tunnel.nix
+    ../../nixos/tailscale.nix
 
     # Self-hosted services — add more from server-modules/ as needed
     ../../server-modules/adguardhome.nix
     ../../server-modules/fail2ban.nix
+    ../../server-modules/copyparty.nix
+    ../../server-modules/navidrome.nix
+    ../../server-modules/slskd.nix
+    ../../server-modules/home-assistant.nix
 
     ./hardware-configuration.nix
     ./variables.nix
@@ -24,9 +29,6 @@
   ];
 
   # Reachable via the VPS at:  ssh -p 2223 <user>@tek.rip
-  # Dials out to the VPS and exposes this host's sshd on the VPS's public
-  # port 2223. Uses the primary milo@milotek.dev key (stored as the
-  # reverse-tunnel-key system secret), which the VPS already authorizes.
   custom.reverseTunnel = {
     enable = true;
     sopsFile = ./secrets/system-secrets.yaml;
@@ -36,7 +38,32 @@
         remotePort = 2223;
         localPort = 22;
       }
+      {
+        remoteBind = "localhost";
+        remotePort = 3923;
+        localPort = 3923;
+      }
+      {
+        remoteBind = "localhost";
+        remotePort = 4533;
+        localPort = 4533;
+      }
+      {
+        remoteBind = "localhost";
+        remotePort = 5030;
+        localPort = 5030;
+      }
+      {
+        remoteBind = "localhost";
+        remotePort = 8123;
+        localPort = 8123;
+      }
     ];
+  };
+
+  sops = {
+    defaultSopsFile = ./secrets/system-secrets.yaml;
+    age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
   };
 
   home-manager.users."${config.var.username}" = import ./home.nix;

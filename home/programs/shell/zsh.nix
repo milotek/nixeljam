@@ -10,6 +10,9 @@
     ripgrep
   ];
 
+  # Declarative Powerlevel10k config (generated via `p10k configure`)
+  home.file.".p10k.zsh".source = ./p10k.zsh;
+
   # Add go binaries to the PATH
   home.sessionPath = ["$HOME/go/bin"];
 
@@ -203,7 +206,7 @@
           print -n "\e]133;C\e\\"
         }
 
-        # Source p10k config — run 'p10k configure' to generate ~/.p10k.zsh
+        # Source p10k config (placed declaratively via home.file)
         [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
       '';
   };
