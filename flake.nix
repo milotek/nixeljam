@@ -48,6 +48,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # nixeljam additions
+    nix-flatpak.url = "github:gmodena/nix-flatpak"; # gaming.nix flatpak (Sober)
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Server
     nixarr.url = "github:rasmus-kirk/nixarr";
     default-creds.url = "github:anotherhadi/default-creds";
@@ -91,6 +98,7 @@
         packages.${system}.nvim = inputs.nvf-config.packages.${system}.nvim;
         apps.${system}.nvim = inputs.nvf-config.apps.${system}.nvim;
         nixosConfigurations = {
+          pc = import ./hosts/pc/flake.nix args;
           h-work = import ./hosts/work/flake.nix args;
         };
         devShells = forAllSystems (system: pkgs: {
