@@ -62,8 +62,13 @@ That plan file is authoritative. Read it first.
         Iterate on eval errors, THEN `nixos-rebuild build --flake .#pc` (never switch).
       - TODO/notes: mime associations still point at helium/elio (won't break build, wrong "open with");
         gpu-screen-recorder ShadowPlay keybind (Page_Down) was in old caelestia bindings, not re-added.
-- [ ] **Phase 3 — minipc**: host files + secrets + self-hosted server-modules
-      (caddy/copyparty/home-assistant/navidrome/slskd) + reverse tunnel. Omit creative tooling. Build `.#minipc`.
+- [x] **Phase 3 — minipc** (EVAL PASSES — `nixos-system-minipc-26.05`):
+      - hosts/minipc: static files verbatim; configuration.nix (server-modules + reverse-tunnel forwards
+        2223/3923/4533/5030/8123 + sops.defaultSopsFile=system-secrets.yaml), home.nix (lighter subset,
+        no creative tooling, no monitor override), flake.nix (nur overlay + sops, no nix-flatpak/spicetify).
+      - server-modules ported: copyparty, navidrome, slskd, home-assistant (ours, verbatim);
+        adguardhome cloudflared ingress line stripped (only file that had it for minipc).
+      - minipc secrets/default.nix is an empty placeholder; system secrets come via defaultSopsFile path.
 - [ ] **Phase 4 — vps**: last. caddy.nix + fail2ban.nix + disko + GatewayPorts/firewall. Build `.#vps`.
 - [ ] **Phase 5 — cutover**: only once all build clean. Decide repo name then.
 
