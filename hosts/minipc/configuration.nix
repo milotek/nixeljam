@@ -7,7 +7,7 @@
     ../../nixos/home-manager.nix
     ../../nixos/systemd-boot.nix
     ../../nixos/tuigreet.nix
-    ../../nixos/sway.nix
+    ../../nixos/hyprland.nix
     ../../nixos/audio.nix
     ../../nixos/bluetooth.nix
     ../../nixos/ssh.nix

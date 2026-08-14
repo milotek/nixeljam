@@ -34,7 +34,7 @@ in {
     hyprpicker
     swappy
     imv
-    wf-recorder
+    gpu-screen-recorder
     wlr-randr
     brightnessctl
     gnome-themes-extra
@@ -73,9 +73,10 @@ in {
         "dbus-update-activation-environment --systemd --all &"
       ];
 
+      # Machine-agnostic default: auto-configure every connected display at its
+      # preferred mode. Hosts with a fixed layout override this in their home.nix.
       monitor = [
-        "HDMI-A-1,2560x1440@144,0x0,1"
-        "DP-1,2560x1440@144,2560x0,1"
+        ",preferred,auto,1"
       ];
 
       env = [

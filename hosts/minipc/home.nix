@@ -1,39 +1,10 @@
-{config, ...}: {
+# minipc: same graphical profile as the pc. Monitors are auto-detected, so
+# there are no machine-specific overrides beyond variables/secrets.
+{...}: {
   imports = [
-    # Programs
-    ../../home/programs/chrome
-    ../../home/programs/ghostty
-    ../../home/programs/nvf
-    ../../home/programs/shell
-    ../../home/programs/git
-    ../../home/programs/git/lazygit.nix
-    ../../home/programs/nix-utils
-    ../../home/programs/yazi
-    ../../home/programs/nixy
-
-    ../../home/programs/group/basic-apps.nix
-    ../../home/programs/group/dev.nix
-
-    # Desktop
-    ../../home/system/sway
-    ../../home/system/mime
-    ../../home/system/udiskie
+    ../../home/graphical.nix
 
     ./variables.nix
     ./secrets
   ];
-
-  home = {
-    inherit (config.var) username;
-    homeDirectory = "/home/" + config.var.username;
-    stateVersion = "24.05";
-  };
-
-  programs = {
-    home-manager.enable = true;
-    nixy = {
-      enable = true;
-      configDirectory = config.var.configDirectory;
-    };
-  };
 }

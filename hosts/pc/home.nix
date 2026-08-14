@@ -1,65 +1,23 @@
-{config, ...}: {
+# milotek-pc-linux: shared graphical profile + this machine's specifics.
+{...}: {
   imports = [
-    # Programs
-    ../../home/programs/chrome
-    ../../home/programs/proton
-    ../../home/programs/proton/auto-start-vpn.nix
-    ../../home/programs/ghostty
-    ../../home/programs/nvf
-    ../../home/programs/shell
-    ../../home/programs/git
-    ../../home/programs/git/lazygit.nix
-    ../../home/programs/git/signing.nix # Change the key or remove this file
-    ../../home/programs/thunar
-    ../../home/programs/nixy
-    ../../home/programs/nightshift
-    ../../home/programs/nix-utils
-    ../../home/programs/blender
-    ../../home/programs/godot
-    ../../home/programs/roblox
-    ../../home/programs/spotatui
-    ../../home/programs/spotify
-    ../../home/programs/yazi
-    ../../home/programs/zellij
-    ../../home/programs/opencode
-    ../../home/programs/rclone
-    ../../home/programs/ai
-    ../../home/programs/rofi
+    ../../home/graphical.nix
 
-    ../../home/programs/group/basic-apps.nix
-    ../../home/programs/group/cybersecurity.nix
-    ../../home/programs/group/dev.nix
-    ../../home/programs/group/misc.nix
-
-    # System (Desktop environment like stuff)
-    ../../home/system/hyprland
-    ../../home/system/gpu-screen-recorder
-    ../../home/system/remote-desktop
-    ../../home/system/caelestia-shell
-    ../../home/system/hyprpaper
-    ../../home/system/mime
-    ../../home/system/udiskie
+    # Apps that depend on this host's sops secrets. Add these to another host's
+    # home.nix once that host has its own secrets provisioned.
+    ../../home/programs/git/signing.nix # signing key from sops
+    ../../home/programs/opencode # router-api-key from sops
+    ../../home/programs/rclone # copyparty-password from sops
 
     ./variables.nix # Mostly user-specific configuration
     ./secrets # You should probably remove this line, this is where I store my secrets
   ];
 
-  home = {
-    inherit (config.var) username;
-    homeDirectory = "/home/" + config.var.username;
-    file.".face" = {
-      source = ./profile_picture.png;
-    };
+  home.file.".face".source = ./profile_picture.png;
 
-    # Don't touch this
-    stateVersion = "24.05";
-  };
-
-  programs = {
-    home-manager.enable = true;
-    nixy = {
-      enable = true;
-      configDirectory = config.var.configDirectory;
-    };
-  };
+  # Dual 1440p144 desktop displays.
+  wayland.windowManager.hyprland.settings.monitor = [
+    "HDMI-A-1,2560x1440@144,0x0,1"
+    "DP-1,2560x1440@144,2560x0,1"
+  ];
 }
