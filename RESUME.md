@@ -6,6 +6,11 @@ That plan file is authoritative. Read it first.
 
 ## Ground rules (from the plan — do not violate)
 - **BUILD, NEVER SWITCH.** `nixos-rebuild build --flake .#<host>` only.
+- **DISK CONSTRAINT (2026-08-14):** minipc `/nix/store` is at 95% (~6.2G free) and minipc is a LIVE
+  self-hosting box (copyparty/navidrome/home-assistant). Do NOT run heavy `nix build` of pc's full closure
+  here — blender(~4.2G)+steam+nvidia would overflow the disk and disrupt live services. **Gate ports with
+  `nix eval ...system.build.toplevel.drvPath` (free, no disk).** Run the heavy `nixos-rebuild build .#pc`
+  on pc itself, or after the user frees space / GCs. Don't nix-collect-garbage minipc autonomously.
 - The old repo `/home/milotek/.config/nixos` stays authoritative and untouched. Reference it read-only with:
   `git --git-dir=/home/milotek/.config/nixos/.git show main:path/to/file.nix`
 - Work only in this repo: `/home/milotek/nixeljam-v6`.
@@ -40,7 +45,7 @@ That plan file is authoritative. Read it first.
         secure, replaced by targeted NOPASSWD rule); fcitx5 input method (CJK, unused); docker_29 pin (kept v6
         default + lazydocker); wireplumber camera-disable; hyprland flake input (kept nixpkgs hyprland);
         source-sans/extra-cachix substituters. themes/nixy.nix local diff not ported (no host uses nixy theme).
-- [~] **Phase 2 — pc** (in progress — everything ported, eval-gating):
+- [x] **Phase 2 — pc** (EVAL PASSES — `nixos-system-pc-26.05` drv builds in eval; heavy `nix build` deferred, see disk note):
       - hosts/pc/: hardware-configuration.nix, variables.nix, secrets/, profile_picture.png (verbatim);
         configuration.nix, home.nix, flake.nix written for v6.
       - Flake: added inputs nix-flatpak + spicetify-nix; registered nixosConfigurations.pc; nur overlay +

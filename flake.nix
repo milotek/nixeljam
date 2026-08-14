@@ -99,6 +99,7 @@
         apps.${system}.nvim = inputs.nvf-config.apps.${system}.nvim;
         nixosConfigurations = {
           pc = import ./hosts/pc/flake.nix args;
+          minipc = import ./hosts/minipc/flake.nix args;
           h-work = import ./hosts/work/flake.nix args;
         };
         devShells = forAllSystems (system: pkgs: {
