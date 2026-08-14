@@ -49,6 +49,10 @@
     };
 
     # nixeljam additions
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-flatpak.url = "github:gmodena/nix-flatpak"; # gaming.nix flatpak (Sober)
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
@@ -100,7 +104,7 @@
         nixosConfigurations = {
           pc = import ./hosts/pc/flake.nix args;
           minipc = import ./hosts/minipc/flake.nix args;
-          h-work = import ./hosts/work/flake.nix args;
+          vps = import ./hosts/vps/flake.nix args;
         };
         devShells = forAllSystems (system: pkgs: {
           default = import ./shell.nix {
