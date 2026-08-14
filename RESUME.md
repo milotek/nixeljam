@@ -69,8 +69,25 @@ That plan file is authoritative. Read it first.
       - server-modules ported: copyparty, navidrome, slskd, home-assistant (ours, verbatim);
         adguardhome cloudflared ingress line stripped (only file that had it for minipc).
       - minipc secrets/default.nix is an empty placeholder; system secrets come via defaultSopsFile path.
-- [ ] **Phase 4 — vps**: last. caddy.nix + fail2ban.nix + disko + GatewayPorts/firewall. Build `.#vps`.
-- [ ] **Phase 5 — cutover**: only once all build clean. Decide repo name then.
+- [x] **Phase 4 — vps** (EVAL PASSES — `nixos-system-vps-26.05`, aarch64):
+      - hosts/vps: static files + disko.nix verbatim; configuration.nix (caddy + fail2ban + user-password +
+        tailscale + ssh + GatewayPorts=clientspecified + firewall 2222/2223 + inline home-manager useGlobalPkgs),
+        home.nix (shell/git/nix-utils), flake.nix (system=aarch64-linux, disko module).
+      - server-modules/caddy.nix ported verbatim; flake gained `disko` input; vps registered; h-work removed.
+      - vps home extraSpecialArgs simplified to {inherit inputs;} (no pkgs-unstable/nur needed; top-flake
+        pkgs-unstable is x86_64-only anyway).
+- [ ] **Phase 5 — cutover** (NOT done — needs the user):
+      - **All three hosts eval clean** (pc/minipc/vps toplevel drvPaths build under `nix eval`).
+      - STILL TODO before cutover:
+        1. **Heavy real build** of each host: `nixos-rebuild build --flake .#<host>` (or
+           `nix build .#nixosConfigurations.<host>.config.system.build.toplevel`). NOT run here — minipc disk
+           was at 95%/6.2G free and it's a live server. Run on pc / after freeing space. Compare closures:
+           `nix path-info -Sh ./result`; confirm minipc shed the creative tooling (~5GiB less; blender=4.2G).
+        2. Diff installed package sets old-vs-new per host to confirm nothing silently dropped.
+        3. Decide the repo's final name/location and whether it replaces `nixeljam` (open decision).
+      - Minor polish (non-blocking, noted in Phase 2): mime associations still point at helium/elio (wrong
+        "open with", won't break build); `elio` file-manager not imported though `$mod,E` binding references it;
+        gpu-screen-recorder ShadowPlay keybind (Page_Down) from old caelestia bindings not re-added.
 
 ## v6 base structure (reference)
 - Per-host dir: `flake.nix` (nixosSystem), `configuration.nix` (system imports), `home.nix` (HM imports),
