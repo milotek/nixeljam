@@ -17,7 +17,6 @@
       noto-fonts-color-emoji
       nerd-fonts.fira-code
       nerd-fonts.meslo-lg
-      openmoji-color
       twemoji-color-font
       liberation_ttf
       monaspace

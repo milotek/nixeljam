@@ -20,7 +20,7 @@
 
     discord # Chat
     obs-studio # Streaming/recording
-    blender # 3D creation suite
+    pkgs.blender # 3D creation suite
 
     # I love TUIs
     caligula # User-friendly, lightweight TUI for disk imaging (ISO, USB BOOT)

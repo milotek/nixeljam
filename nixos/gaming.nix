@@ -21,15 +21,7 @@
     { appId = "org.vinegarhq.Sober"; origin = "flathub"; }
   ];
 
-  services.sunshine = {
-    enable = true;
-    autoStart = true;
-    capSysAdmin = true; # needed for KMS/DRM screen capture on Wayland
-    openFirewall = true;
-  };
-
   environment.systemPackages = with pkgs; [
-    moonlight-qt
     vinegar
     prismlauncher # Minecraft instance/mod launcher
     modrinth-app # Modrinth's Minecraft launcher

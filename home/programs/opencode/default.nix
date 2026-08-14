@@ -28,6 +28,7 @@
           baseURL = "https://api.derouter.ai/openai/v1";
         };
         models = {
+          "claude-opus-5"    = { name = "Claude Opus 5"; };
           "claude-opus-4-8"  = { name = "Claude Opus 4.8"; };
           "claude-opus-4-7"  = { name = "Claude Opus 4.7"; };
           "claude-opus-4-6"  = { name = "Claude Opus 4.6"; };
