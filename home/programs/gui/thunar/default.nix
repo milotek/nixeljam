@@ -27,29 +27,15 @@ in {
       material-symbols
     ]);
 
-  gtk = {
-    enable = true;
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-
-    # bookmarks for the side pane
-    gtk3.bookmarks = [
-      "file:///home/${user}/Downloads Downloads"
-      "file:///home/${user}/Pictures Pictures"
-      "file:///home/${user}/.config/nixos NixOS"
-      "file:///home/${user}/dev Development"
-    ];
-  };
-
-  qt.enable = true;
-
-  home.sessionVariables = {
-    XDG_ICON_DIR = "${pkgs.papirus-icon-theme}/share/icons/Papirus";
-    QS_ICON_THEME = "Papirus";
-    QT_STYLE_OVERRIDE = lib.mkForce "Fusion";
-  };
+  # gtk.enable, iconTheme, qt.enable and the icon/QT session variables are
+  # provided by home/system/hyprland (v6 moved them there). Only the thunar
+  # side-pane bookmarks are thunar-specific.
+  gtk.gtk3.bookmarks = [
+    "file:///home/${user}/Downloads Downloads"
+    "file:///home/${user}/Pictures Pictures"
+    "file:///home/${user}/.config/nixos NixOS"
+    "file:///home/${user}/dev Development"
+  ];
 
   home.file.".config/xarchiver/xarchiverrc".text = ''
     [xarchiver]

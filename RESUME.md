@@ -40,8 +40,23 @@ That plan file is authoritative. Read it first.
         secure, replaced by targeted NOPASSWD rule); fcitx5 input method (CJK, unused); docker_29 pin (kept v6
         default + lazydocker); wireplumber camera-disable; hyprland flake input (kept nixpkgs hyprland);
         source-sans/extra-cachix substituters. themes/nixy.nix local diff not ported (no host uses nixy theme).
-- [ ] **Phase 2 — pc**: host files + secrets + home modules. Do the gui/tui split and grab-bag breakup here.
-      Build `.#pc`. pc also needs: users groups video+input (Sunshine) in host config; nix-flatpak input for gaming.nix.
+- [~] **Phase 2 — pc** (in progress — everything ported, eval-gating):
+      - hosts/pc/: hardware-configuration.nix, variables.nix, secrets/, profile_picture.png (verbatim);
+        configuration.nix, home.nix, flake.nix written for v6.
+      - Flake: added inputs nix-flatpak + spicetify-nix; registered nixosConfigurations.pc; nur overlay +
+        sops-nix + nix-flatpak modules in host flake. Dropped hyprland/dotfiles/caelestia inputs (unused).
+      - Resolved home-manager.nix args question: v6 convention = pkgs + pkgs-unstable + NUR via overlay
+        (pkgs.nur.repos.anotherhadi.*). Kept v6's home-manager.nix (no change needed).
+      - Browser: kept CHROME (our chrome module = programs.chromium); swapped v6's helium refs to
+        google-chrome in system/hyprland bindings + windowrules + proton. Did NOT import gui/helium.
+      - Dropped: caelestia-shell (→ v6 waybar/tofi/swaync/hyprlock/hypridle/clipboard), rofi (→ tofi),
+        keyboard-backlight (laptop), home/system/hyprpaper (identical to v6 hyprland/hyprpaper.nix),
+        basic-apps/misc grab bags (superseded by v6 gui/tui pkgs.nix; added wiremix back).
+      - console.keyMap per-host override no longer needed (utils.nix useXkbConfig handles gb→uk).
+      - GATE: `nix eval .#nixosConfigurations.pc.config.system.build.toplevel.drvPath` (running).
+        Iterate on eval errors, THEN `nixos-rebuild build --flake .#pc` (never switch).
+      - TODO/notes: mime associations still point at helium/elio (won't break build, wrong "open with");
+        gpu-screen-recorder ShadowPlay keybind (Page_Down) was in old caelestia bindings, not re-added.
 - [ ] **Phase 3 — minipc**: host files + secrets + self-hosted server-modules
       (caddy/copyparty/home-assistant/navidrome/slskd) + reverse tunnel. Omit creative tooling. Build `.#minipc`.
 - [ ] **Phase 4 — vps**: last. caddy.nix + fail2ban.nix + disko + GatewayPorts/firewall. Build `.#vps`.
