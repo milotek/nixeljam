@@ -1,5 +1,5 @@
 # milotek-pc-linux: shared graphical profile + this machine's specifics.
-{...}: {
+{pkgs, ...}: {
   imports = [
     ../../home/graphical.nix
 
@@ -14,6 +14,8 @@
   ];
 
   home.file.".face".source = ./profile_picture.png;
+
+  home.packages = [pkgs.unityhub];
 
   # Dual 1440p144 desktop displays.
   wayland.windowManager.hyprland.settings.monitor = [
