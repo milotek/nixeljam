@@ -9,11 +9,11 @@
     image = ["imv-dir.desktop"];
     audio = ["vlc.desktop"];
     video = ["vlc.desktop"];
-    directory = ["elio.desktop"];
+    directory = ["thunar.desktop"];
     office = ["onlyoffice-desktopeditors.desktop"];
     pdf = ["onlyoffice-desktopeditors.desktop"];
-    archive = ["elio.desktop"];
-    browser = ["helium.desktop"];
+    archive = ["xarchiver.desktop"];
+    browser = ["google-chrome.desktop"];
   };
 
   mimeMap = {

@@ -120,7 +120,7 @@ in {
 
         # Quick launch
         "$mod,RETURN, exec, ${pkgs.ghostty}/bin/ghostty +new-window" # Ghostty (terminal, via daemon D-Bus)
-        "$mod,E, exec, ${pkgs.ghostty}/bin/ghostty +new-window -e elio" # Elio
+        "$mod,E, exec, ${pkgs.thunar}/bin/thunar" # Thunar
         "$mod, SPACE, exec, ${pkgs.tofi}/bin/tofi-drun" # Launcher
         "$mod, N, exec, ${pkgs.swaynotificationcenter}/bin/swaync-client -t" # Notification center
 
