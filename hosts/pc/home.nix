@@ -68,6 +68,7 @@
       obs-studio # Streaming/recording
       blender # 3D creation suite
       godot # Game engine
+      unityhub # Unity editor launcher
     ];
 
     file.".face" = {
