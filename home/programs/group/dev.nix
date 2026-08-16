@@ -7,6 +7,7 @@
     [
       go
       claude-code
+      uv
     ]
     ++ (with pkgs; [
       nodejs
