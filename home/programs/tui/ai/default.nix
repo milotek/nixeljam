@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 let
   agents = ./AGENTS.md;
   voice = ./VOICE.md;
@@ -22,4 +22,6 @@ in
 
   # Referenced by AGENTS.md via `read ~/VOICE.md`
   home.file."VOICE.md".source = voice;
+
+  home.sessionVariables.CLAUDE_CLI = "/etc/profiles/per-user/${config.var.username}/bin/claude";
 }
