@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  pkgs,
   ...
 }: {
   imports = [
@@ -59,6 +60,16 @@
   home = {
     inherit (config.var) username;
     homeDirectory = "/home/" + config.var.username;
+
+    # Kept here rather than in gui/pkgs.nix: minipc imports that file too, and
+    # these closures (blender alone is ~4 GiB) would overflow its /nix/store.
+    packages = with pkgs; [
+      discord # Chat
+      obs-studio # Streaming/recording
+      blender # 3D creation suite
+      godot # Game engine
+    ];
+
     file.".face" = {
       source = ./profile_picture.png;
     };
