@@ -74,6 +74,12 @@
     AttrEventCode=-REL_WHEEL_HI_RES;-REL_HWHEEL_HI_RES
   '';
 
+  fileSystems."/mnt/storage" = {
+    device = "/dev/disk/by-uuid/454060ba-9c61-4e93-8e77-e54ee4bfe1e2";
+    fsType = "ext4";
+    options = ["nofail" "x-systemd.device-timeout=5s" "x-gvfs-show" "x-gvfs-name=Storage"];
+  };
+
   home-manager.users."${config.var.username}" = import ./home.nix;
 
   # Don't touch this
