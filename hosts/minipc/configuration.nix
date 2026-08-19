@@ -22,6 +22,7 @@
     ../../server-modules/navidrome.nix
     ../../server-modules/slskd.nix
     ../../server-modules/home-assistant.nix
+    ../../server-modules/openclaw.nix
 
     ./hardware-configuration.nix
     ./variables.nix

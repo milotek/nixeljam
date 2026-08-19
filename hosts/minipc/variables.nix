@@ -23,6 +23,10 @@
       email = "milo@milotek.dev";
     };
 
+    # Numeric Telegram ID from @userinfobot. Until this is set, openclaw runs
+    # with no chat channel attached.
+    openclawTelegramUserId = null;
+
     autoUpgrade = false;
     autoGarbageCollector = true;
   };

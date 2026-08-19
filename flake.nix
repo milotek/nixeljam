@@ -59,6 +59,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # OpenClaw - self-hosted AI agent (first-party nix packaging).
+    # Deliberately NOT following our nixpkgs: the upstream garnix cache
+    # (cache.garnix.io) is built against their pinned nixos-unstable, and
+    # overriding it changes the derivation hash into a full source build.
+    nix-openclaw.url = "github:openclaw/nix-openclaw";
+
     # Server
     nixarr.url = "github:rasmus-kirk/nixarr";
     default-creds.url = "github:anotherhadi/default-creds";

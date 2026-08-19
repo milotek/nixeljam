@@ -16,6 +16,7 @@ nixpkgs.lib.nixosSystem {
     inputs.stylix.nixosModules.stylix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.default
+    inputs.nix-openclaw.nixosModules.openclaw-gateway
     ./configuration.nix
   ];
 }
