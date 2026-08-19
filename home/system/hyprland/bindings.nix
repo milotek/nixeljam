@@ -126,6 +126,7 @@ in {
 
         # Windows
         "$mod,Q, killactive," # Close window
+        "$mod,W, killactive," # Close window
         "$mod,F, fullscreen" # Toggle Fullscreen
         "$shiftMod,F, togglefloating," # Toggle Floating
         "$shiftMod, SPACE, exec, ${scripts.focus-toggle}/bin/focus-toggle" # Toggle focus mode
