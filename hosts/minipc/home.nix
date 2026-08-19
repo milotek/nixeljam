@@ -33,7 +33,6 @@
     ../../home/system/tofi
     ../../home/system/clipboard
     ../../home/system/mime
-    ../../home/system/termfilechooser
     ../../home/system/udiskie
 
     ./variables.nix

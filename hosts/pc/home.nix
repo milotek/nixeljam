@@ -48,7 +48,6 @@
     ../../home/system/tofi
     ../../home/system/clipboard
     ../../home/system/mime
-    ../../home/system/termfilechooser
     ../../home/system/udiskie
     ../../home/system/gpu-screen-recorder
     ../../home/system/remote-desktop
