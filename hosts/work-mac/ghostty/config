@@ -1,0 +1,46 @@
+# swag
+theme = Catppuccin Mocha
+window-theme = system
+font-family = "JetBrains Mono"
+font-size = 12
+font-thicken = true
+
+# shaders
+# note: shaders are applied in the order they are listed
+# custom-shader = ~/.config/ghostty/shaders/tft.glsl
+custom-shader = ~/.config/ghostty/shaders/cursor_warp.glsl
+custom-shader = ~/.config/ghostty/shaders/ripple_rectangle_cursor.glsl
+
+# cursor
+cursor-style = bar
+cursor-style-blink = true
+mouse-hide-while-typing = false
+
+# window
+initial-window = false
+window-inherit-working-directory = true
+window-inherit-font-size = true
+confirm-close-surface = false
+shell-integration-features = true
+link-url = true
+clipboard-trim-trailing-spaces = true
+
+# quick-terminal
+quick-terminal-position = bottom
+quick-terminal-size = 34%, 67%
+quick-terminal-screen = mouse
+quick-terminal-animation-duration = 0.1
+quick-terminal-autohide = true
+quick-terminal-keyboard-interactivity = exclusive
+quick-terminal-space-behavior = remain
+
+# macos
+macos-titlebar-proxy-icon = hidden
+macos-option-as-alt = true
+macos-icon = official
+macos-icon-frame = aluminum
+macos-icon-ghost-color = FFFFFF
+macos-icon-screen-color = 000000
+
+# binds
+keybind = global:control+tab=toggle_quick_terminal

@@ -27,6 +27,11 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # macOS system management (work-mac host).
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     stylix = {
       url = "github:nix-community/stylix/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -95,6 +100,19 @@
         ;
     };
     merge = nixpkgs.lib.foldl nixpkgs.lib.recursiveUpdate {};
+
+    # Args passed to Darwin (nix-darwin) host flakes.
+    darwinSystem = "aarch64-darwin";
+    darwinArgs = {
+      inherit inputs nixpkgs;
+      system = darwinSystem;
+      pkgs = nixpkgs.legacyPackages.${darwinSystem};
+      pkgs-unstable = import nixpkgs-unstable {
+        system = darwinSystem;
+        config.allowUnfree = true;
+      };
+    };
+
     supportedSystems = ["x86_64-linux" "aarch64-linux"];
 
     forAllSystems = f:
@@ -111,6 +129,10 @@
           pc = import ./hosts/pc/flake.nix args;
           minipc = import ./hosts/minipc/flake.nix args;
           vps = import ./hosts/vps/flake.nix args;
+        };
+        # nix-darwin hosts — deploy with: darwin-rebuild switch --flake .#<name>
+        darwinConfigurations = {
+          work-mac = import ./hosts/work-mac/flake.nix darwinArgs; # milotek-mac
         };
         devShells = forAllSystems (system: pkgs: {
           default = import ./shell.nix {
