@@ -17,6 +17,7 @@ nixpkgs.lib.nixosSystem {
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.default
     inputs.nix-openclaw.nixosModules.openclaw-gateway
+    inputs.hermes-agent.nixosModules.default
     ./configuration.nix
   ];
 }

@@ -23,6 +23,7 @@
     ../../server-modules/slskd.nix
     ../../server-modules/home-assistant.nix
     ../../server-modules/openclaw.nix
+    ../../server-modules/hermes.nix
 
     ./hardware-configuration.nix
     ./variables.nix

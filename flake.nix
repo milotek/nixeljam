@@ -70,6 +70,17 @@
     # overriding it changes the derivation hash into a full source build.
     nix-openclaw.url = "github:openclaw/nix-openclaw";
 
+    # Hermes Agent (Nous Research) - second self-hosted agent on minipc.
+    # Deliberately NOT following our nixpkgs: upstream is a Tier 2 platform that
+    # builds its Python dependencies as derivations against its own pin, so an
+    # override turns every rebuild into a from-source build against a tree
+    # upstream never tested.
+    hermes-agent.url = "github:NousResearch/hermes-agent";
+    hermes-claude-auth = {
+      url = "github:kristianvast/hermes-claude-auth";
+      flake = false;
+    };
+
     # Server
     nixarr.url = "github:rasmus-kirk/nixarr";
     default-creds.url = "github:anotherhadi/default-creds";
