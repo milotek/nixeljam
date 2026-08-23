@@ -8,7 +8,6 @@
       "--disable-features=UseChromeOSDirectVideoDecoder"
       "--enable-accelerated-video-decode"
       "--enable-gpu-rasterization"
-      "--use-gl=egl"
       "--no-default-browser-check"
     ];
   };
