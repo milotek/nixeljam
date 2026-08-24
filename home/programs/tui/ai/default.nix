@@ -2,6 +2,7 @@
 let
   agents = ./AGENTS.md;
   voice = ./VOICE.md;
+  opinions = ./OPINIONS.md;
   skills = import ./skills.nix { inherit pkgs; };
 in
 {
@@ -20,8 +21,9 @@ in
   home.file.".claude/CLAUDE.md".source = agents;
   home.file.".claude/skills".source = skills;
 
-  # Referenced by AGENTS.md via `read ~/VOICE.md`
+  # Referenced by AGENTS.md via `read ~/VOICE.md` and `read ~/OPINIONS.md`
   home.file."VOICE.md".source = voice;
+  home.file."OPINIONS.md".source = opinions;
 
   home.sessionVariables.CLAUDE_CLI = "/etc/profiles/per-user/${config.var.username}/bin/claude";
 }
