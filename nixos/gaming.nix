@@ -46,6 +46,7 @@
     vinegar
     prismlauncher
     modrinth-app
+    osu-lazer
     mangohud
     protonup-ng
   ];
