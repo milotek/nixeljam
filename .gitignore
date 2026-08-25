@@ -6,3 +6,4 @@ docs/superpowers/
 result/
 .pre-commit-config.yaml
 .direnv/
+__pycache__/

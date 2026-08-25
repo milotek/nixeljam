@@ -1,6 +1,7 @@
 {config, ...}: {
   imports = [
     ../../home/programs/tui/shell
+    ../../home/programs/tui/zellij
     ../../home/programs/tui/git
     ../../home/programs/tui/nix-utils
     ./variables.nix

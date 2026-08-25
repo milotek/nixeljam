@@ -43,11 +43,14 @@ _No entries yet._
 
 ## Data and storage
 
-_No entries yet._
+- **Structure carries capitals, content does not.** Base folders, nested folders and convention docs (`README.md`, `AGENTS.md`, `LICENSE`) keep the capitalisation they were given; everything else is lowercase. Capitalisation is what separates the scaffolding of a tree from the things stored in it, and lowercasing the scaffolding destroys that signal.
+- **No spaces or punctuation in a path segment, at any level; words join with `_`.** Spaces force quoting in every shell, script and URL that touches the path, and punctuation shifts meaning between filesystems and clients.
+- **Filenames are normalised on arrival, not swept up later.** A gate at the ingress point keeps a tree clean for free; a periodic cleanup pass only ever chases a backlog that regrows.
 
 ## Tooling and workflow
 
-_No entries yet._
+- **A bulk mutation is reviewed before it touches anything, never staged in the thing being changed.** A dry run that emits an editable plan lets the whole change be judged at once and abandoned for free; marking records in-place (a prefix, a flag column) mutates the very field under review, doubles the write, and leaves a half-migrated mess if the pass is never finished.
+- **Anything that rewrites data in bulk ships with an undo log.** Recording old and new for each applied change costs one line and turns an irreversible operation into a reversible one.
 
 ## Testing
 
@@ -55,7 +58,7 @@ _No entries yet._
 
 ## AI and agents
 
-_No entries yet._
+- **Agent skills are pinned in the flake, never installed through a harness's plugin marketplace.** A `/plugin` install is mutable state inside one harness's dotfiles: unpinned, invisible to every other harness, and absent on the next machine, whereas a fetched revision is fanned to every harness on every host by the same rebuild.
 
 ---
 

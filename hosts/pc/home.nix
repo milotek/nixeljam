@@ -27,6 +27,7 @@
     ../../home/programs/tui/git/signing.nix
     ../../home/programs/tui/nixy
     ../../home/programs/tui/nix-utils
+    ../../pkgs/tidyname
     ../../home/programs/tui/spotatui
     ../../home/programs/tui/navi
     ../../home/programs/tui/wikiman

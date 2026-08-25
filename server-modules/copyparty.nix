@@ -4,11 +4,17 @@
 # Login passwords live in sops: `sops hosts/vps/secrets/secrets.yaml`
 #   copyparty-password        -> milotek (rwmd, full access)
 #   copyparty-guest-password  -> guest   (r, read-only)
+#
+# Uploads are renamed to lowercase snake_case on arrival by the tidyname xbu
+# hook, so the share never accumulates names with spaces or punctuation again.
+# reloc only fires over HTTP (up2k/basic/webdav) — fine here, no ftp/tftp/smb.
 {
   config,
   pkgs,
   ...
 }: let
+  tidyname = import ../pkgs/tidyname/package.nix {inherit pkgs;};
+
   start = pkgs.writeShellScript "copyparty-start" ''
     pw="$(cat ${config.sops.secrets.copyparty-password.path})"
     guest_pw="$(cat ${config.sops.secrets.copyparty-guest-password.path})"
@@ -19,6 +25,7 @@
       --daw \
       -a milotek:"$pw" \
       -a guest:"$guest_pw" \
+      --xbu j,c1,,${tidyname}/bin/tidyname,hook \
       -v /var/lib/copyparty::rwmd,milotek:r,guest
   '';
 in {

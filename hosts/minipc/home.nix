@@ -13,11 +13,13 @@
     ## TUI
     inputs.nvf-config.homeManagerModules.default
     ../../home/programs/tui/ghostty
+    ../../home/programs/tui/zellij
     ../../home/programs/tui/shell
     ../../home/programs/tui/git
     ../../home/programs/tui/git/lazygit.nix
     ../../home/programs/tui/nixy
     ../../home/programs/tui/nix-utils
+    ../../pkgs/tidyname
     ../../home/programs/tui/pkgs.nix
 
     ## GROUPS

@@ -134,7 +134,10 @@
       (import ./home/programs/tui/nixy/flake.nix args)
       {
         formatter.${system} = pkgs.alejandra;
-        packages.${system}.nvim = inputs.nvf-config.packages.${system}.nvim;
+        packages.${system} = {
+          nvim = inputs.nvf-config.packages.${system}.nvim;
+          tidyname = import ./pkgs/tidyname/package.nix {inherit pkgs;};
+        };
         apps.${system}.nvim = inputs.nvf-config.apps.${system}.nvim;
         nixosConfigurations = {
           pc = import ./hosts/pc/flake.nix args;
