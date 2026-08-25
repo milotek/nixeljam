@@ -93,9 +93,38 @@ This was applied at runtime with `tailscale set`, so it must also be declared or
 services.tailscale.extraUpFlags = ["--accept-dns=false"];
 ```
 
+## Status as of 2026-08-25 03:20
+
+Phases 0 and 1 are **done and verified live**. Phases 2 to 4 are not started.
+
+minipc and vps both run generation `26.05.20260811.70cc455` built from `388808a2`.
+Caddy proxies to `100.85.180.11:<port>` over the tailnet, confirmed by `files` 200, `music` 302, `slsk` 200, `home` 200.
+The reverse tunnel is still running but is no longer in the path for HTTP; it is the rollback route until Phase 2.
+`remote.pc.tek.rip` is gone as intended.
+
+**pc was deliberately not switched.** Its `nixos/tailscale.nix` and `remote-desktop` changes are committed but not applied,
+so noVNC still binds `127.0.0.1` and the desktop is currently unreachable both publicly and over the tailnet.
+The tree had unrelated in-flight work in it (`flake.nix`, `skills.nix`, `zellij`, both `home.nix`, a new `pkgs/tidyname`),
+and a switch would have built all of it. Rebuild pc once that work is settled.
+
+### Two failures worth not repeating
+
+The first minipc rebuild was **OOM-killed** (SIGKILL) building `hermes-tui` and `web` from source.
+minipc has 7.6G RAM and `nix.settings` defaults of `max-jobs = 4`, `cores = 0`, so four builds each took all four cores
+on a box already holding 3.1G of Home Assistant, Navidrome, slskd and two agents.
+It succeeded on retry with `--max-jobs 1 --cores 3`.
+
+`hosts/minipc/hardware-configuration.nix` declares `swapDevices = [ ]`, but a fully allocated 8G `/swapfile`
+was sitting on disk unreferenced and never activated. It was enabled by hand during this work, which is **not persistent**.
+Either declare it or set `zramSwap.enable = true`, and consider `nix.settings.max-jobs = 2` on that host.
+
+The VPS was never cut over to the v6 repo. Its checkout was on the pre-migration lineage, 1576 commits with no shared
+ancestry with `origin/main`, which is why `git pull` refused. Those commits are preserved on a local branch
+`pre-v6-history` **on the VPS only** and are not on GitHub. Decide whether to push or discard them.
+
 ## Phases
 
-### Phase 0: bring Tailscale up (in progress)
+### Phase 0: bring Tailscale up (done)
 
 `tailscale up --accept-dns=false` on each host, approving the device in the admin console.
 
