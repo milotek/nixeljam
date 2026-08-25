@@ -262,6 +262,18 @@ def spotify(open_browser: bool = False) -> spotipy.Spotify:
     if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
         die("SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET are unset")
     STATE.mkdir(parents=True, exist_ok=True)
+
+    # A refresh token belongs to the app that issued it. Swapping credentials
+    # (spotdl's shared app <-> your own) leaves a cache spotipy will try to
+    # refresh against the wrong client and fail on, in a way whose error message
+    # points nowhere useful. Notice the swap and start clean instead.
+    cache = STATE / "spotify-token.json"
+    if load_state("spotify-app.json", {}).get("client_id") != SPOTIFY_CLIENT_ID:
+        if cache.exists():
+            cache.unlink()
+            log("spotify app changed — discarded the old token, re-run: tunedeck-auth")
+        save_state("spotify-app.json", {"client_id": SPOTIFY_CLIENT_ID})
+
     auth = SpotifyOAuth(
         client_id=SPOTIFY_CLIENT_ID,
         client_secret=SPOTIFY_CLIENT_SECRET,
