@@ -32,11 +32,14 @@ _No entries yet._
 
 ## Architecture and code structure
 
-_No entries yet._
+- **Delete the duplication before abstracting over it.** An abstraction that synchronises several copies of a fact is worth less than a change that leaves one copy, and it is easy to design the former without noticing the latter was available.
+- **Abstractions describe what is wanted, not which backend provides it.** Naming the intent rather than the implementation means swapping the implementation later touches one module instead of every caller.
 
 ## Infrastructure and hosting
 
-_No entries yet._
+- **Own the public ingress on a box with a real public IP; do not put the front door behind Cloudflare Tunnel.** A tunnel is HTTP-only in practice, caps proxied request bodies at 100 MB on free and Pro, cannot carry a public game server without Spectrum, and terminates TLS on someone else's hardware. A cheap VPS keeps arbitrary TCP, unlimited body size and end-to-end control.
+- **Tailscale is the only admin path; no host exposes a public SSH port.** An out-of-band door that does not depend on local DNS, the reverse proxy, or the ingress host means a broken rebuild cannot lock you out.
+- **Machine-to-machine links between own hosts run over the tailnet, not hand-rolled SSH tunnels.** Tailscale already solves NAT traversal, reconnection and key rotation; an `ssh -R` loop with `Restart=always` only approximates them and needs a secret provisioned before it can even start.
 
 ## Data and storage
 
