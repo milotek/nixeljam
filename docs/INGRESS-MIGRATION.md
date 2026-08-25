@@ -86,26 +86,27 @@ Its `/etc/resolv.conf` pointed at MagicDNS (`100.100.100.100`), which made the b
 That is the recorded "MagicDNS dead so fetches fail" incident.
 It now resolves via the router at `192.168.50.1` directly.
 
-This was applied at runtime with `tailscale set`, so it must also be declared or it will not survive a fresh install:
+This was applied at runtime with `tailscale set`, and is now also declared so it survives a fresh install:
 
 ```nix
 # nixos/tailscale.nix
-services.tailscale.extraUpFlags = ["--accept-dns=false"];
+services.tailscale.extraSetFlags = ["--accept-dns=false"];
 ```
 
-## Status as of 2026-08-25 03:20
+`extraSetFlags`, not `extraUpFlags`: the latter is only consumed by the `tailscaled-autoconnect` unit,
+which is conditional on an `authKeyFile`. These hosts were authenticated interactively, so `extraUpFlags` would never run.
 
-Phases 0 and 1 are **done and verified live**. Phases 2 to 4 are not started.
+## Status as of 2026-08-25 03:40
 
-minipc and vps both run generation `26.05.20260811.70cc455` built from `388808a2`.
+Phases 0 through 3 are **done**. Phase 4 has nothing to do until a game server exists.
+
 Caddy proxies to `100.85.180.11:<port>` over the tailnet, confirmed by `files` 200, `music` 302, `slsk` 200, `home` 200.
-The reverse tunnel is still running but is no longer in the path for HTTP; it is the rollback route until Phase 2.
 `remote.pc.tek.rip` is gone as intended.
+The reverse tunnel, its sops key requirement, `GatewayPorts` and the public 2222/2223 are all removed;
+the VPS now opens only caddy's 80 and 443.
 
-**pc was deliberately not switched.** Its `nixos/tailscale.nix` and `remote-desktop` changes are committed but not applied,
-so noVNC still binds `127.0.0.1` and the desktop is currently unreachable both publicly and over the tailnet.
-The tree had unrelated in-flight work in it (`flake.nix`, `skills.nix`, `zellij`, both `home.nix`, a new `pkgs/tidyname`),
-and a switch would have built all of it. Rebuild pc once that work is settled.
+The `reverse-tunnel-key` entry is still present in both hosts' `secrets/system-secrets.yaml`.
+Nothing references it, so it is inert, but it wants cleaning out with `sops` at some point.
 
 ### Two failures worth not repeating
 
@@ -131,7 +132,7 @@ ancestry with `origin/main`, which is why `git pull` refused. Those commits are 
 Gate: `tailscale ping` succeeds in both directions between vps and minipc, and vps and pc.
 Nothing below is safe until this holds, because the later phases remove the public SSH ports that are currently the only way into minipc.
 
-### Phase 1: move Caddy onto the tailnet
+### Phase 1: move Caddy onto the tailnet (done)
 
 Point each vhost in `server-modules/caddy.nix` at `<minipc tailnet ip>:<port>` instead of `localhost:<port>`.
 
@@ -150,7 +151,7 @@ This one fails as a silent 400, not an obvious error.
 
 Gate: every service loads over its public hostname with the tunnel units manually stopped.
 
-### Phase 2: delete the reverse tunnel
+### Phase 2: delete the reverse tunnel (done)
 
 With Caddy proven on the tailnet path, remove:
 
@@ -159,7 +160,7 @@ With Caddy proven on the tailnet path, remove:
 - the `reverse-tunnel-key` secret from both hosts' `secrets/system-secrets.yaml`
 - `services.openssh.settings.GatewayPorts` on the VPS, which existed only so tunnels could bind public ports
 
-### Phase 3: remote access to Tailscale only
+### Phase 3: remote access to Tailscale only (done)
 
 Delete the `remote.pc.tek.rip` vhost and its bcrypt basic auth from `caddy.nix`.
 Close ports 2222 and 2223 in the VPS firewall, leaving 80 and 443.
@@ -172,7 +173,7 @@ Losing the basic auth is a security improvement rather than a regression, since 
 
 Gate: `ssh milotek@<minipc tailnet ip>` works, noVNC loads over the tailnet, and a port scan of the VPS shows only 80 and 443.
 
-### Phase 4: raw TCP, when a game server actually exists
+### Phase 4: raw TCP, when a game server actually exists (not started, nothing to forward)
 
 Open the public port on the VPS and DNAT it to the origin's tailnet address via nftables, with `networking.nat` masquerading so return traffic finds its way back.
 Not built until there is something to forward.
