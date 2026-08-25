@@ -18,7 +18,6 @@
     ../../home/programs/tui/git/lazygit.nix
     ../../home/programs/tui/nixy
     ../../home/programs/tui/nix-utils
-    ../../home/programs/tui/yazi
     ../../home/programs/tui/pkgs.nix
 
     ## GROUPS
