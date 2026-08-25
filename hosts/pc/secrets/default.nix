@@ -14,17 +14,11 @@ in {
     age.keyFile = "${home}/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets.yaml;
     secrets = {
-      ssh-config = {
-        path = "${home}/.ssh/config";
+      key = {
+        path = "${home}/.ssh/id_ed25519";
       };
-      signing-key = {
-        path = "${home}/.ssh/key";
-      };
-      signing-pub-key = {
-        path = "${home}/.ssh/key.pub";
-      };
-      oracle-key = {
-        path = "${home}/.ssh/oracle";
+      "key.pub" = {
+        path = "${home}/.ssh/id_ed25519.pub";
       };
       router-api-key = {};
       # copyparty (files.tek.rip) WebDAV password, consumed by the rclone mount.
