@@ -29,7 +29,8 @@
 #     listening, just on a different player — but the account risk is real and
 #     it is yours.
 #
-# SETUP, after `nixos-rebuild switch` with the secrets from tunedeck.nix in place
+# SETUP. No Spotify app registration needed by default — see tunedeck.nix for
+# where the credentials come from. After `nixos-rebuild switch`:
 #
 #   1. tunedeck-login                     log the headless profile in, once,
 #                                         from a graphical session

@@ -42,6 +42,11 @@
       # on-demand allowance for actual listening. Minutes per day.
       mirrorDailyLimitMinutes = 240;
 
+      # false rides spotdl's public client id/secret, so nothing needs
+      # registering. Flip to true (and add spotify-client-id /
+      # spotify-client-secret to sops) if the shared app starts rate-limiting.
+      ownSpotifyApp = false;
+
       # Flip on once lastfm-api-key and lastfm-secret are in sops. Until then
       # Navidrome scrobbles to ListenBrainz only.
       lastfm = false;

@@ -59,18 +59,14 @@ and it is yours. It is a free account, so there is not much to lose.
 
 ### Setup
 
-1. Create an app at <https://developer.spotify.com/dashboard>, redirect URI
-   exactly `http://127.0.0.1:8974/callback`.
-2. `sops hosts/minipc/secrets/system-secrets.yaml` and add:
-   ```yaml
-   spotify-client-id: ...
-   spotify-client-secret: ...
-   ```
-3. `nixos-rebuild switch --flake .#minipc`
-4. `tunedeck-login` — from a graphical session. Logs the headless profile in
+No Spotify app registration by default — see *Credentials* below.
+
+1. `nixos-rebuild switch --flake .#minipc`
+2. `tunedeck-login` — from a graphical session. Logs the headless profile in
    once. Close the window when the library has loaded.
-5. `sudo -u milotek tunedeck-auth` — paste the URL back when prompted.
-6. `systemctl restart spotify-headless tunedeck-mirror`
+3. `sudo -u milotek tunedeck-auth` — paste the URL back when prompted. The
+   consent screen will say **spotDL**; that is expected.
+4. `systemctl restart spotify-headless tunedeck-mirror`
 
 Check on it:
 
@@ -78,6 +74,31 @@ Check on it:
 sudo -u milotek tunedeck-auth status
 journalctl -fu tunedeck-mirror
 ```
+
+## Credentials
+
+The Web API is needed for three things MPRIS cannot do: **search** (turning
+"Radiohead — Creep" into a track id, without which the mirror has nothing to
+hand the client), **`/me/player`** (the guard that yields when you are playing
+elsewhere), and **playlists** (the whole sync half).
+
+By default tunedeck rides spotdl's credentials. spotdl hardcodes a public
+client id/secret and writes them to `~/.config/spotdl/config.json` on first
+run, which is why none of this ever needed registering. Its app has
+`http://127.0.0.1:9900/` registered as a redirect URI, and Spotify does not
+pre-register scopes per app, so tunedeck's scopes go through it fine.
+
+What that costs: the rate limit is shared with every spotdl user in the world,
+so heavy sync runs may see 429s, and if Spotify ever revokes that app
+everything here stops at once. The OAuth consent screen also says "spotDL",
+because it is.
+
+To use your own app instead: register one at
+<https://developer.spotify.com/dashboard> with redirect URI exactly
+`http://127.0.0.1:8974/callback`, put `spotify-client-id` and
+`spotify-client-secret` in `sops hosts/minipc/secrets/system-secrets.yaml`, and
+set `var.tunedeck.ownSpotifyApp = true`. Re-run `tunedeck-auth` afterwards —
+switching apps invalidates the cached token.
 
 ## playlist-sync
 
