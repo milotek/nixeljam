@@ -17,7 +17,7 @@ in {
       key = {
         path = "${home}/.ssh/id_ed25519";
       };
-      "key.pub" = {
+      key-pub = {
         path = "${home}/.ssh/id_ed25519.pub";
       };
       router-api-key = {};
