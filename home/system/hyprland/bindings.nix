@@ -7,6 +7,12 @@
   colors = config.lib.stylix.colors;
   scripts = import ../waybar/scripts.nix {inherit pkgs config;};
 
+  # "waybar" (default) or "caelestia". The two shells own the same handful of
+  # keys - launcher, notification centre, session menu, brightness and volume -
+  # so exactly one of them gets to bind each.
+  desktopShell = config.var.desktopShell or "waybar";
+  waybarShell = desktopShell == "waybar";
+
   mkMenu = menu: let
     configFile = pkgs.writeText "config.yaml" (
       lib.generators.toYAML {} {
@@ -91,38 +97,9 @@ in {
 
         "$mod,B, exec, uwsm app -- ${config.programs.chromium.package}/bin/google-chrome-stable" # Browser
 
-        # Power
-        (
-          "$mod, X, exec, "
-          + lib.getExe (mkMenu [
-            {
-              key = "l";
-              desc = "Lock";
-              cmd = "${pkgs.hyprlock}/bin/hyprlock";
-            }
-            {
-              key = "s";
-              desc = "Suspend";
-              cmd = "systemctl suspend";
-            }
-            {
-              key = "r";
-              desc = "Reboot";
-              cmd = "systemctl reboot";
-            }
-            {
-              key = "p";
-              desc = "Power Off";
-              cmd = "systemctl poweroff";
-            }
-          ])
-        )
-
         # Quick launch
         "$mod,RETURN, exec, ${pkgs.ghostty}/bin/ghostty +new-window" # Ghostty (terminal, via daemon D-Bus)
         "$mod,E, exec, ${pkgs.thunar}/bin/thunar" # Thunar
-        "$mod, SPACE, exec, ${pkgs.tofi}/bin/tofi-drun" # Launcher
-        "$mod, N, exec, ${pkgs.swaynotificationcenter}/bin/swaync-client -t" # Notification center
 
         # Windows
         "$mod,Q, killactive," # Close window
@@ -149,6 +126,37 @@ in {
         ", Print, exec, ${pkgs.hyprshot}/bin/hyprshot -m region" # Capture region
         "$shiftMod, Print, exec, ${pkgs.hyprshot}/bin/hyprshot -m output" # Capture screen
       ]
+      ++ (lib.optionals waybarShell [
+        "$mod, SPACE, exec, ${pkgs.tofi}/bin/tofi-drun" # Launcher
+        "$mod, N, exec, ${pkgs.swaynotificationcenter}/bin/swaync-client -t" # Notification center
+
+        # Power
+        (
+          "$mod, X, exec, "
+          + lib.getExe (mkMenu [
+            {
+              key = "l";
+              desc = "Lock";
+              cmd = "${pkgs.hyprlock}/bin/hyprlock";
+            }
+            {
+              key = "s";
+              desc = "Suspend";
+              cmd = "systemctl suspend";
+            }
+            {
+              key = "r";
+              desc = "Reboot";
+              cmd = "systemctl reboot";
+            }
+            {
+              key = "p";
+              desc = "Power Off";
+              cmd = "systemctl poweroff";
+            }
+          ])
+        )
+      ])
       ++ (builtins.concatLists (
         builtins.genList (
           i: let
@@ -166,23 +174,26 @@ in {
       "$mod,R, resizewindow" # Resize Window (mouse)
     ];
 
-    bindl = [
-      # Brightness
-      ", XF86MonBrightnessUp, exec, ${scripts.bright-up}/bin/bright-up"
-      ", XF86MonBrightnessDown, exec, ${scripts.bright-down}/bin/bright-down"
+    bindl =
+      [
+        # Media
+        ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
+        ", XF86AudioPause, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
+        ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
+        ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
+        ", XF86AudioStop, exec, ${pkgs.playerctl}/bin/playerctl stop"
+      ]
+      # These wrap the waybar OSD, which only exists when waybar does.
+      ++ (lib.optionals waybarShell [
+        # Brightness
+        ", XF86MonBrightnessUp, exec, ${scripts.bright-up}/bin/bright-up"
+        ", XF86MonBrightnessDown, exec, ${scripts.bright-down}/bin/bright-down"
 
-      # Media
-      ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
-      ", XF86AudioPause, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
-      ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
-      ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
-      ", XF86AudioStop, exec, ${pkgs.playerctl}/bin/playerctl stop"
-
-      # Sound
-      ", XF86AudioMute, exec, ${scripts.vol-mute}/bin/vol-mute"
-      ", XF86AudioRaiseVolume, exec, ${scripts.vol-up}/bin/vol-up"
-      ", XF86AudioLowerVolume, exec, ${scripts.vol-down}/bin/vol-down"
-      ", XF86AudioMicMute, exec, ${scripts.mic-mute}/bin/mic-mute"
-    ];
+        # Sound
+        ", XF86AudioMute, exec, ${scripts.vol-mute}/bin/vol-mute"
+        ", XF86AudioRaiseVolume, exec, ${scripts.vol-up}/bin/vol-up"
+        ", XF86AudioLowerVolume, exec, ${scripts.vol-down}/bin/vol-down"
+        ", XF86AudioMicMute, exec, ${scripts.mic-mute}/bin/mic-mute"
+      ]);
   };
 }
