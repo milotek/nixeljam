@@ -62,11 +62,29 @@ and it is yours. It is a free account, so there is not much to lose.
 No Spotify app registration by default — see *Credentials* below.
 
 1. `nixos-rebuild switch --flake .#minipc`
-2. `tunedeck-login` — from a graphical session. Logs the headless profile in
-   once. Close the window when the library has loaded.
+2. `tunedeck-console` — prints a URL. Open it from any tailnet device,
+   including a phone. That is the headless display: the Spotify window is
+   already there, waiting to be logged in. Do that once.
 3. `sudo -u milotek tunedeck-auth` — paste the URL back when prompted. The
    consent screen will say **spotDL**; that is expected.
-4. `systemctl restart spotify-headless tunedeck-mirror`
+4. `systemctl restart tunedeck-mirror`
+
+### The console
+
+`minipc` has no desktop session, so there is normally no way to click the one
+button Spotify insists on. `tunedeck-console` solves that: Xvfb on `:97` with
+openbox, x11vnc bound to localhost, and noVNC bridged onto port 6081. Same
+trust model as `home/system/remote-desktop` — VNC is unauthenticated and the
+tailnet is the authentication, and `trustedInterfaces = ["tailscale0"]` means
+no port needed opening.
+
+`tunedeck-browser <url>` puts a real desktop browser on that same display,
+which is also how to reach the Spotify developer dashboard when a phone
+refuses to render it.
+
+It is strictly more exposure than the pc's remote desktop, because anyone on
+the tailnet can drive that browser as your user. Set `var.tunedeck.console =
+false` once setup is done.
 
 Check on it:
 

@@ -42,6 +42,12 @@
       # on-demand allowance for actual listening. Minutes per day.
       mirrorDailyLimitMinutes = 240;
 
+      # Browser-accessible view of the mirror's headless display, over the
+      # tailnet. Needed to log Spotify in on a box with no desktop session;
+      # worth turning off once setup is done, since it also exposes
+      # tunedeck-browser to anything on the tailnet.
+      console = true;
+
       # false rides spotdl's public client id/secret, so nothing needs
       # registering. Flip to true (and add spotify-client-id /
       # spotify-client-secret to sops) if the shared app starts rate-limiting.
