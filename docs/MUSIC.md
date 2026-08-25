@@ -63,8 +63,9 @@ No Spotify app registration by default — see *Credentials* below.
 
 1. `nixos-rebuild switch --flake .#minipc`
 2. `tunedeck-console` — prints a URL. Open it from any tailnet device,
-   including a phone. That is the headless display: the Spotify window is
-   already there, waiting to be logged in. Do that once.
+   including a phone. That is the headless display, and the Spotify window is
+   already sitting on it showing a login screen with a **QR code**. Scan it
+   with the Spotify app on your phone. No password is typed anywhere.
 3. `sudo -u milotek tunedeck-auth` — paste the URL back when prompted. The
    consent screen will say **spotDL**; that is expected.
 4. `systemctl restart tunedeck-mirror`

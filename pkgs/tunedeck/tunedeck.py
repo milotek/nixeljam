@@ -95,11 +95,26 @@ def load_state(name: str, default: Any) -> Any:
 
 
 def save_state(name: str, value: Any) -> None:
-    STATE.mkdir(parents=True, exist_ok=True)
+    """Write via a temp file and rename, retrying once.
+
+    During a nixos-rebuild switch, systemd-tmpfiles can recreate the state
+    directory in the window between the write and the rename, which orphans the
+    temp file and takes the whole daemon down with a FileNotFoundError that
+    looks nothing like its cause. Observed in the wild on first deploy.
+    """
     path = STATE / name
     tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(json.dumps(value, indent=2, sort_keys=True))
-    tmp.replace(path)
+    body = json.dumps(value, indent=2, sort_keys=True)
+    for attempt in (1, 2):
+        try:
+            STATE.mkdir(parents=True, exist_ok=True)
+            tmp.write_text(body)
+            tmp.replace(path)
+            return
+        except FileNotFoundError:
+            if attempt == 2:
+                raise
+            time.sleep(0.5)
 
 
 # ---------------------------------------------------------------------------

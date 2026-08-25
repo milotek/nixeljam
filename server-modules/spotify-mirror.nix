@@ -51,20 +51,40 @@
   # fighting the desktop Spotify over ~/.config/spotify.
   spotifyHome = "/var/lib/tunedeck/spotify-home";
 
-  display = ":97";
+  displayNum = "97";
+  display = ":${displayNum}";
   vncPort = 5901;
   webPort = 6081;
 
   # MPRIS lives on the session bus, so these units have to join the user's
-  # session rather than run in isolation. %U expands to the UID behind User=,
-  # which beats hardcoding 1000.
-  sessionEnv = {
-    XDG_RUNTIME_DIR = "/run/user/%U";
-    DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/%U/bus";
-    PULSE_SERVER = "unix:/run/user/%U/pulse/native";
-    PULSE_SINK = "tunedeck-null";
-    DISPLAY = display;
-  };
+  # session rather than run in isolation.
+  #
+  # The UID is resolved at runtime, not in the unit. systemd's %U looks like the
+  # obvious answer and is a trap: in a *system* unit it expands to the UID of the
+  # service manager (0), not of User=. That silently pointed everything at
+  # /run/user/0, so the session bus was unreachable and MPRIS could never have
+  # worked — the mirror would have run forever without ever playing anything.
+  # users.users.<name>.uid is null here, so there is nothing static to read.
+  #
+  # Also waits for the bus socket: linger brings the user manager up at boot,
+  # but not necessarily before this unit starts.
+  inSession = name: cmd:
+    pkgs.writeShellScript "tunedeck-${name}-session" ''
+      export XDG_RUNTIME_DIR="/run/user/$(${pkgs.coreutils}/bin/id -u)"
+      bus="$XDG_RUNTIME_DIR/bus"
+      export DBUS_SESSION_BUS_ADDRESS="unix:path=$bus"
+      export PULSE_SERVER="unix:$XDG_RUNTIME_DIR/pulse/native"
+      export PULSE_SINK=tunedeck-null
+      export DISPLAY=${display}
+
+      for _ in $(${pkgs.coreutils}/bin/seq 1 150); do
+        [ -S "$bus" ] && break
+        sleep 0.2
+      done
+      [ -S "$bus" ] || echo "warning: no session bus at $bus — MPRIS will not work" >&2
+
+      exec ${cmd}
+    '';
 
   # Anything you want to look at on the headless display, from the phone.
   tunedeckBrowser = pkgs.writeShellScriptBin "tunedeck-browser" ''
@@ -119,6 +139,10 @@ in {
   # A real X server rather than xvfb-run, because x11vnc has to be able to
   # attach to it by name. xvfb-run picks its own display and auth file, which
   # nothing else can find.
+  #
+  # Everything that draws on this display is PartOf= it, so an Xvfb restart
+  # cycles them cleanly instead of leaving each one to crash against a dead
+  # socket and recover on its own timer.
   systemd.services.tunedeck-xvfb = {
     description = "Xvfb ${display} — the headless display the mirror lives on";
     wantedBy = ["multi-user.target"];
@@ -127,6 +151,12 @@ in {
       # -nolisten tcp keeps it to the local socket; the only reachability is
       # through x11vnc below, which is itself bound to localhost.
       ExecStart = "${pkgs.xorg-server}/bin/Xvfb ${display} -screen 0 1280x800x24 -nolisten tcp";
+      # Type=simple marks the unit active the moment Xvfb forks, but the socket
+      # takes a beat longer — so openbox and x11vnc would start, fail to open
+      # the display, and only recover on their restart timer. That left a failed
+      # unit on every boot and made switch-to-configuration exit 4. Units
+      # ordered After= this one wait for ExecStartPost, so block here instead.
+      ExecStartPost = "${pkgs.bash}/bin/bash -c 'for _ in $(seq 1 100); do [ -S /tmp/.X11-unix/X${displayNum} ] && exit 0; sleep 0.1; done; exit 1'";
       Restart = "always";
       RestartSec = "5s";
     };
@@ -139,6 +169,7 @@ in {
     description = "openbox on ${display}";
     after = ["tunedeck-xvfb.service"];
     requires = ["tunedeck-xvfb.service"];
+    partOf = ["tunedeck-xvfb.service"];
     wantedBy = ["multi-user.target"];
     environment.DISPLAY = display;
     serviceConfig = {
@@ -151,29 +182,32 @@ in {
 
   systemd.services.spotify-headless = {
     description = "Spotify desktop client, headless and muted, for stat mirroring";
-    after = ["network-online.target" "tunedeck-xvfb.service" "user@%U.service"];
+    after = ["network-online.target" "tunedeck-xvfb.service"];
     wants = ["network-online.target"];
     requires = ["tunedeck-xvfb.service"];
+    partOf = ["tunedeck-xvfb.service"];
     wantedBy = ["multi-user.target"];
-    environment = sessionEnv // {HOME = spotifyHome;};
+    environment.HOME = spotifyHome;
     serviceConfig = {
       User = user;
-      ExecStart = "${pkgs.spotify}/bin/spotify --disable-gpu";
+      ExecStart = inSession "spotify" "${pkgs.spotify}/bin/spotify --disable-gpu";
       Restart = "always";
       RestartSec = "20s";
+      # Spotify ignores SIGTERM for a long time; without this every rebuild
+      # stalls 90s waiting for it before SIGKILL.
+      TimeoutStopSec = "15s";
     };
   };
 
   systemd.services.tunedeck-mirror = {
     description = "Mirror Navidrome playback onto Spotify";
-    after = ["spotify-headless.service" "navidrome.service" "user@%U.service"];
+    after = ["spotify-headless.service" "navidrome.service"];
     wants = ["spotify-headless.service"];
     wantedBy = ["multi-user.target"];
-    environment = sessionEnv;
     serviceConfig = {
       User = user;
       EnvironmentFile = config.sops.templates."tunedeck-env".path;
-      ExecStart = "${tunedeck}/bin/tunedeck mirror";
+      ExecStart = inSession "mirror" "${tunedeck}/bin/tunedeck mirror";
       Restart = "always";
       RestartSec = "30s";
     };
@@ -189,6 +223,7 @@ in {
     description = "x11vnc exposing ${display}";
     after = ["tunedeck-xvfb.service"];
     requires = ["tunedeck-xvfb.service"];
+    partOf = ["tunedeck-xvfb.service"];
     wantedBy = ["multi-user.target"];
     environment.DISPLAY = display;
     serviceConfig = {
@@ -203,6 +238,7 @@ in {
     description = "noVNC web client fronting tunedeck-vnc";
     after = ["tunedeck-vnc.service"];
     requires = ["tunedeck-vnc.service"];
+    partOf = ["tunedeck-vnc.service"];
     wantedBy = ["multi-user.target"];
     serviceConfig = {
       User = user;
