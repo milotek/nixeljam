@@ -38,8 +38,10 @@
     LC_TIME = config.var.extraLocale;
   };
 
-  # Caddy reaches minipc over the tailnet, so nothing dials in here any more.
-  # The only open ports are caddy's 80/443, opened by server-modules/caddy.nix.
+  # The only host with a public IP, so the only one a scanner can reach. SSH
+  # still works over tailscale0 (a trusted interface); break-glass is Oracle's
+  # serial console.
+  services.openssh.openFirewall = lib.mkForce false;
 
   environment.systemPackages = with pkgs; [wget curl git vim htop];
 

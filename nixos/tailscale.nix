@@ -1,21 +1,27 @@
 # Tailscale — private WireGuard mesh across all my machines.
 #
-# Purpose: an out-of-band admin door that does NOT depend on this host's own DNS
-# (AdGuard on the minipc) or the tek.rip reverse tunnel. tailscaled reaches its
-# control plane via its own bootstrap DNS, so even a rebuild that breaks local
-# DNS can't lock me out — I can still SSH in over the tailnet. See the minipc
-# lockout incident that motivated this.
+# It carries everything now, not just admin access: the VPS's caddy reaches
+# minipc's services over it, and it is the only way in to any host.
 #
-# One-time per host after the first rebuild, run interactively:
-#   sudo tailscale up
-# It prints a login URL; approve the device in the Tailscale admin console.
-# On headless hosts (vps, server) just open the printed URL from any browser.
-{config, ...}: {
+# One-time per host: `sudo tailscale up`, then approve the device in the admin
+# console. Headless hosts print a login URL to open from any browser.
+{
+  config,
+  lib,
+  ...
+}: let
+  # Static because MagicDNS is off below, and a device keeps its 100.x address.
+  tailnet = {
+    pc = "100.96.10.65";
+    minipc = "100.85.180.11";
+    vps = "100.117.236.50";
+  };
+in {
   services.tailscale.enable = true;
 
-  # Not extraUpFlags: that only runs via tailscaled-autoconnect, which needs an
-  # authKeyFile these hosts don't use.
-  services.tailscale.extraSetFlags = ["--accept-dns=false"];
+  networking.hosts =
+    lib.mapAttrs' (name: ip: lib.nameValuePair ip [name])
+    (lib.filterAttrs (name: _: name != config.var.hostname) tailnet);
 
   networking.firewall = {
     # Trust the tailnet interface so my own devices can reach local services

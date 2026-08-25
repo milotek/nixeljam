@@ -1,6 +1,6 @@
 # slskd — headless Soulseek daemon with a web UI.
-# Bound to localhost:5030; exposed publicly via the VPS Caddy reverse proxy
-# (caddy.nix) at https://slsk.<domain>, tunnelled up by the reverse tunnel.
+# Reachable on 5030 over the tailnet; the VPS's caddy fronts it publicly at
+# https://slsk.<domain>.
 #
 # Downloads land in copyparty's Music/Songs/Soulseek, so Navidrome scans them
 # and they show up in arpeggi automatically. Shares Music/Songs read-only so
