@@ -17,6 +17,6 @@
       iptables -D INPUT -s 10.233.0.0/16 -p tcp --dport 3000 -j ACCEPT 2>/dev/null || true
     '';
   };
-  # Cloudflare Tunnel ingress line stripped: we expose via caddy+reverse-tunnel,
-  # not cloudflared, and config.var.{tunnelId,domain} are not set on our hosts.
+  # Cloudflare Tunnel ingress line stripped: we expose via the VPS caddy over the
+  # tailnet, not cloudflared, and config.var.{tunnelId,domain} are unset here.
 }

@@ -38,13 +38,8 @@
     LC_TIME = config.var.extraLocale;
   };
 
-  # Reverse tunnels from pc (2222 + noVNC 6080) and minipc (2223) both dial in
-  # with the primary milo@milotek.dev key, which nixos/ssh.nix already authorizes
-  # with full access - so no dedicated forwarding-only keys are needed here.
-
-  # Let the tunnels bind a public port, and open them.
-  services.openssh.settings.GatewayPorts = "clientspecified";
-  networking.firewall.allowedTCPPorts = [2222 2223];
+  # Caddy reaches minipc over the tailnet, so nothing dials in here any more.
+  # The only open ports are caddy's 80/443, opened by server-modules/caddy.nix.
 
   environment.systemPackages = with pkgs; [wget curl git vim htop];
 

@@ -12,7 +12,6 @@
     ../../nixos/bluetooth.nix
     ../../nixos/ssh.nix
     ../../nixos/ydotool.nix
-    ../../nixos/reverse-tunnel.nix
     ../../nixos/tailscale.nix
 
     # Self-hosted services — add more from server-modules/ as needed
@@ -29,40 +28,8 @@
     ./variables.nix
   ];
 
-  # Reachable via the VPS at:  ssh -p 2223 <user>@tek.rip
-  # Private ports (copyparty 3923, navidrome 4533, slskd 5030, home-assistant 8123)
-  # are fronted by the VPS's caddy over TLS.
-  custom.reverseTunnel = {
-    enable = true;
-    sopsFile = ./secrets/system-secrets.yaml;
-    forwards = [
-      {
-        remoteBind = "*";
-        remotePort = 2223;
-        localPort = 22;
-      }
-      {
-        remoteBind = "localhost";
-        remotePort = 3923;
-        localPort = 3923;
-      }
-      {
-        remoteBind = "localhost";
-        remotePort = 4533;
-        localPort = 4533;
-      }
-      {
-        remoteBind = "localhost";
-        remotePort = 5030;
-        localPort = 5030;
-      }
-      {
-        remoteBind = "localhost";
-        remotePort = 8123;
-        localPort = 8123;
-      }
-    ];
-  };
+  # Reachable over the tailnet; the VPS's caddy proxies copyparty, navidrome,
+  # slskd and home-assistant from there over TLS.
 
   sops = {
     defaultSopsFile = ./secrets/system-secrets.yaml;
