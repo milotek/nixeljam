@@ -11,8 +11,8 @@
     ../../nixos/nix.nix
     ../../nixos/users.nix
     ../../nixos/user-password.nix
-    ../../nixos/ssh.nix
     ../../nixos/tailscale.nix
+    ../../server-modules/ssh.nix
     ../../server-modules/fail2ban.nix
     ../../server-modules/caddy.nix
 

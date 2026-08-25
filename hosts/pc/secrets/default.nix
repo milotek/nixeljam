@@ -37,11 +37,6 @@ in {
         key_groups:
           - age:
             - *primary
-      - path_regex: hosts/pc/secrets/system-secrets.yaml$
-        key_groups:
-          - age:
-            - *primary
-            - *pc_host
       - path_regex: hosts/minipc/secrets/system-secrets.yaml$
         key_groups:
           - age:

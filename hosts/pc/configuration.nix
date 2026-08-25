@@ -19,11 +19,11 @@
     ../../nixos/ydotool.nix
     ../../nixos/usbguard.nix
     ../../nixos/gaming.nix
-    ../../nixos/ssh.nix
     ../../nixos/docker.nix
     ../../nixos/ollama.nix
 
     ../../nixos/tailscale.nix
+    ../../server-modules/ssh.nix
 
     # You should let those lines as is
     ./hardware-configuration.nix

@@ -10,9 +10,9 @@
     ../../nixos/hyprland.nix
     ../../nixos/audio.nix
     ../../nixos/bluetooth.nix
-    ../../nixos/ssh.nix
     ../../nixos/ydotool.nix
     ../../nixos/tailscale.nix
+    ../../server-modules/ssh.nix
 
     # Self-hosted services — add more from server-modules/ as needed
     ../../server-modules/adguardhome.nix
