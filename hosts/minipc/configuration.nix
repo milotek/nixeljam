@@ -23,6 +23,9 @@
     ../../server-modules/home-assistant.nix
     ../../server-modules/openclaw.nix
     ../../server-modules/hermes.nix
+    ../../server-modules/glance
+    ../../server-modules/minecraft.nix
+    ../../server-modules/minecraft-power.nix
 
     ./hardware-configuration.nix
     ./variables.nix
