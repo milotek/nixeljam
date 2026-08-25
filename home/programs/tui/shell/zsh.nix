@@ -74,6 +74,10 @@
       notes = "nvim ~/notes/index.md --cmd 'cd ~/notes' -c ':lua Snacks.picker.smart()'";
       nix-shell = "nix-shell --command zsh";
 
+      # learncpp.com's recommended warning set, promoted to errors: catches the
+      # narrowing and sign-conversion bugs a bare `clang++` silently compiles.
+      cl = "clang++ -std=c++26 -ggdb -pedantic-errors -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -Werror";
+
       # git
       g = "lazygit";
       ga = "git add";

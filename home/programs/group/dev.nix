@@ -12,6 +12,11 @@
     ++ (with pkgs; [
       nodejs
       air
+      clang
+      clang-tools
+      cmake
+      gnumake
+      gdb
       duckdb
       python3
       jq
