@@ -1,15 +1,13 @@
 # Browser-accessible remote desktop for this Hyprland (wlroots) session.
 #
-# wayvnc mirrors the live Wayland session as a VNC server on localhost:5900,
-# and websockify serves the noVNC web client on localhost:6080, bridging the
-# browser's WebSocket to that VNC port. The host's reverse tunnel
-# (nixos/reverse-tunnel.nix) forwards 6080 up to the VPS, where caddy fronts it
-# at https://remote.<host>.<domain>.
+# wayvnc mirrors the live Wayland session as a VNC server, and websockify
+# serves the noVNC web client on 6080, bridging the browser's WebSocket to that
+# VNC port. Reachable at http://<this host's tailnet ip>:6080 from any tailnet
+# device; the firewall trusts tailscale0 only, so nothing is exposed publicly.
 #
-# Nothing here listens beyond 127.0.0.1, so the only public entry point is
-# caddy on the VPS (TLS + basic auth). wayvnc attaches to the running
-# compositor, so remote access only works while the user is logged into
-# Hyprland - at the greeter there is no session to mirror.
+# VNC itself is unauthenticated, so the tailnet IS the authentication.
+# wayvnc attaches to the running compositor, so remote access only works while
+# the user is logged into Hyprland - at the greeter there is no session to mirror.
 {
   pkgs,
   ...
@@ -44,7 +42,7 @@ in {
     };
     Service = {
       Type = "simple";
-      ExecStart = "${websockify}/bin/websockify --web=${novncRoot} 127.0.0.1:${toString webPort} 127.0.0.1:${toString vncPort}";
+      ExecStart = "${websockify}/bin/websockify --web=${novncRoot} 0.0.0.0:${toString webPort} 127.0.0.1:${toString vncPort}";
       Restart = "on-failure";
       RestartSec = 5;
     };

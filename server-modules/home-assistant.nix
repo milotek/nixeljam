@@ -1,6 +1,6 @@
 # Home Assistant — self-hosted smart home hub.
-# Runs locally on the minipc, bound to localhost; reached from the outside via
-# the reverse tunnel + Caddy (home.<domain>). Since it sits behind that proxy it
+# Runs locally on the minipc, reachable over the tailnet; Caddy on the VPS
+# fronts it publicly at home.<domain>. Since it sits behind that proxy it
 # needs use_x_forwarded_for + trusted_proxies or it rejects the forwarded host.
 {config, ...}: {
   services.home-assistant = {
@@ -24,10 +24,10 @@
       };
 
       http = {
-        server_host = "127.0.0.1";
+        server_host = "0.0.0.0";
         server_port = 8123;
         use_x_forwarded_for = true;
-        trusted_proxies = ["127.0.0.1" "::1"];
+        trusted_proxies = ["100.117.236.50" "127.0.0.1" "::1"];
       };
     };
   };

@@ -3,7 +3,7 @@
     enable = true;
     settings = {
       MusicFolder = "/var/lib/copyparty/Music";
-      Address = "127.0.0.1";
+      Address = "0.0.0.0";
       Port = 4533;
     };
   };

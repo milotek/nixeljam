@@ -13,6 +13,10 @@
 {config, ...}: {
   services.tailscale.enable = true;
 
+  # Not extraUpFlags: that only runs via tailscaled-autoconnect, which needs an
+  # authKeyFile these hosts don't use.
+  services.tailscale.extraSetFlags = ["--accept-dns=false"];
+
   networking.firewall = {
     # Trust the tailnet interface so my own devices can reach local services
     # (sshd, etc.) over Tailscale without per-port firewall rules.
