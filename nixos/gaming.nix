@@ -1,4 +1,8 @@
-{ pkgs, ... }: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
@@ -8,18 +12,27 @@
 
   programs.gamemode.enable = true;
 
-  services.flatpak.enable = true;
+  # protonup-ng installs Proton-GE builds here; Steam only picks them up if
+  # this path is exported.
+  environment.sessionVariables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/${config.var.username}/.steam/root/compatibilitytools.d";
 
-  services.flatpak.remotes = [
-    {
-      name = "flathub";
-      location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-    }
-  ];
+  services.flatpak = {
+    enable = true;
 
-  services.flatpak.packages = [
-    { appId = "org.vinegarhq.Sober"; origin = "flathub"; }
-  ];
+    remotes = [
+      {
+        name = "flathub";
+        location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+      }
+    ];
+
+    packages = [
+      {
+        appId = "org.vinegarhq.Sober";
+        origin = "flathub";
+      }
+    ];
+  };
 
   services.sunshine = {
     enable = true;
@@ -31,7 +44,9 @@
   environment.systemPackages = with pkgs; [
     moonlight-qt
     vinegar
-    prismlauncher # Minecraft instance/mod launcher
-    modrinth-app # Modrinth's Minecraft launcher
+    prismlauncher
+    modrinth-app
+    mangohud
+    protonup-ng
   ];
 }
