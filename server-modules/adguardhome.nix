@@ -1,5 +1,8 @@
 # Adguard is a network-wide ad blocker
 # When installed, open localhost:3000 to setup
+#
+# Bind the LAN and tailnet addresses explicitly, not 0.0.0.0: systemd-resolved
+# (enabled by nixos/tailscale.nix) already holds 127.0.0.53:53.
 {config, ...}: {
   services.adguardhome = {
     enable = true;

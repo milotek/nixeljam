@@ -8,15 +8,10 @@
 {config, ...}: {
   services.tailscale.enable = true;
 
-  # MagicDNS, so peers resolve by bare name (`ssh vps`).
   services.tailscale.extraSetFlags = ["--accept-dns=true"];
 
-  # Without resolved, tailscaled points all of /etc/resolv.conf at itself, so a
-  # dead tailscaled means no DNS at all - that is what took minipc down before.
-  # resolved gets split DNS instead: only ts.net goes to the tailnet resolver.
-  #
-  # NOTE: the stub listener holds 127.0.0.53:53, so AdGuard must bind its
-  # LAN/tailnet addresses explicitly rather than the wildcard.
+  # Not optional: with plain resolvconf, tailscaled claims all of resolv.conf,
+  # so losing it loses DNS entirely. resolved routes only ts.net to the tailnet.
   services.resolved.enable = true;
 
   networking.firewall = {
