@@ -59,6 +59,31 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak"; # gaming.nix flatpak (Sober)
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    minegrub-world-sel-theme = {
+      url = "github:Lxtharia/minegrub-world-sel-theme";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Caelestia: opt-in Quickshell desktop shell (see home/system/caelestia).
+    # Follows nixpkgs-unstable, not our 26.05 pin: upstream targets unstable and
+    # its Quickshell dependency moves faster than a stable release does.
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    caelestia-cli = {
+      url = "github:caelestia-dots/cli";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -143,6 +168,7 @@
           pc = import ./hosts/pc/flake.nix args;
           minipc = import ./hosts/minipc/flake.nix args;
           vps = import ./hosts/vps/flake.nix args;
+          wsl = import ./hosts/wsl/flake.nix args;
         };
         # nix-darwin hosts — deploy with: darwin-rebuild switch --flake .#<name>
         darwinConfigurations = {
