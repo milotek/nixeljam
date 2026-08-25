@@ -31,12 +31,6 @@
   # Reachable over the tailnet; the VPS's caddy proxies copyparty, navidrome,
   # slskd and home-assistant from there over TLS.
 
-  # This host serves the network's DNS, so it must not route its own lookups
-  # through tailscaled - that circularity is what took DNS down here before.
-  # Other hosts keep MagicDNS; this one resolves peers via networking.hosts.
-  # extraSetFlags, not extraUpFlags: the latter needs an authKeyFile.
-  services.tailscale.extraSetFlags = ["--accept-dns=false"];
-
   sops = {
     defaultSopsFile = ./secrets/system-secrets.yaml;
     age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];

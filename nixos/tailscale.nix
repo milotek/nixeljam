@@ -5,23 +5,19 @@
 #
 # One-time per host: `sudo tailscale up`, then approve the device in the admin
 # console. Headless hosts print a login URL to open from any browser.
-{
-  config,
-  lib,
-  ...
-}: let
-  # Static because MagicDNS is off below, and a device keeps its 100.x address.
-  tailnet = {
-    pc = "100.96.10.65";
-    minipc = "100.85.180.11";
-    vps = "100.117.236.50";
-  };
-in {
+{config, ...}: {
   services.tailscale.enable = true;
 
-  networking.hosts =
-    lib.mapAttrs' (name: ip: lib.nameValuePair ip [name])
-    (lib.filterAttrs (name: _: name != config.var.hostname) tailnet);
+  # MagicDNS, so peers resolve by bare name (`ssh vps`).
+  services.tailscale.extraSetFlags = ["--accept-dns=true"];
+
+  # Without resolved, tailscaled points all of /etc/resolv.conf at itself, so a
+  # dead tailscaled means no DNS at all - that is what took minipc down before.
+  # resolved gets split DNS instead: only ts.net goes to the tailnet resolver.
+  #
+  # NOTE: the stub listener holds 127.0.0.53:53, so AdGuard must bind its
+  # LAN/tailnet addresses explicitly rather than the wildcard.
+  services.resolved.enable = true;
 
   networking.firewall = {
     # Trust the tailnet interface so my own devices can reach local services
