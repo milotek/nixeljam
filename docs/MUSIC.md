@@ -1,0 +1,160 @@
+# MUSIC
+
+How the self-hosted music stack relates to Spotify, SoundCloud and listening
+stats. Three NixOS modules, one helper package.
+
+| Piece | File | What it does |
+| --- | --- | --- |
+| Navidrome | `server-modules/navidrome.nix` | the library, plus native Last.fm / ListenBrainz scrobbling |
+| tunedeck (base) | `server-modules/tunedeck.nix` | shared package, secrets and env file |
+| spotify-mirror | `server-modules/spotify-mirror.nix` | replays Navidrome playback on a real Spotify client |
+| playlist-sync | `server-modules/playlist-sync.nix` | two-way playlists, SoundCloud pull, auto-download |
+| tunedeck | `pkgs/tunedeck/` | the Python that does all of it |
+
+Knobs live in `hosts/minipc/variables.nix` under `var.tunedeck`.
+
+## The honest part first
+
+**Spotify has no ingest API.** There is no endpoint anywhere that accepts "I
+listened to this track". Your Spotify history is generated server-side, only
+from playback that really happened on a Spotify client. stats.fm just reads
+Spotify's API, so it inherits that exactly — and on the free tier it cannot even
+take a manual history import, since that is a stats.fm Plus feature.
+
+So there is no honest way to *scrobble* Navidrome plays into Spotify. The only
+thing that ever counts is real playback. `spotify-mirror` produces real
+playback; nothing else could have worked.
+
+## spotify-mirror
+
+Runs the actual Spotify desktop client on the minipc, headless under Xvfb, with
+its audio routed into a PipeWire null sink. A daemon polls Navidrome's Subsonic
+`getNowPlaying`, resolves the track on Spotify, and fires
+`org.mpris.MediaPlayer2.Player.OpenUri` at the client over D-Bus. The client
+streams it for real. It counts for stats.fm, for Wrapped, for the
+recommendation algorithm, and it pays the artist.
+
+Why the desktop client and not `librespot` or the Web API: both of those need
+Premium. The desktop client has done on-demand playback of any track on the free
+tier since September 2025, and MPRIS is the only remote control it exposes.
+
+Three guards keep it from being obnoxious:
+
+- **Daily budget.** Free accounts get an undocumented on-demand allowance.
+  tunedeck keeps its own ledger (`var.tunedeck.mirrorDailyLimitMinutes`,
+  default 240) and stops early rather than spending the quota you wanted for
+  real listening.
+- **Yield to the human.** One account plays on one device at a time. Before
+  mirroring anything the daemon reads `/me/player`; if another device is
+  playing, it stands down. It will never yank playback off your phone.
+- **Skip the unmirrorable.** Tracks under 35s, and anything with no confident
+  Spotify match, are skipped rather than guessed at.
+
+Ads play into the null sink and cost a little budget. Nothing breaks.
+
+**The risk, plainly:** this is automated playback of audio nobody is hearing,
+which is the shape Spotify's artificial-streaming detection looks for. You are
+genuinely listening, just on a different player — but the account risk is real
+and it is yours. It is a free account, so there is not much to lose.
+
+### Setup
+
+1. Create an app at <https://developer.spotify.com/dashboard>, redirect URI
+   exactly `http://127.0.0.1:8974/callback`.
+2. `sops hosts/minipc/secrets/system-secrets.yaml` and add:
+   ```yaml
+   spotify-client-id: ...
+   spotify-client-secret: ...
+   ```
+3. `nixos-rebuild switch --flake .#minipc`
+4. `tunedeck-login` — from a graphical session. Logs the headless profile in
+   once. Close the window when the library has loaded.
+5. `sudo -u milotek tunedeck-auth` — paste the URL back when prompted.
+6. `systemctl restart spotify-headless tunedeck-mirror`
+
+Check on it:
+
+```sh
+sudo -u milotek tunedeck-auth status
+journalctl -fu tunedeck-mirror
+```
+
+## playlist-sync
+
+Everything here works on a free account — reading your playlists and liked
+songs, and creating playlists you own, are all free-tier operations. A timer
+runs every 30 minutes.
+
+```
+SoundCloud  ──scdl──▶  <music>/Songs/Tunedeck/SoundCloud
+Spotify     ──────▶    matched against the library, written as .m3u
+                       into <music>/Playlists  (Navidrome auto-imports these)
+unmatched   ──spotdl─▶ <music>/Songs/Tunedeck   (next run matches them locally)
+Navidrome   ──────▶    pushed up to a Spotify playlist you own
+```
+
+It walks **every playlist you follow**, not just the ones you made — so
+Discover Weekly and Release Radar land in Navidrome too, which is most of the
+discovery value Spotify was being kept around for.
+
+**Loop prevention:** pulled playlists are named `[sp] Foo` locally, pushed ones
+`[nd] Bar` on Spotify. Each direction skips the other's prefix. Do not rename
+them by hand.
+
+SoundCloud is the weak link: they closed the public API to new apps years ago,
+so `scdl` scrapes public URLs. Put them in `var.tunedeck.soundcloudUrls`.
+
+Manual runs:
+
+```sh
+systemctl start tunedeck-sync                      # everything, now
+sudo -u milotek tunedeck-auth sync --only pull     # or push / soundcloud
+sudo -u milotek tunedeck-auth sync --refresh       # after moving files around
+```
+
+### Matching
+
+Title and artist are hard gates; duration only breaks ties. Same title under a
+different artist is treated as a cover and rejected, because letting a close
+duration drag those over the line produced exactly the wrong matches in testing.
+Remaster/live/feat. suffixes are stripped before comparison. See
+`pkgs/tunedeck/test_match.py` for the cases that pin this down.
+
+Both directions cache their matches, negatives included, in `/var/lib/tunedeck`.
+Without that a few hundred liked songs would mean a thousand Subsonic searches
+every half hour.
+
+## Stats, without the mirror
+
+The mirror is the hacky answer to "make it count on stats.fm". The robust answer
+to "put all my listening in one place" does not involve Spotify at all:
+
+- Navidrome scrobbles natively to **ListenBrainz** (on by default; paste your
+  token in the Navidrome UI under Personal → Settings) and to **Last.fm** (set
+  `var.tunedeck.lastfm = true` once `lastfm-api-key` / `lastfm-secret` are in
+  sops — Navidrome ships no API key of its own).
+- Last.fm can pull your Spotify plays in by itself: Last.fm → Settings →
+  Applications → connect Spotify. No software involved.
+
+That gives one unified history across both players, which is the thing stats.fm
+structurally cannot do — it only ever sees Spotify. ListenBrainz also does real
+recommendation playlists off the full history, and Navidrome's Last.fm agent
+surfaces similar artists in the UI.
+
+## Files on disk
+
+```
+/var/lib/copyparty/Music/
+├── Playlists/                 .m3u written by playlist-sync, read by Navidrome
+└── Songs/
+    ├── Soulseek/              slskd downloads
+    └── Tunedeck/              spotdl + scdl downloads
+        └── SoundCloud/
+/var/lib/tunedeck/
+├── spotify-token.json         OAuth refresh token
+├── spotify-home/              the headless client's profile
+├── match-cache.json           navidrome track -> spotify id
+├── local-cache.json           spotify track -> navidrome song
+├── mirror-budget.json         today's spent minutes
+└── wanted.json                tracks the library still lacks
+```

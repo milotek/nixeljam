@@ -19,6 +19,8 @@
     ../../server-modules/fail2ban.nix
     ../../server-modules/copyparty.nix
     ../../server-modules/navidrome.nix
+    ../../server-modules/playlist-sync.nix
+    ../../server-modules/spotify-mirror.nix
     ../../server-modules/slskd.nix
     ../../server-modules/home-assistant.nix
     ../../server-modules/openclaw.nix

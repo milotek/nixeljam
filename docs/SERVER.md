@@ -18,6 +18,9 @@ The server is designed for private, secure, and easily manageable self-hosting o
 The server hosts several key applications:
 
 - **AdGuard Home**: A self-hosted DNS ad blocker for network-wide ad and tracker filtering.
+- **Navidrome + tunedeck**: Music library, with two-way Spotify/SoundCloud playlist sync and a
+  headless Spotify client that mirrors local playback so it still counts on Spotify's stats.
+  See [MUSIC.md](MUSIC.md).
 - **Glance**: An awesome dashboard! (See the screenshot above)
 - **Arr Stack (Radarr, Sonarr, etc.)**: Automated media management tools for handling movies and TV shows. (legally ofc)
 - **Mealie**: A self-hosted recipe manager and meal planner with a clean user interface.
