@@ -34,27 +34,27 @@ in {
                 {
                   title = "AdGuard";
                   url = "http://localhost:3000";
-                  icon = "si:adguard";
+                  icon = "sh:adguard-home";
                 }
                 {
                   title = "Files";
                   url = "https://files.${domain}";
-                  icon = "si:files";
+                  icon = "sh:copyparty";
                 }
                 {
                   title = "Music";
                   url = "https://music.${domain}";
-                  icon = "si:navidrome";
+                  icon = "sh:navidrome";
                 }
                 {
                   title = "Soulseek";
                   url = "https://slsk.${domain}";
-                  icon = "si:soundcharts";
+                  icon = "sh:soulseek";
                 }
                 {
                   title = "Home Assistant";
                   url = "https://home.${domain}";
-                  icon = "si:homeassistant";
+                  icon = "sh:home-assistant";
                 }
               ];
             }
