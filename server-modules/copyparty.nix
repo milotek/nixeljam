@@ -12,6 +12,11 @@
 # That same password is shared with slskd, navidrome and tunedeck, so rotating
 # it means rotating those too.
 #
+# --xff-src trusts the VPS's tailnet address so copyparty honours Caddy's
+# X-Forwarded-Proto. Without it copyparty assumes plain http and rejects every
+# browser POST (login, upload, rename) as a cross-origin request, because the
+# Origin the browser sends is https.
+#
 # Uploads are renamed to lowercase snake_case on arrival by the tidyname xbu
 # hook, so the share never accumulates names with spaces or punctuation again.
 # reloc only fires over HTTP (up2k/basic/webdav) — fine here, no ftp/tftp/smb.
@@ -28,6 +33,7 @@
       -i 0.0.0.0 \
       -p 3923 \
       --rproxy 1 \
+      --xff-src 100.117.236.50/32 \
       --daw \
       --no-robots \
       -a milotek:"$pw" \
