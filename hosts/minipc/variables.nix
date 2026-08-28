@@ -27,6 +27,10 @@
     # with no chat channel attached.
     openclawTelegramUserId = null;
 
+    # Serve this host's zellij sessions to a browser at term.minipc.<domain>.
+    # Read by both server-modules/zellij-web.nix and the zellij home module.
+    zellijWeb = true;
+
     autoUpgrade = false;
     autoGarbageCollector = true;
 

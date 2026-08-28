@@ -40,7 +40,11 @@ in {
         mirror_session = false;
         # Colors are left to stylix's zellij target, matching the rest of the setup.
       }
-      // lib.optionalAttrs (copyCommand != null) {copy_command = copyCommand;};
+      // lib.optionalAttrs (copyCommand != null) {copy_command = copyCommand;}
+      # Sessions started in a terminal are not reachable from the web client
+      # unless they are allowed to be shared. Only hosts running the server
+      # (server-modules/zellij-web.nix) set this.
+      // lib.optionalAttrs (config.var.zellijWeb or false) {web_sharing = "on";};
   };
 
   # A tiling WM retiles on every new terminal, so no two windows are the same

@@ -26,6 +26,16 @@ in {
     virtualHosts."home.${config.var.domain}".extraConfig = ''
       reverse_proxy ${minipc}:8123
     '';
+
+    # minipc's terminal sessions in a browser. Nested under the machine name
+    # because this is the one service that is genuinely per-host; the singletons
+    # above stay flat so they can move machines without breaking their URL.
+    #
+    # A zellij login token is the only thing between this and a root-capable
+    # shell — see server-modules/zellij-web.nix.
+    virtualHosts."term.minipc.${config.var.domain}".extraConfig = ''
+      reverse_proxy ${minipc}:8082
+    '';
   };
 
   # 80 lets Caddy solve the ACME challenge and redirect http -> https; 443 serves the site.
