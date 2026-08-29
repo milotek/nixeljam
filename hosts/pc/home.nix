@@ -31,7 +31,6 @@
     ../../home/programs/tui/spotatui
     ../../home/programs/tui/navi
     ../../home/programs/tui/wikiman
-    ../../home/programs/tui/zellij
     ../../home/programs/tui/opencode
     ../../home/programs/tui/rclone
     ../../home/programs/tui/ai

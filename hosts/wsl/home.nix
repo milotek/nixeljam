@@ -8,7 +8,6 @@
     ../../home/programs/tui/shell
     ../../home/programs/tui/git
     ../../home/programs/tui/git/lazygit.nix
-    ../../home/programs/tui/zellij
     ../../home/programs/tui/nix-utils
     ../../home/programs/tui/nixy
     ../../home/programs/group/dev.nix
