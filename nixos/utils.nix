@@ -107,6 +107,7 @@ in {
       btop
       unrar
       p7zip
+      ffmpeg
     ];
   };
 
