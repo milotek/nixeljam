@@ -15,7 +15,6 @@
     ../../server-modules/ssh.nix
     ../../server-modules/fail2ban.nix
     ../../server-modules/caddy.nix
-    ../../server-modules/minecraft-proxy.nix
 
     ./disko.nix
     ./hardware-configuration.nix

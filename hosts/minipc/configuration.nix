@@ -25,8 +25,6 @@
     ../../server-modules/hermes.nix
     ../../server-modules/glance
     ../../server-modules/zellij-web.nix
-    ../../server-modules/minecraft.nix
-    ../../server-modules/minecraft-power.nix
 
     ./hardware-configuration.nix
     ./variables.nix
