@@ -11,7 +11,7 @@
 
   # Display names only; anything unlisted falls back to its ollama tag.
   ollamaModelNames = {
-    "qwen3.6:35b" = "Qwen3.6 35B-A3B (MoE)";
+    "gemma3:4b" = "Gemma 3 4B";
   };
 
   ollamaProvider = lib.optionalAttrs (ollamaModels != []) {
