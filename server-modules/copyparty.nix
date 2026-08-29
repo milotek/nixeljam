@@ -1,6 +1,8 @@
 # copyparty — browser-accessible file server with upload support.
 # Reachable over the tailnet only (firewall trusts tailscale0); Caddy on the
-# VPS fronts it publicly at https://files.<domain>.
+# VPS fronts it publicly at https://files.<domain>. The VPS's tailnet address
+# must stay listed in --xff-src: without it copyparty distrusts Caddy's
+# X-Forwarded-For, bans it, and 403s every public request.
 # Login passwords live in sops: `sops hosts/vps/secrets/secrets.yaml`
 #   copyparty-password        -> milotek (rwmd, full access)
 #   copyparty-guest-password  -> guest   (r, read-only)
@@ -22,6 +24,7 @@
       -i 0.0.0.0 \
       -p 3923 \
       --rproxy 1 \
+      --xff-src 100.117.236.50/32 \
       --daw \
       -a milotek:"$pw" \
       -a guest:"$guest_pw" \
