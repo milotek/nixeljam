@@ -7,12 +7,6 @@
   colors = config.lib.stylix.colors;
   scripts = import ../waybar/scripts.nix {inherit pkgs config;};
 
-  # "waybar" (default) or "caelestia". The two shells own the same handful of
-  # keys - launcher, notification centre, session menu, brightness and volume -
-  # so exactly one of them gets to bind each.
-  desktopShell = config.var.desktopShell or "waybar";
-  waybarShell = desktopShell == "waybar";
-
   mkMenu = menu: let
     configFile = pkgs.writeText "config.yaml" (
       lib.generators.toYAML {} {
@@ -126,7 +120,7 @@ in {
         ", Print, exec, ${pkgs.hyprshot}/bin/hyprshot -m region" # Capture region
         "$shiftMod, Print, exec, ${pkgs.hyprshot}/bin/hyprshot -m output" # Capture screen
       ]
-      ++ (lib.optionals waybarShell [
+      ++ [
         "$mod, SPACE, exec, ${pkgs.tofi}/bin/tofi-drun" # Launcher
         "$mod, N, exec, ${pkgs.swaynotificationcenter}/bin/swaync-client -t" # Notification center
 
@@ -156,7 +150,7 @@ in {
             }
           ])
         )
-      ])
+      ]
       ++ (builtins.concatLists (
         builtins.genList (
           i: let
@@ -183,8 +177,7 @@ in {
         ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
         ", XF86AudioStop, exec, ${pkgs.playerctl}/bin/playerctl stop"
       ]
-      # These wrap the waybar OSD, which only exists when waybar does.
-      ++ (lib.optionals waybarShell [
+      ++ [
         # Brightness
         ", XF86MonBrightnessUp, exec, ${scripts.bright-up}/bin/bright-up"
         ", XF86MonBrightnessDown, exec, ${scripts.bright-down}/bin/bright-down"
@@ -194,6 +187,6 @@ in {
         ", XF86AudioRaiseVolume, exec, ${scripts.vol-up}/bin/vol-up"
         ", XF86AudioLowerVolume, exec, ${scripts.vol-down}/bin/vol-down"
         ", XF86AudioMicMute, exec, ${scripts.mic-mute}/bin/mic-mute"
-      ]);
+      ];
   };
 }

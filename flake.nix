@@ -64,17 +64,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Caelestia: opt-in Quickshell desktop shell (see home/system/caelestia).
-    # Follows nixpkgs-unstable, not our 26.05 pin: upstream targets unstable and
-    # its Quickshell dependency moves faster than a stable release does.
-    caelestia-shell = {
-      url = "github:caelestia-dots/shell";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    caelestia-cli = {
-      url = "github:caelestia-dots/cli";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
