@@ -27,6 +27,12 @@ in {
       reverse_proxy ${minipc}:8123
     '';
 
+    # Glance dashboard. No authentication in front of it — see
+    # server-modules/glance/default.nix.
+    virtualHosts."dash.${config.var.domain}".extraConfig = ''
+      reverse_proxy ${minipc}:5678
+    '';
+
     # minipc's terminal sessions in a browser. Nested under the machine name
     # because this is the one service that is genuinely per-host; the singletons
     # above stay flat so they can move machines without breaking their URL.
