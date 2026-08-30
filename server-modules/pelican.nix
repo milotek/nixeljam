@@ -16,7 +16,14 @@
 #      daemon port 8080, sftp port 2022
 #   3. paste the generated config into /etc/pelican/config.yml, then
 #      systemctl restart pelican-wings
-#   4. only then point appUrl at game.<domain> and add the vhost on the VPS
+#   4. keep the node's FQDN on the tailnet address with SSL off — the panel is
+#      served over plain http, so a wss console would be the only thing on TLS
+#
+# NOT PUBLIC, deliberately. A panel admin can define a server with any Docker
+# image and startup command, and wings runs it as root on the Docker socket —
+# so the panel is a root shell on this host behind one web login. It is reached
+# over the tailnet only; there is no vhost for it on the VPS. Game traffic
+# still reaches players, which the VPS relays at the packet level.
 #
 # Game ports are published by Docker, which installs its own DNAT rules ahead of
 # the NixOS firewall — a published port is reachable from the LAN whether or not
@@ -33,9 +40,11 @@
   stateDir = "/var/lib/pelican";
 
   # The panel redirects everything to APP_URL, so it must match the address you
-  # actually browse to. Caddy on the VPS fronts this hostname and forwards to
-  # panelPort across the tailnet.
-  appUrl = "https://game.${config.var.domain}";
+  # actually browse to — which is this host over the tailnet, from a device on
+  # it. MagicDNS is not used here: wings resolves this too, and it must keep
+  # working when the panel is what tells it its own name.
+  tailnetAddress = "100.85.180.11"; # minipc's tailnet address
+  appUrl = "http://${tailnetAddress}:${toString panelPort}";
 
   wings = pkgs.stdenvNoCC.mkDerivation rec {
     pname = "pelican-wings";
@@ -109,10 +118,10 @@ in {
       APP_ENV = "production";
       APP_DEBUG = "false";
       XDG_DATA_HOME = "/pelican-data";
-      # Caddy on the VPS terminates TLS and forwards over the tailnet, so the
-      # panel must trust that hop to build correct absolute URLs.
-      BEHIND_PROXY = "true";
-      TRUSTED_PROXIES = "100.64.0.0/10";
+      # Nothing fronts the panel now, so X-Forwarded-* arrives only from the
+      # client itself. Trusting it here would let any tailnet peer choose the
+      # scheme and host Laravel builds its URLs from.
+      BEHIND_PROXY = "false";
     };
     extraOptions = ["--add-host=host.docker.internal:host-gateway"];
   };
