@@ -33,6 +33,19 @@ in {
       reverse_proxy ${minipc}:5678
     '';
 
+    # Pelican game-server panel. Gated by its own admin login.
+    virtualHosts."game.${config.var.domain}".extraConfig = ''
+      reverse_proxy ${minipc}:8085
+    '';
+
+    # Pelican's wings daemon. Needs its own vhost rather than a path on
+    # game.<domain>: the browser opens the server console straight to wings, so
+    # from an https panel that websocket must also be wss or it is blocked as
+    # mixed content. Caddy terminates TLS here and wings stays plain http.
+    virtualHosts."node.${config.var.domain}".extraConfig = ''
+      reverse_proxy ${minipc}:8080
+    '';
+
     # minipc's terminal sessions in a browser. Nested under the machine name
     # because this is the one service that is genuinely per-host; the singletons
     # above stay flat so they can move machines without breaking their URL.
