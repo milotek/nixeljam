@@ -140,6 +140,12 @@
         bindkey "^[OA" history-beginning-search-backward-end
         bindkey "^[OB" history-beginning-search-forward-end
 
+        # word movement on ctrl/alt + arrows
+        bindkey "^[[1;5C" forward-word
+        bindkey "^[[1;5D" backward-word
+        bindkey "^[[1;3C" forward-word
+        bindkey "^[[1;3D" backward-word
+
         # General completion behavior
         zstyle ':completion:*' completer _extensions _complete _approximate
 
