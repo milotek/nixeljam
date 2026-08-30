@@ -21,13 +21,7 @@ in {
             <link rel="preload" as="image" href="${files}/Pictures/orange_cat_prentending_to_be_dead.webp" />
             <style>
               body {
-                background: linear-gradient(
-                  180deg,
-                  #4b3e4b 0%,
-                  #292532 26%,
-                  #171724 52%,
-                  #11111b 100%
-                );
+                background: linear-gradient(#4b3e4b, #11111b);
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -41,9 +35,7 @@ in {
                 height: 420px;
                 transform-origin: bottom;
                 cursor: pointer;
-                /* drop-shadow, not box-shadow: it follows the gif's alpha, so
-                   the glow hugs the character instead of its bounding box. */
-                filter: drop-shadow(0 0 40px rgba(255, 189, 189, 0.35));
+                filter: drop-shadow(0 0 40px #ffbdbd);
               }
               audio {
                 max-width: 90vw;
