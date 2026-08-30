@@ -1,5 +1,5 @@
 # Oracle Cloud aarch64 VPS — headless, deploy via nixos-anywhere.
-# nixos-anywhere --flake .#vps --build-on remote -i ~/.ssh/github root@<ip>
+# nixos-anywhere --flake .#vps --build-on remote -i ~/.ssh/id_ed25519 root@<ip>
 {
   config,
   lib,
