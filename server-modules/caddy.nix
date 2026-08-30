@@ -9,6 +9,14 @@ in {
     enable = true;
     email = config.var.git.email; # Let's Encrypt ACME account / expiry notices
 
+    # The apex: a one-page static site (server-modules/site) on the minipc.
+    virtualHosts."${config.var.domain}" = {
+      serverAliases = ["www.${config.var.domain}"];
+      extraConfig = ''
+        reverse_proxy ${minipc}:8090
+      '';
+    };
+
     virtualHosts."files.${config.var.domain}".extraConfig = ''
       reverse_proxy ${minipc}:3923
     '';
