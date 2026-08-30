@@ -13,6 +13,7 @@
     ../../home/programs/gui/proton/auto-start-vpn.nix
     ../../home/programs/gui/spotify
     ../../home/programs/gui/thunar
+    ../../home/programs/gui/obsidian
     ../../home/programs/gui/blender
     ../../home/programs/gui/godot
     ../../home/programs/gui/roblox

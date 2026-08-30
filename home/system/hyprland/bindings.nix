@@ -6,6 +6,7 @@
 }: let
   colors = config.lib.stylix.colors;
   scripts = import ../waybar/scripts.nix {inherit pkgs config;};
+  obsidian = import ../../programs/gui/obsidian/package.nix {inherit pkgs lib config;};
 
   mkMenu = menu: let
     configFile = pkgs.writeText "config.yaml" (
@@ -64,7 +65,7 @@ in {
             {
               key = "o";
               desc = "Obsidian";
-              cmd = "${pkgs.obsidian}/bin/obsidian";
+              cmd = "${obsidian}/bin/obsidian";
             }
             {
               key = "s";
