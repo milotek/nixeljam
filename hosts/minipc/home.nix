@@ -18,6 +18,7 @@
     ../../home/programs/tui/shell
     ../../home/programs/tui/git
     ../../home/programs/tui/git/lazygit.nix
+    ../../home/programs/tui/git/signing.nix
     ../../home/programs/tui/nixy
     ../../home/programs/tui/nix-utils
     ../../pkgs/tidyname

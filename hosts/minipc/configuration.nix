@@ -38,6 +38,19 @@
   sops = {
     defaultSopsFile = ./secrets/system-secrets.yaml;
     age.sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+
+    secrets = {
+      key = {
+        path = "/home/${config.var.username}/.ssh/id_ed25519";
+        owner = config.var.username;
+        mode = "0400";
+      };
+      key-pub = {
+        path = "/home/${config.var.username}/.ssh/id_ed25519.pub";
+        owner = config.var.username;
+        mode = "0444";
+      };
+    };
   };
 
   home-manager.users."${config.var.username}" = import ./home.nix;
