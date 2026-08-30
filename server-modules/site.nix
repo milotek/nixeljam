@@ -35,7 +35,7 @@ in {
                 height: 420px;
                 transform-origin: bottom;
                 cursor: pointer;
-                filter: drop-shadow(0 0 40px #ffbdbd);
+                filter: drop-shadow(0 0 70px #ffbdbd8c);
               }
               audio {
                 max-width: 90vw;
