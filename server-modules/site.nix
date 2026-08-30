@@ -21,18 +21,13 @@ in {
             <link rel="preload" as="image" href="${files}/Pictures/orange_cat_prentending_to_be_dead.webp" />
             <style>
               body {
-                /* The pink wash needs an opaque layer under it; on its own it
-                   composites against the white canvas and blows out to near
-                   white at the top. */
-                background:
-                  linear-gradient(
-                    180deg,
-                    rgba(255, 189, 189, 0.2) 0%,
-                    rgba(255, 189, 189, 0.06) 26%,
-                    rgba(255, 189, 189, 0) 52%
-                  ),
-                  linear-gradient(180deg, #1e1e2e 0%, #11111b 100%);
-                background-attachment: fixed;
+                background: linear-gradient(
+                  180deg,
+                  #4b3e4b 0%,
+                  #292532 26%,
+                  #171724 52%,
+                  #11111b 100%
+                );
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -46,6 +41,8 @@ in {
                 height: 420px;
                 transform-origin: bottom;
                 cursor: pointer;
+                /* drop-shadow, not box-shadow: it follows the gif's alpha, so
+                   the glow hugs the character instead of its bounding box. */
                 filter: drop-shadow(0 0 40px rgba(255, 189, 189, 0.35));
               }
               audio {
