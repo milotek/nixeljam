@@ -31,10 +31,12 @@ in {
   # provided by home/system/hyprland (v6 moved them there). Only the thunar
   # side-pane bookmarks are thunar-specific.
   gtk.gtk3.bookmarks = [
+    "file:///home/${user}/Desktop Desktop"
+    "file:///home/${user}/Documents Documents"
     "file:///home/${user}/Downloads Downloads"
+    "file:///home/${user}/Videos Movies"
+    "file:///home/${user}/Music Music"
     "file:///home/${user}/Pictures Pictures"
-    "file:///home/${user}/.config/nixos NixOS"
-    "file:///home/${user}/dev Development"
   ];
 
   home.file.".config/xarchiver/xarchiverrc".text = ''
