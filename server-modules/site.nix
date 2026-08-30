@@ -39,6 +39,11 @@ in {
               audio {
                 max-width: 90vw;
               }
+              #track {
+                color: #cdd6f4;
+                font: 0.9rem system-ui, sans-serif;
+                text-align: center;
+              }
               #flash {
                 position: fixed;
                 inset: 0;
@@ -50,6 +55,7 @@ in {
           </head>
           <body>
             <img id="gif" src="${files}/Pictures/Animated/wawawa.gif" alt="wawawa" />
+            <div id="track"></div>
             <audio id="song" controls preload="metadata" crossorigin="anonymous"></audio>
             <div id="flash"></div>
             <audio id="shot" src="${files}/Music/Sounds/awm_fire.ogg" preload="auto"></audio>
@@ -63,7 +69,10 @@ in {
 
               const pick = () =>
                 songs.then((list) => {
-                  song.src = singles + list[Math.floor(Math.random() * list.length)].href;
+                  const name = list[Math.floor(Math.random() * list.length)].href;
+                  song.src = singles + name;
+                  track.textContent =
+                    "milo@${config.var.domain} - " + decodeURIComponent(name);
                 });
 
               pick();
