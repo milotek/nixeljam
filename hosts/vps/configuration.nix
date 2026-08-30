@@ -15,6 +15,7 @@
     ../../server-modules/ssh.nix
     ../../server-modules/fail2ban.nix
     ../../server-modules/caddy.nix
+    ../../server-modules/game-relay.nix
 
     ./disko.nix
     ./hardware-configuration.nix
