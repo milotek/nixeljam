@@ -9,7 +9,7 @@ in {
     enable = true;
     email = config.var.git.email; # Let's Encrypt ACME account / expiry notices
 
-    # The apex: a one-page static site (server-modules/site) on the minipc.
+    # The apex: a one-page static site (server-modules/site.nix) on the minipc.
     virtualHosts."${config.var.domain}" = {
       serverAliases = ["www.${config.var.domain}"];
       extraConfig = ''

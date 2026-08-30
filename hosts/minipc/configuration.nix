@@ -26,7 +26,7 @@
     ../../server-modules/glance
     ../../server-modules/zellij-web.nix
     ../../server-modules/pelican.nix
-    ../../server-modules/site
+    ../../server-modules/site.nix
 
     ./hardware-configuration.nix
     ./variables.nix

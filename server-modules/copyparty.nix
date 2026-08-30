@@ -3,9 +3,12 @@
 # VPS fronts it publicly at https://files.<domain>. The VPS's tailnet address
 # must stay listed in --xff-src: without it copyparty distrusts Caddy's
 # X-Forwarded-For, bans it, and 403s every public request.
+# The whole share is anonymous-read: anyone who reaches files.<domain> can browse
+# and download it without logging in. The apex site (server-modules/site.nix)
+# hotlinks its gif from here, so anon read must stay on or tek.rip breaks.
 # Login passwords live in sops: `sops hosts/vps/secrets/secrets.yaml`
 #   copyparty-password        -> milotek (rwmd, full access)
-#   copyparty-guest-password  -> guest   (r, read-only)
+#   copyparty-guest-password  -> guest   (no grant beyond anon read; removable)
 #
 # Uploads are renamed to lowercase snake_case on arrival by the tidyname xbu
 # hook, so the share never accumulates names with spaces or punctuation again.
@@ -29,7 +32,7 @@
       -a milotek:"$pw" \
       -a guest:"$guest_pw" \
       --xbu j,c1,,${tidyname}/bin/tidyname,hook \
-      -v /var/lib/copyparty::rwmd,milotek:r,guest
+      -v /var/lib/copyparty::r:rwmd,milotek
   '';
 in {
   users.users.copyparty = {
