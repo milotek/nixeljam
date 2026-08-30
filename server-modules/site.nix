@@ -23,15 +23,20 @@ in {
               :root {
                 --base: #1e1e2e;
                 --crust: #11111b;
-                --sapphire: #74c7ec;
-                --mauve: #cba6f7;
-                --pink: #f5c2e7;
+                --glow: #ffbdbd;
               }
               body {
+                /* The pink wash needs an opaque layer under it; on its own it
+                   composites against the white canvas and blows out to near
+                   white at the top. */
                 background:
-                  radial-gradient(120% 70% at 50% -10%, rgba(203, 166, 247, 0.3), transparent 62%),
-                  radial-gradient(85% 50% at 50% 0%, rgba(137, 180, 250, 0.22), transparent 68%),
-                  linear-gradient(180deg, #262639 0%, var(--base) 45%, var(--crust) 100%);
+                  linear-gradient(
+                    180deg,
+                    rgba(255, 189, 189, 0.16) 0%,
+                    rgba(255, 189, 189, 0.05) 26%,
+                    rgba(255, 189, 189, 0) 52%
+                  ),
+                  linear-gradient(180deg, var(--base) 0%, var(--crust) 100%);
                 background-attachment: fixed;
                 display: flex;
                 flex-direction: column;
@@ -41,54 +46,43 @@ in {
                 margin: 0;
                 min-height: 100vh;
               }
-              /* Fixed so these stay out of the flex flow rather than becoming
-                 stray flex items. Two layers read as neon: a hairline filament,
-                 and a blurred bloom for the light it throws onto the page. */
-              body::before,
-              body::after {
+              /* Fixed so the bar stays out of the flex flow rather than
+                 becoming a stray flex item. Its own box-shadow is the glow, so
+                 the light travels with it instead of sitting in one place. */
+              body::before {
                 content: "";
                 position: fixed;
-                inset: 0 0 auto 0;
-                pointer-events: none;
-              }
-              body::before {
+                top: 0;
+                left: 0;
+                width: 40%;
                 height: 2px;
                 background: linear-gradient(
                   90deg,
-                  transparent 0%,
-                  var(--sapphire) 20%,
-                  var(--mauve) 40%,
-                  var(--pink) 50%,
-                  var(--mauve) 60%,
-                  var(--sapphire) 80%,
-                  transparent 100%
+                  transparent,
+                  var(--glow),
+                  transparent
                 );
-                background-size: 200% 100%;
-                animation: drift 14s linear infinite;
                 box-shadow:
-                  0 0 8px rgba(203, 166, 247, 0.9),
-                  0 0 26px rgba(137, 180, 250, 0.55);
+                  0 0 10px rgba(255, 189, 189, 0.95),
+                  0 0 30px rgba(255, 189, 189, 0.45);
+                animation: sweep 7s ease-in-out infinite alternate;
+                pointer-events: none;
                 z-index: 2;
               }
-              body::after {
-                height: 200px;
-                background: radial-gradient(
-                  60% 100% at 50% 0%,
-                  rgba(203, 166, 247, 0.35),
-                  rgba(137, 180, 250, 0.12) 45%,
-                  transparent 75%
-                );
-                filter: blur(22px);
-                z-index: 1;
-              }
-              @keyframes drift {
+              /* Offsets are a share of the bar's own width, so -100% parks it
+                 just off the left edge and 250% just off the right. */
+              @keyframes sweep {
+                from {
+                  transform: translateX(-100%);
+                }
                 to {
-                  background-position: 200% 0;
+                  transform: translateX(250%);
                 }
               }
               @media (prefers-reduced-motion: reduce) {
                 body::before {
                   animation: none;
+                  transform: translateX(75%);
                 }
               }
               img {
@@ -98,7 +92,7 @@ in {
                 height: 420px;
                 transform-origin: bottom;
                 cursor: pointer;
-                filter: drop-shadow(0 0 40px rgba(137, 180, 250, 0.25));
+                filter: drop-shadow(0 0 40px rgba(255, 189, 189, 0.35));
               }
               audio {
                 position: relative;
@@ -112,7 +106,7 @@ in {
                 font: 0.9rem system-ui, sans-serif;
                 text-align: center;
               }
-              /* Above the glow layers, otherwise the shot flash is dimmed by them. */
+              /* Above the bar, otherwise the shot flash is dimmed by its glow. */
               #flash {
                 position: fixed;
                 inset: 0;
