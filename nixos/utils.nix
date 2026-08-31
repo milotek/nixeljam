@@ -54,7 +54,7 @@ in {
     xserver = {
       enable = true;
       xkb.layout = keyboardLayout;
-      xkb.options = "";
+      xkb.options = "ctrl:nocaps";
     };
     gnome.gnome-keyring.enable = true;
     psd = {
