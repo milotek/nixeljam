@@ -98,11 +98,16 @@ in {
 
         # Windows
         "$mod,Q, killactive," # Close window
-        "$mod,W, killactive," # Close window
-        "CTRL,Q, killactive," # Close window
         "$mod,F, fullscreen" # Toggle Fullscreen
         "$shiftMod,F, togglefloating," # Toggle Floating
         "$shiftMod, SPACE, exec, ${scripts.focus-toggle}/bin/focus-toggle" # Toggle focus mode
+
+        # App shortcuts (caps sends Super; forward as Ctrl to the focused app)
+        "$mod,C, sendshortcut, CTRL, C" # Copy
+        "$mod,V, sendshortcut, CTRL, V" # Paste
+        "$mod,W, sendshortcut, CTRL, W" # Close tab
+        "$shiftMod,C, sendshortcut, CTRL SHIFT, C" # Interrupt in the terminal
+        "$shiftMod,V, sendshortcut, CTRL SHIFT, V" # Literal Ctrl+V in the terminal
 
         # Focus Windows
         "$mod,H, movefocus, l" # Move focus left
