@@ -17,7 +17,6 @@
     ../../nixos/utils.nix
     ../../nixos/hyprland.nix
     ../../nixos/ydotool.nix
-    ../../nixos/wooting.nix
     ../../nixos/usbguard.nix
     ../../nixos/gaming.nix
     ../../nixos/docker.nix

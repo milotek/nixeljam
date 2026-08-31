@@ -156,6 +156,7 @@ in {
       input = {
         kb_layout = keyboardLayout;
 
+        kb_options = "ctrl:nocaps";
         follow_mouse = 1;
         sensitivity = 0.5;
         repeat_delay = 300;
