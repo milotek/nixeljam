@@ -107,15 +107,6 @@ in {
         "$mod,V, sendshortcut, CTRL, V" # Paste
         "$mod,W, sendshortcut, CTRL, W" # Close tab
 
-        # Text navigation (caps sends Super; alt is Option)
-        "$mod,LEFT, sendshortcut, , Home" # Start of line
-        "$mod,RIGHT, sendshortcut, , End" # End of line
-        "$mod,UP, sendshortcut, CTRL, Home" # Start of document
-        "$mod,DOWN, sendshortcut, CTRL, End" # End of document
-        "ALT,LEFT, sendshortcut, CTRL, LEFT" # Word left
-        "ALT,RIGHT, sendshortcut, CTRL, RIGHT" # Word right
-        "ALT,BACKSPACE, sendshortcut, CTRL, BACKSPACE" # Delete word
-
         # Focus Windows
         "$mod,H, movefocus, l" # Move focus left
         "$mod,J, movefocus, d" # Move focus Down

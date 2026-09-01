@@ -146,8 +146,6 @@
         bindkey "^[[1;3C" forward-word
         bindkey "^[[1;3D" backward-word
         bindkey "^H" backward-kill-word
-        bindkey "^[[H" beginning-of-line
-        bindkey "^[[F" end-of-line
 
         # General completion behavior
         zstyle ':completion:*' completer _extensions _complete _approximate
