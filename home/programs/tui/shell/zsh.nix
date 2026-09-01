@@ -112,6 +112,10 @@
 
         bindkey -e
 
+        # Ctrl+Q closes the window at the compositor, so XON can never reach the
+        # terminal to undo an accidental Ctrl+S. Drop flow control instead.
+        stty -ixon
+
         # Open command in VIM
         autoload -Uz edit-command-line
         zle -N edit-command-line
@@ -146,6 +150,10 @@
         bindkey "^[[1;3C" forward-word
         bindkey "^[[1;3D" backward-word
         bindkey "^H" backward-kill-word
+
+        # Ghostty sends ^U for ctrl+backspace; killing back to the start of the line
+        # is closer to what that chord means elsewhere than zsh's kill-whole-line.
+        bindkey "^U" backward-kill-line
 
         # General completion behavior
         zstyle ':completion:*' completer _extensions _complete _approximate

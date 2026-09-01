@@ -98,14 +98,10 @@ in {
 
         # Windows
         "$mod,Q, killactive," # Close window
+        "CTRL,Q, killactive," # Close window
         "$mod,F, fullscreen" # Toggle Fullscreen
         "$shiftMod,F, togglefloating," # Toggle Floating
         "$shiftMod, SPACE, exec, ${scripts.focus-toggle}/bin/focus-toggle" # Toggle focus mode
-
-        # App shortcuts (caps sends Super; forward as Ctrl to the focused app)
-        "$mod,C, sendshortcut, CTRL, Insert" # Copy (Ctrl+Insert, so a terminal never reads it as SIGINT)
-        "$mod,V, sendshortcut, CTRL, V" # Paste
-        "$mod,W, sendshortcut, CTRL, W" # Close tab
 
         # Focus Windows
         "$mod,H, movefocus, l" # Move focus left
@@ -126,7 +122,7 @@ in {
         "$shiftMod, Print, exec, ${pkgs.hyprshot}/bin/hyprshot -m output" # Capture screen
       ]
       ++ [
-        "$mod, SPACE, exec, ${pkgs.tofi}/bin/tofi-drun" # Launcher
+        "ALT, SPACE, exec, ${pkgs.tofi}/bin/tofi-drun" # Launcher
         "$mod, N, exec, ${pkgs.swaynotificationcenter}/bin/swaync-client -t" # Notification center
 
         # Power
