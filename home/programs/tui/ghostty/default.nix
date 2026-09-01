@@ -35,6 +35,7 @@ in {
       keybind = [
         "shift+ctrl+tab=new_tab"
         "ctrl+v=paste_from_clipboard"
+        "ctrl+insert=copy_to_clipboard"
       ];
     };
   };
