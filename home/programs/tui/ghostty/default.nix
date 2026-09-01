@@ -34,6 +34,7 @@ in {
       custom-shader-animation = "always";
       keybind = [
         "shift+ctrl+tab=new_tab"
+        "ctrl+v=paste_from_clipboard"
       ];
     };
   };
