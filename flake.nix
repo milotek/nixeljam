@@ -40,10 +40,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    notashelf-tuigreet = {
-      url = "github:NotAShelf/tuigreet";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     helium-browser = {
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
