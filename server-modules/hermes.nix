@@ -102,4 +102,9 @@ in {
     # unreachable. Matches the openclaw unit.
     restartSec = 30;
   };
+
+  # nixos/systemd-boot.nix sets DefaultTimeoutStopSec to 10s host-wide, which is
+  # below the 30s of headroom the gateway wants for its shutdown drain, so every
+  # restart SIGKILLs it mid-drain and lands in the journal as a phantom kill.
+  systemd.services.hermes-agent.serviceConfig.TimeoutStopSec = 30;
 }
