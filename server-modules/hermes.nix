@@ -107,4 +107,9 @@ in {
   # below the 30s of headroom the gateway wants for its shutdown drain, so every
   # restart SIGKILLs it mid-drain and lands in the journal as a phantom kill.
   systemd.services.hermes-agent.serviceConfig.TimeoutStopSec = 30;
+
+  # addToSystemPackages exports HERMES_HOME host-wide, but it points at state
+  # that is 2770 hermes:hermes, so the CLI is only usable by group members.
+  # Without this the `hermes` on PATH dies reading .env before it can parse argv.
+  users.users.${config.var.username}.extraGroups = ["hermes"];
 }
