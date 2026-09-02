@@ -32,6 +32,21 @@ Comments that explain what the code does are redundant if the code is reasonably
 LLMs have a bad habit of commenting like a tutorial and leaving their thought process in the code.
 Do not do that.
 Only comment in nonstandard scenarios, where the code is not immediately self explanatory or obvious.
+Do not add banner or section-header comments to a file that does not already use them.
+
+## Scope
+
+Do not add features, refactor, or introduce abstractions beyond what the task requires.
+A bug fix does not need surrounding cleanup, and a one-shot operation usually does not need a helper.
+Do not design for hypothetical future requirements; do the simplest thing that works.
+Do not add error handling, fallbacks, or validation for cases that cannot occur.
+Trust internal code and framework guarantees, and validate at real boundaries only (user input, external APIs).
+
+## Local Precedent
+
+Before writing a new file, read two or three neighbouring files and follow their structure, naming and idiom, including project-specific helpers, wrappers and option namespaces.
+Prefer the project's existing way of doing something over the generically standard way, even when the generic way is more common in the wild.
+If there is genuinely no local precedent, say so, then pick the mainstream idiom for that ecosystem.
 
 ## Milo's Opinions
 

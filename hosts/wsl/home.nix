@@ -9,6 +9,7 @@
     ../../home/programs/tui/git
     ../../home/programs/tui/git/lazygit.nix
     ../../home/programs/tui/nix-utils
+    ../../home/programs/tui/ai
     ../../home/programs/tui/nixy
     ../../home/programs/group/dev.nix
 

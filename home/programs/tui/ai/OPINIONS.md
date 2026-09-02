@@ -34,6 +34,7 @@ _No entries yet._
 
 - **Delete the duplication before abstracting over it.** An abstraction that synchronises several copies of a fact is worth less than a change that leaves one copy, and it is easy to design the former without noticing the latter was available.
 - **Abstractions describe what is wanted, not which backend provides it.** Naming the intent rather than the implementation means swapping the implementation later touches one module instead of every caller.
+- **Use the solution that already exists; write a bespoke one only when nothing available fits.** An icon provider, a library or an upstream default arrives tested, documented and already covering cases not yet thought of, where the hand-rolled equivalent (own icon SVGs, own helper) has to earn each of those one bug at a time. What is saved is not only the writing, it is every later fix and addition that someone else now makes on your behalf.
 
 ## Infrastructure and hosting
 

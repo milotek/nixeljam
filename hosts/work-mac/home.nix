@@ -7,6 +7,7 @@
     # ── Darwin-safe modules reused from the repo (shared with your Linux hosts) ──
     ../../home/programs/tui/git # git config + aliases (uses config.var.git)
     ../../home/programs/tui/nix-utils # nix-index + comma (`, <cmd>`)
+    ../../home/programs/tui/ai # AGENTS.md + shared skills, fanned out to every harness
     ../../home/programs/group/dev.nix # go, node, python, uv, claude-code, jq, ...
     inputs.nvf-config.homeManagerModules.default # your neovim (nvf)
 

@@ -21,6 +21,7 @@
     ../../home/programs/tui/git/signing.nix
     ../../home/programs/tui/nixy
     ../../home/programs/tui/nix-utils
+    ../../home/programs/tui/ai
     ../../pkgs/tidyname
     ../../home/programs/tui/pkgs.nix
 
