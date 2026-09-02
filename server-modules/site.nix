@@ -31,11 +31,10 @@ in {
                 min-height: 100vh;
               }
               img {
-                width: 420px;
-                height: 420px;
+                width: 500px;
+                height: 500px;
                 transform-origin: bottom;
                 cursor: pointer;
-                filter: drop-shadow(0 0 40px #ffbdbd);
               }
               audio {
                 max-width: 90vw;
@@ -55,7 +54,7 @@ in {
             </style>
           </head>
           <body>
-            <img id="gif" src="${files}/Pictures/Animated/wawawa.gif" alt="wawawa" />
+            <img id="gif" src="${files}/Pictures/Animated/wawawa_glow.webp" alt="wawawa" />
             <div id="track"></div>
             <audio id="song" controls preload="metadata" crossorigin="anonymous"></audio>
             <div id="flash"></div>
