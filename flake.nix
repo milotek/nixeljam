@@ -96,6 +96,10 @@
     blog.url = "github:anotherhadi/blog";
     awesome-wallpapers.url = "github:anotherhadi/awesome-wallpapers";
     iknowyou.url = "github:anotherhadi/iknowyou";
+    habits = {
+      url = "github:milotek/habits";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {

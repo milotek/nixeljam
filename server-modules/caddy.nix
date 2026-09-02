@@ -41,6 +41,13 @@ in {
       reverse_proxy ${minipc}:5678
     '';
 
+    # Habit tracker. Deliberately unauthenticated: the wall display has to
+    # render without a login, so POST /tick is world-callable too. The only
+    # thing behind it is a habit log.
+    virtualHosts."habits.${config.var.domain}".extraConfig = ''
+      reverse_proxy ${minipc}:8095
+    '';
+
     # The Pelican panel and its wings daemon are deliberately absent: panel
     # admin is arbitrary root code execution on the minipc (wings runs as root
     # on the Docker socket), so both stay tailnet-only. Game traffic itself

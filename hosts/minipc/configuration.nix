@@ -27,6 +27,7 @@
     ../../server-modules/zellij-web.nix
     ../../server-modules/pelican.nix
     ../../server-modules/site.nix
+    ../../server-modules/habits.nix
 
     ./hardware-configuration.nix
     ./variables.nix

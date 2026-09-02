@@ -508,6 +508,26 @@
         "type": "github"
       }
     },
+    "habits": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788341544,
+        "narHash": "sha256-cNSapv1aZTyDLpvvgatNxJ2b5bJ8NVH1qorLDV+c9fc=",
+        "owner": "milotek",
+        "repo": "habits",
+        "rev": "13b7e22b9ff5524e891e66b365a474e3156f976e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "milotek",
+        "repo": "habits",
+        "type": "github"
+      }
+    },
     "helium-browser": {
       "inputs": {
         "nixpkgs": [
@@ -1356,6 +1376,7 @@
         "default-creds": "default-creds",
         "disko": "disko",
         "git-hooks": "git-hooks",
+        "habits": "habits",
         "helium-browser": "helium-browser",
         "hermes-agent": "hermes-agent",
         "hermes-claude-auth": "hermes-claude-auth",
