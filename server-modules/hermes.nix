@@ -24,6 +24,9 @@
 # Secrets (sops hosts/minipc/secrets/system-secrets.yaml):
 #   hermes-env   env file, one KEY=value per line. Do not set ANTHROPIC_API_KEY
 #                when using Claude Code OAuth, because it can override OAuth.
+#                Carries TELEGRAM_BOT_TOKEN, which is what switches the Telegram
+#                platform on: the plugin registers on the token being present,
+#                so without it the gateway starts deaf.
 {
   config,
   inputs,
@@ -94,6 +97,10 @@ in {
     };
 
     environmentFiles = [config.sops.secrets.hermes-env.path];
+
+    # Anyone else who finds the bot gets nothing. A Telegram user ID is not a
+    # credential, so it stays in the open rather than costing a sops entry.
+    environment.TELEGRAM_ALLOWED_USERS = "5702116773";
 
     # Puts the `hermes` CLI on PATH so the agent is reachable over SSH.
     addToSystemPackages = true;
