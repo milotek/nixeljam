@@ -75,9 +75,9 @@
     };
 
     polarity = "dark";
-    image = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/anotherhadi/awesome-wallpapers/refs/heads/main/app/static/wallpapers/black-moutains-and-a-city.png";
-      sha256 = "sha256-RTTA3Lf+hnPpo9hwS075kbnIouz12ul2GKO3EIgP6AU=";
-    };
+    image = ./wallpapers/tf2_watchtower.jpg;
+    # The wallpapers are mixed aspect ratios; filling the screen matters more
+    # than keeping their proportions.
+    imageScalingMode = "stretch";
   };
 }
