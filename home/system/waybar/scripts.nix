@@ -2,11 +2,16 @@
   pkgs,
   config,
 }: let
+  # Session-scoped rather than /tmp: these are per-user UI state, and a shared
+  # /tmp name collides between users on the same machine.
+  osdPath = "$XDG_RUNTIME_DIR/waybar-osd";
+  focusModePath = "$XDG_RUNTIME_DIR/hypr-focus-mode";
+
   waybar-osd = pkgs.writeShellApplication {
     name = "waybar-osd";
     runtimeInputs = with pkgs; [procps coreutils];
     text = ''
-      printf '%s' "$1" > /tmp/waybar-osd
+      printf '%s' "$1" > "${osdPath}"
       pkill -x -RTMIN+8 waybar 2>/dev/null || true
     '';
   };
@@ -15,7 +20,7 @@
     name = "waybar-osd-status";
     runtimeInputs = with pkgs; [coreutils];
     text = ''
-      file=/tmp/waybar-osd
+      file="${osdPath}"
       [ -f "$file" ] || exit 1
       mtime=$(stat -c %Y "$file" 2>/dev/null) || exit 1
       age=$(( $(date +%s) - mtime ))
@@ -87,7 +92,7 @@
       ${nerdFontGlyphnames} > "$out"
   '';
 in {
-  inherit waybar-osd waybar-osd-status battery-monitor;
+  inherit waybar-osd waybar-osd-status battery-monitor osdPath focusModePath;
 
   bluetoothScript = pkgs.writeShellScript "waybar-bluetooth" ''
     jq=${pkgs.jq}/bin/jq
@@ -271,14 +276,14 @@ in {
   '';
 
   focus-toggle = pkgs.writeShellScriptBin "focus-toggle" ''
-    if test -f /tmp/hypr-focus-mode; then
-      rm /tmp/hypr-focus-mode
+    if test -f "${focusModePath}"; then
+      rm "${focusModePath}"
       OSD_TEXT="󰈈  Focus Off"
       ${updateOsd}
       ${pkgs.hyprland}/bin/hyprctl reload
       ${pkgs.hyprland}/bin/hyprctl dispatch exec waybar
     else
-      touch /tmp/hypr-focus-mode
+      touch "${focusModePath}"
       OSD_TEXT="󰈈  Focus On"
       ${updateOsd}
       ${pkgs.procps}/bin/pkill waybar || true

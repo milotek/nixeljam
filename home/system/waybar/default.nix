@@ -11,6 +11,8 @@ in {
   ];
 
   _module.args.scripts = scripts;
+  _module.args.osdPath = scripts.osdPath;
+  _module.args.focusModePath = scripts.focusModePath;
   _module.args.networkScript = scripts.networkScript;
   _module.args.bluetoothScript = scripts.bluetoothScript;
   _module.args.volMuteScript = scripts.vol-mute;

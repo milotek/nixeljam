@@ -2,6 +2,7 @@
   config,
   pkgs,
   scripts,
+  focusModePath,
   ...
 }: let
   c = config.lib.stylix.colors;
@@ -76,7 +77,7 @@ in {
               label = "󰈈";
               type = "toggle";
               command = "${scripts.focus-toggle}/bin/focus-toggle";
-              "update-command" = "test -f /tmp/hypr-focus-mode && echo true || echo false";
+              "update-command" = "test -f ${focusModePath} && echo true || echo false";
             }
             {
               label = "󰍭";
