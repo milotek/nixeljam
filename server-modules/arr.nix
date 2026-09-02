@@ -1,5 +1,5 @@
 # *arr is a collection of media management applications.
-# See https://github.com/rasmus-kirk/nixarr
+# See https://github.com/nix-media-server/nixarr
 # Setup guide: https://nixarr.com/wiki/setup/
 {config, ...}: let
   username = config.var.username;
@@ -30,7 +30,7 @@ in {
     };
 
     jellyfin.enable = true;
-    jellyseerr.enable = true;
+    seerr.enable = true;
     prowlarr.enable = true;
     radarr.enable = true;
     sonarr.enable = true;
