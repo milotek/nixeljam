@@ -46,7 +46,7 @@ in {
               HTTP_PORT = 3002;
               ROOT_URL = "https://git.${domain}/";
               DOMAIN = "git.${domain}";
-              LANDING_PAGE = "/anotherhadi";
+              LANDING_PAGE = "/milotek";
             };
             service = {
               REGISTER_MANUAL_CONFIRM = true;
