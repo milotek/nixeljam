@@ -51,20 +51,20 @@
 
     fonts = {
       monospace = {
-        package = pkgs.fira-mono;
-        name = "Fira Mono";
+        package = pkgs.nerd-fonts.meslo-lg;
+        name = "MesloLGS Nerd Font Mono";
       };
       sansSerif = {
-        package = pkgs.source-sans-pro;
-        name = "Source Sans Pro";
+        package = pkgs.source-sans;
+        name = "Source Sans 3";
       };
       serif = {
         package = pkgs.montserrat;
         name = "Montserrat";
       };
       emoji = {
-        package = pkgs.noto-fonts-color-emoji;
-        name = "Noto Color Emoji";
+        package = pkgs.twitter-color-emoji;
+        name = "Twitter Color Emoji";
       };
       sizes = {
         applications = 12;
