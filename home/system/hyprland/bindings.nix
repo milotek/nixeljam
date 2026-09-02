@@ -24,8 +24,21 @@
     );
   in
     pkgs.writeShellScriptBin "menu" ''
+      # Re-pressing the bind should dismiss the open menu, not stack a second one.
+      if ${pkgs.procps}/bin/pkill -x wlr-which-key; then
+        exit 0
+      fi
       exec ${lib.getExe pkgs.wlr-which-key} ${configFile}
     '';
+
+  tofi-drun-toggle = pkgs.writeShellScriptBin "tofi-drun-toggle" ''
+    # tofi-drun is a distinct process name from the plain "tofi" binary used by
+    # the emoji/icon/clipboard pickers, so this can't close those.
+    if ${pkgs.procps}/bin/pkill -x tofi-drun; then
+      exit 0
+    fi
+    exec ${pkgs.tofi}/bin/tofi-drun
+  '';
 in {
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
@@ -122,7 +135,7 @@ in {
         "$shiftMod, Print, exec, ${pkgs.hyprshot}/bin/hyprshot -m output" # Capture screen
       ]
       ++ [
-        "ALT, SPACE, exec, ${pkgs.tofi}/bin/tofi-drun" # Launcher
+        "ALT, SPACE, exec, ${lib.getExe tofi-drun-toggle}" # Launcher
         "$mod, N, exec, ${pkgs.swaynotificationcenter}/bin/swaync-client -t" # Notification center
 
         # Power
