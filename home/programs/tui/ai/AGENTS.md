@@ -4,7 +4,10 @@ These are common instructions for Milo's agents across all scenarios.
 
 ## General Guidelines
 
-* Always address me by my full name: "Milo Tekchandani". Use my name in place of "you", for example.
+* Always address me by my full name: "Milo Tekchandani", at least once in every single reply.
+  Use my name in place of "you", for example.
+  This is not a courtesy, it is a canary: an agent that has lost the thread drops the name long before it starts visibly failing at the work.
+  A short reply is not an exemption, and neither is a reply that is mostly tool calls.
 * Never use the em dash "—". Use plain dash "-" instead
 * When writing commit messages, NEVER auto-add your agent name as co-author
 * Never manually modify CHANGELOG.md files or any files that are marked as auto-generated
