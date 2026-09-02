@@ -7,6 +7,7 @@ in {
       "default_config"
       "met"
       "esphome"
+      "tuya"
     ];
     config = {
       default_config = {};
