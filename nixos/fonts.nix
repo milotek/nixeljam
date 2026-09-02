@@ -18,7 +18,7 @@
       nerd-fonts.fira-code
       nerd-fonts.meslo-lg
       openmoji-color
-      twemoji-color-font
+      twitter-color-emoji
     ];
 
     enableDefaultPackages = false;
