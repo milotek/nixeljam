@@ -40,10 +40,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    notashelf-tuigreet = {
-      url = "github:NotAShelf/tuigreet";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     helium-browser = {
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -91,7 +87,7 @@
     };
 
     # Server
-    nixarr.url = "github:rasmus-kirk/nixarr";
+    nixarr.url = "github:nix-media-server/nixarr";
     default-creds.url = "github:anotherhadi/default-creds";
     blog.url = "github:anotherhadi/blog";
     awesome-wallpapers.url = "github:anotherhadi/awesome-wallpapers";

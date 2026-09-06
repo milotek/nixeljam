@@ -2,11 +2,16 @@
   pkgs,
   config,
 }: let
+  # Session-scoped rather than /tmp: these are per-user UI state, and a shared
+  # /tmp name collides between users on the same machine.
+  osdPath = "$XDG_RUNTIME_DIR/waybar-osd";
+  focusModePath = "$XDG_RUNTIME_DIR/hypr-focus-mode";
+
   waybar-osd = pkgs.writeShellApplication {
     name = "waybar-osd";
     runtimeInputs = with pkgs; [procps coreutils];
     text = ''
-      printf '%s' "$1" > /tmp/waybar-osd
+      printf '%s' "$1" > "${osdPath}"
       pkill -x -RTMIN+8 waybar 2>/dev/null || true
     '';
   };
@@ -15,7 +20,7 @@
     name = "waybar-osd-status";
     runtimeInputs = with pkgs; [coreutils];
     text = ''
-      file=/tmp/waybar-osd
+      file="${osdPath}"
       [ -f "$file" ] || exit 1
       mtime=$(stat -c %Y "$file" 2>/dev/null) || exit 1
       age=$(( $(date +%s) - mtime ))
@@ -87,7 +92,7 @@
       ${nerdFontGlyphnames} > "$out"
   '';
 in {
-  inherit waybar-osd waybar-osd-status battery-monitor;
+  inherit waybar-osd waybar-osd-status battery-monitor osdPath focusModePath;
 
   bluetoothScript = pkgs.writeShellScript "waybar-bluetooth" ''
     jq=${pkgs.jq}/bin/jq
@@ -234,34 +239,34 @@ in {
   '';
 
   wifi-toggle = pkgs.writeShellScriptBin "wifi-toggle" ''
-    if nmcli radio wifi | grep -q enabled; then
-      nmcli radio wifi off
+    if ${pkgs.networkmanager}/bin/nmcli radio wifi | grep -q enabled; then
+      ${pkgs.networkmanager}/bin/nmcli radio wifi off
     else
-      nmcli radio wifi on
+      ${pkgs.networkmanager}/bin/nmcli radio wifi on
     fi
     ${updateOsd}
   '';
 
   bluetooth-toggle = pkgs.writeShellScriptBin "bluetooth-toggle" ''
-    if bluetoothctl show | grep -q "Powered: yes"; then
-      bluetoothctl power off
+    if ${pkgs.bluez}/bin/bluetoothctl show | grep -q "Powered: yes"; then
+      ${pkgs.bluez}/bin/bluetoothctl power off
     else
-      bluetoothctl power on
+      ${pkgs.bluez}/bin/bluetoothctl power on
     fi
     ${updateOsd}
   '';
 
   waybar-toggle = pkgs.writeShellScriptBin "waybar-toggle" ''
-    if pidof waybar > /dev/null; then
-      pkill waybar
+    if ${pkgs.procps}/bin/pidof waybar > /dev/null; then
+      ${pkgs.procps}/bin/pkill waybar
     else
-      hyprctl dispatch exec waybar
+      ${pkgs.hyprland}/bin/hyprctl dispatch exec waybar
     fi
   '';
 
   nightshift-toggle = pkgs.writeShellScriptBin "nightshift-toggle" ''
-    if pidof "hyprsunset" > /dev/null; then
-      pkill hyprsunset
+    if ${pkgs.procps}/bin/pidof "hyprsunset" > /dev/null; then
+      ${pkgs.procps}/bin/pkill hyprsunset
       OSD_TEXT="󰖔  Night Shift Off"
     else
       ${pkgs.hyprsunset}/bin/hyprsunset -t 4500 &
@@ -271,23 +276,23 @@ in {
   '';
 
   focus-toggle = pkgs.writeShellScriptBin "focus-toggle" ''
-    if test -f /tmp/hypr-focus-mode; then
-      rm /tmp/hypr-focus-mode
+    if test -f "${focusModePath}"; then
+      rm "${focusModePath}"
       OSD_TEXT="󰈈  Focus Off"
       ${updateOsd}
-      hyprctl reload
-      hyprctl dispatch exec waybar
+      ${pkgs.hyprland}/bin/hyprctl reload
+      ${pkgs.hyprland}/bin/hyprctl dispatch exec waybar
     else
-      touch /tmp/hypr-focus-mode
+      touch "${focusModePath}"
       OSD_TEXT="󰈈  Focus On"
       ${updateOsd}
-      pkill waybar || true
-      hyprctl keyword animations:enabled false
-      hyprctl keyword general:gaps_in 0
-      hyprctl keyword general:gaps_out 0
-      hyprctl keyword decoration:active_opacity 1
-      hyprctl keyword decoration:inactive_opacity 1
-      hyprctl keyword decoration:rounding 0
+      ${pkgs.procps}/bin/pkill waybar || true
+      ${pkgs.hyprland}/bin/hyprctl keyword animations:enabled false
+      ${pkgs.hyprland}/bin/hyprctl keyword general:gaps_in 0
+      ${pkgs.hyprland}/bin/hyprctl keyword general:gaps_out 0
+      ${pkgs.hyprland}/bin/hyprctl keyword decoration:active_opacity 1
+      ${pkgs.hyprland}/bin/hyprctl keyword decoration:inactive_opacity 1
+      ${pkgs.hyprland}/bin/hyprctl keyword decoration:rounding 0
     fi
   '';
 
@@ -372,9 +377,9 @@ in {
   '';
 
   record-toggle = pkgs.writeShellScriptBin "record-toggle" ''
-    if pgrep -x wf-recorder >/dev/null; then
+    if ${pkgs.procps}/bin/pgrep -x wf-recorder >/dev/null; then
       # -INT lets wf-recorder finalize the file cleanly.
-      pkill -INT -x wf-recorder
+      ${pkgs.procps}/bin/pkill -INT -x wf-recorder
       OSD_TEXT="󰕧  Recording saved"
     else
       dir="$HOME/Videos"
@@ -403,15 +408,15 @@ in {
   airplane-toggle = pkgs.writeShellScriptBin "airplane-toggle" ''
     # Reuse nmcli + bluetoothctl (unprivileged) instead of rfkill.
     on=false
-    nmcli radio wifi 2>/dev/null | grep -q enabled && on=true
-    bluetoothctl show 2>/dev/null | grep -q "Powered: yes" && on=true
+    ${pkgs.networkmanager}/bin/nmcli radio wifi 2>/dev/null | grep -q enabled && on=true
+    ${pkgs.bluez}/bin/bluetoothctl show 2>/dev/null | grep -q "Powered: yes" && on=true
     if $on; then
-      nmcli radio wifi off 2>/dev/null
-      bluetoothctl power off >/dev/null 2>&1 || true
+      ${pkgs.networkmanager}/bin/nmcli radio wifi off 2>/dev/null
+      ${pkgs.bluez}/bin/bluetoothctl power off >/dev/null 2>&1 || true
       OSD_TEXT="󰀝  Airplane On"
     else
-      nmcli radio wifi on 2>/dev/null
-      bluetoothctl power on >/dev/null 2>&1 || true
+      ${pkgs.networkmanager}/bin/nmcli radio wifi on 2>/dev/null
+      ${pkgs.bluez}/bin/bluetoothctl power on >/dev/null 2>&1 || true
       OSD_TEXT="󰀞  Airplane Off"
     fi
     ${updateOsd}

@@ -1,9 +1,10 @@
 {
   config,
   pkgs,
+  scripts,
+  focusModePath,
   ...
 }: let
-  scripts = import ../waybar/scripts.nix {inherit pkgs config;};
   c = config.lib.stylix.colors;
   font = config.stylix.fonts.sansSerif.name;
   monofont = config.stylix.fonts.monospace.name;
@@ -76,7 +77,7 @@ in {
               label = "󰈈";
               type = "toggle";
               command = "${scripts.focus-toggle}/bin/focus-toggle";
-              "update-command" = "test -f /tmp/hypr-focus-mode && echo true || echo false";
+              "update-command" = "test -f ${focusModePath} && echo true || echo false";
             }
             {
               label = "󰍭";
