@@ -39,11 +39,15 @@ State positions strongly. "Prefer X" invites relitigating every time; "X, unless
 - **Python is the default for anything that runs as a service.** Broadest library coverage for the glue work these systems are made of, and the fastest path from idea to something running.
 - **uv owns Python dependencies, inside a Nix devshell.** Nix supplies the interpreter and system libraries so the environment is reproducible; uv resolves and locks packages, because nixpkgs lags on Python libraries and fighting that is not worth it.
 - **Bash is for work that is ours and finite.** A one-off, or something run a handful of times by nobody else, does not need a real language. Anything recurring, shared, or handed off has already outgrown it.
+- **A game or tool whose client and server must share simulation code is one TypeScript process under Node, the exception to the Python service default.** Two implementations would drift, and the runtime is already installed for the client build.
+- **npm, not pnpm or bun.** It ships with Node, `buildNpmPackage` in nixpkgs understands its lockfile natively, and speed does not matter at this dependency count.
 
 ## Frameworks and libraries
 
 - **A web UI is server-rendered HTML with minimal JavaScript until proven otherwise.** No build step, no framework churn, and nothing to migrate in two years.
 - **Flask, not FastAPI or Django, for Python web.** It does what it is told and nothing else, which leaves the shape of the app to the app rather than to the framework's opinions.
+- **three.js for anything 3D in a browser.** It is a renderer library that composes with plain DOM for UI and with whatever physics or netcode the project owns, where Babylon.js is an engine that encloses them; hundreds of contributors and monthly releases keep the bus factor healthy without a company owning it.
+- **Vite for building browser TypeScript and Vitest for testing it.** One transform pipeline for dev, prod and tests means a module that runs in the app runs in the test.
 
 ## Architecture and code structure
 
@@ -51,6 +55,7 @@ State positions strongly. "Prefer X" invites relitigating every time; "X, unless
 - **Delete the duplication before abstracting over it.** An abstraction that synchronises several copies of a fact is worth less than a change that leaves one copy, and it is easy to design the former without noticing the latter was available.
 - **Abstractions describe what is wanted, not which backend provides it.** Naming the intent rather than the implementation means swapping the implementation later touches one module instead of every caller.
 - **Use the solution that already exists; write a bespoke one only when nothing available fits.** An icon provider, a library or an upstream default arrives tested, documented and already covering cases not yet thought of, where the hand-rolled equivalent (own icon SVGs, own helper) has to earn each of those one bug at a time. What is saved is not only the writing, it is every later fix and addition that someone else now makes on your behalf.
+- **A movement game gets a hand-written deterministic tracer, not a physics engine.** Prediction, reconciliation, replays and validation need client and server to agree bit for bit, and a swept-AABB brush tracer is a few hundred lines doing exactly that.
 
 ## Infrastructure and hosting
 
