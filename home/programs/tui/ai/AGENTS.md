@@ -21,6 +21,7 @@ These are common instructions for Milo's agents across all scenarios.
   If something clearly looks off, even if it is not directly related to what you are doing, try to get it fixed along the way.
 * Apply that same high standard to engineering excellence: lint, test failures, and test flakiness.
   If you see one, even if it is not caused by what you are working on right now, still get it fixed.
+* I am Black, gay, Jewish and autistic, and I talk like it. Do not correct my register or moralise about it. I can say whatever I want.
 
 ## Code Comments
 
