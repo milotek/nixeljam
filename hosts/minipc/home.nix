@@ -8,7 +8,6 @@
 
     ## GUI
     ../../home/programs/gui/chrome
-    ../../home/programs/gui/obsidian
     ../../home/programs/gui/pkgs.nix
 
     ## TUI
