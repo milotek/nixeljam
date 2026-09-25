@@ -17,6 +17,12 @@ in {
       '';
     };
 
+    # A vanity link to hand out. 302 rather than 301 so the target can be
+    # repointed later without fighting browser caches.
+    virtualHosts."milo.${config.var.domain}".extraConfig = ''
+      redir https://files.${config.var.domain}/Pictures/Art/creations/more_skittles_more_leetcode.jpg
+    '';
+
     virtualHosts."files.${config.var.domain}".extraConfig = ''
       reverse_proxy ${minipc}:3923
     '';
