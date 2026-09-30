@@ -56,6 +56,12 @@ in {
       ExecStart = start;
       Restart = "always";
       RestartSec = "5s";
+
+      # Every session lives in this unit's cgroup, so the default
+      # OOMPolicy=stop let one OOM-killed process inside a pane (chrome, a nix
+      # build) tear down the whole server and every session with it. Losing the
+      # process that actually bloated is fine; losing the sessions is not.
+      OOMPolicy = "continue";
     };
   };
 
