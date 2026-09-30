@@ -500,11 +500,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788555753,
-        "narHash": "sha256-CMzMVqISG9AgcwvvmsgZ9xA04q4KNUVgapP/G4CZqig=",
+        "lastModified": 1789950885,
+        "narHash": "sha256-MH//6Wyozp5vK4niLfmrsWwGFDPxmcvgxdGPMI6w97I=",
         "owner": "milotek",
         "repo": "habits",
-        "rev": "3057e864f39d89fe7320358f55ba8367c28f63b3",
+        "rev": "2e6b805231a53e1502d8858d2fb3abb502c41da4",
         "type": "github"
       },
       "original": {
