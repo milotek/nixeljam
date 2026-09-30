@@ -6,9 +6,19 @@
 # The whole share is anonymous-read: anyone who reaches files.<domain> can browse
 # and download it without logging in. The apex site (server-modules/site.nix)
 # hotlinks its gif from here, so anon read must stay on or tek.rip breaks.
-# Login passwords live in sops: `sops hosts/vps/secrets/secrets.yaml`
-#   copyparty-password        -> milotek (rwmd, full access)
-#   copyparty-guest-password  -> guest   (no grant beyond anon read; removable)
+# Login passwords live in sops: `sops hosts/minipc/secrets/system-secrets.yaml`
+#   copyparty-password         -> milotek (rwmd, full access)
+#   copyparty-guest-password   -> guest   (no grant beyond anon read; removable)
+#   copyparty-tmkcell-password -> tmkcell (rwmd inside Friends/tmkcell only)
+#
+# Each friend gets a volume of their own under Friends/, never a shared writable
+# Friends volume: permissions attach to a volume and never to the folders inside
+# one, so a shared volume would let any friend delete another's uploads. Friends/
+# itself is not a volume: the root volume serves it, which is what makes the
+# separate piles browse as one folder. Nothing but the named account writes to a
+# friend volume, so rwmd there means they can only ever touch their own files.
+# Their uploads stay outside Music/, so nothing reaches navidrome until it is
+# moved into the library by hand.
 #
 # Uploads are renamed to lowercase snake_case on arrival by the tidyname xbu
 # hook, so the share never accumulates names with spaces or punctuation again.
@@ -20,9 +30,12 @@
 }: let
   tidyname = import ../pkgs/tidyname/package.nix {inherit pkgs;};
 
+  friendsDir = "/var/lib/copyparty/Friends";
+
   start = pkgs.writeShellScript "copyparty-start" ''
     pw="$(cat ${config.sops.secrets.copyparty-password.path})"
     guest_pw="$(cat ${config.sops.secrets.copyparty-guest-password.path})"
+    tmkcell_pw="$(cat ${config.sops.secrets.copyparty-tmkcell-password.path})"
     exec ${pkgs.copyparty}/bin/copyparty \
       -i 0.0.0.0 \
       -p 3923 \
@@ -31,8 +44,10 @@
       --daw \
       -a milotek:"$pw" \
       -a guest:"$guest_pw" \
+      -a tmkcell:"$tmkcell_pw" \
       --xbu j,c1,,${tidyname}/bin/tidyname,hook \
-      -v /var/lib/copyparty::r:rwmd,milotek
+      -v /var/lib/copyparty::r:rwmd,milotek \
+      -v ${friendsDir}/tmkcell:Friends/tmkcell:r:rwmd,tmkcell:rwmd,milotek
   '';
 in {
   users.users.copyparty = {
@@ -50,6 +65,18 @@ in {
     owner = "copyparty";
     mode = "0400";
   };
+
+  sops.secrets.copyparty-tmkcell-password = {
+    owner = "copyparty";
+    mode = "0400";
+  };
+
+  # copyparty does mkdir a missing volume path, but only as a side effect of
+  # laying down its .hist folder, and it warns on every boot until then.
+  systemd.tmpfiles.rules = [
+    "d ${friendsDir} 0755 copyparty copyparty - -"
+    "d ${friendsDir}/tmkcell 0755 copyparty copyparty - -"
+  ];
 
   systemd.services.copyparty = {
     description = "copyparty file server";
