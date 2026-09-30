@@ -2,8 +2,22 @@
 #
 # To expose another service, add a vhost below. *.<domain> already wildcards to
 # this VPS, so no DNS record is needed.
-{config, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   minipc = "100.85.180.11";
+
+  # Discordbot is exempted because it reads robots.txt before rendering a link
+  # preview, and pasting a file link into chat should still show the thumbnail.
+  robots = pkgs.writeTextDir "robots.txt" ''
+    User-agent: Discordbot
+    Allow: /
+
+    User-agent: *
+    Disallow: /
+  '';
 in {
   services.caddy = {
     enable = true;
@@ -24,7 +38,28 @@ in {
     '';
 
     virtualHosts."files.${config.var.domain}".extraConfig = ''
-      reverse_proxy ${minipc}:3923
+      @crawlers header_regexp User-Agent "(?i)(amazonbot|applebot|bytespider|ccbot|claudebot|diffbot|googlebot|gptbot|imagesiftbot|meta-externalagent|oai-searchbot|omgili|perplexitybot|youbot)"
+      @scanners header_regexp User-Agent "(?i)(censys|cms-scanner|expanse|l9scan|leakix|masscan|nuclei|paloaltonetworks|python-httpx|python-requests|scrapy|shodan|visionheight|vuln_scanner|wpbot|zgrab)"
+
+      # Ahead of the 403s on purpose: RFC 9309 lets a crawler that gets a 4xx on
+      # robots.txt treat the whole site as fair game.
+      handle /robots.txt {
+        root * ${robots}
+        file_server
+      }
+
+      handle @crawlers {
+        respond 403
+      }
+
+      handle @scanners {
+        respond 403
+      }
+
+      handle {
+        header X-Robots-Tag "noindex, nofollow, noarchive, noai, noimageai"
+        reverse_proxy ${minipc}:3923
+      }
     '';
 
     virtualHosts."music.${config.var.domain}".extraConfig = ''
