@@ -1,4 +1,8 @@
-{config, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   imports = [
     ../../nixos/nix.nix
     ../../nixos/users.nix
@@ -53,6 +57,21 @@
       };
     };
   };
+
+  # 7.6G of RAM, no swap and ~20 services left the kernel no way to reclaim idle
+  # daemon pages, so it answered memory pressure by OOM-killing instead.
+  # Compressed in RAM rather than a swapfile on disk: sda is a 2013 SATA SSD at
+  # 86% full, where paging would be slow and spend write cycles this host
+  # cannot spare. This box never hibernates, so it gives up nothing for it.
+  zramSwap.enable = true;
+
+  # Forced off against nixos/utils.nix, which enables psd for the desktop. psd
+  # keeps the whole browser profile in /run/user/$UID and only flushes back on a
+  # clean stop. Here that pinned 778M of tmpfs permanently, even with chrome
+  # closed, out of 7.6G total. Spending a tenth of RAM to spare SSD writes is
+  # the wrong way round on a host that OOMs, and the deferred flush loses the
+  # profile on any ungraceful death.
+  services.psd.enable = lib.mkForce false;
 
   home-manager.users."${config.var.username}" = import ./home.nix;
 
