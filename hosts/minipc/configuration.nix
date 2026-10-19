@@ -73,20 +73,15 @@
   # profile on any ungraceful death.
   services.psd.enable = lib.mkForce false;
 
-  # The share lives on the 4.5T USB Seagate, since the 119G root SSD cannot hold it.
-  # nofail keeps boot going without the disk; RequiresMountsFor then keeps these
-  # three from starting at all, instead of quietly writing into the bare
-  # mountpoint on the SSD and filling it. No short device-timeout as on pc: USB
-  # can take a while to enumerate, and timing out early would fail all three.
   fileSystems."/var/lib/copyparty" = {
-    device = "/dev/disk/by-uuid/61088e9e-9818-4824-b5c0-c14d35a78ec5";
+    device = "/dev/disk/by-label/copyparty";
     fsType = "ext4";
     options = ["nofail"];
   };
 
-  systemd.services = lib.genAttrs ["copyparty" "navidrome" "slskd"] (_: {
-    unitConfig.RequiresMountsFor = ["/var/lib/copyparty"];
-  });
+  systemd.services.copyparty.unitConfig.RequiresMountsFor = ["/var/lib/copyparty"];
+  systemd.services.navidrome.unitConfig.RequiresMountsFor = ["/var/lib/copyparty"];
+  systemd.services.slskd.unitConfig.RequiresMountsFor = ["/var/lib/copyparty"];
 
   home-manager.users."${config.var.username}" = import ./home.nix;
 
