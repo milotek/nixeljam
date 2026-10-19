@@ -23,6 +23,9 @@
 # Uploads are renamed to lowercase snake_case on arrival by the tidyname xbu
 # hook, so the share never accumulates names with spaces or punctuation again.
 # reloc only fires over HTTP (up2k/basic/webdav) — fine here, no ftp/tftp/smb.
+#
+# The share root is an ext4 mount (the USB Seagate), whose lost+found would
+# otherwise list as a folder that 403s for everyone, since only root can read it.
 {
   config,
   pkgs,
@@ -46,7 +49,7 @@
       -a guest:"$guest_pw" \
       -a tmkcell:"$tmkcell_pw" \
       --xbu j,c1,,${tidyname}/bin/tidyname,hook \
-      -v /var/lib/copyparty::r:rwmd,milotek \
+      -v /var/lib/copyparty::r:rwmd,milotek:c,unlist='^lost.found/?$' \
       -v ${friendsDir}/tmkcell:Friends/tmkcell:r:rwmd,tmkcell:rwmd,milotek
   '';
 in {
