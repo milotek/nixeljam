@@ -6,9 +6,19 @@
 }: let
   tidyname = import ../pkgs/tidyname/package.nix {inherit pkgs;};
 
-  friendsDir = "/var/lib/copyparty/Friends";
+  root = "/var/lib/copyparty";
 
-  secret = name: config.sops.secrets.${name}.path;
+  secrets = {
+    milotek = "copyparty-password";
+    guest = "copyparty-guest-password";
+    friend = "copyparty-friend-password";
+    bros = "copyparty-bros-password";
+  };
+
+  accounts = lib.concatStringsSep " \\\n      " (lib.mapAttrsToList (
+      user: name: ''-a ${user}:"$(cat ${config.sops.secrets.${name}.path})"''
+    )
+    secrets);
 
   start = pkgs.writeShellScript "copyparty-start" ''
     exec ${pkgs.copyparty}/bin/copyparty \
@@ -17,12 +27,10 @@
       --rproxy 1 \
       --xff-src 100.117.236.50/32 \
       --daw \
-      -a milotek:"$(cat ${secret "copyparty-password"})" \
-      -a guest:"$(cat ${secret "copyparty-guest-password"})" \
-      -a tmkcell:"$(cat ${secret "copyparty-tmkcell-password"})" \
+      ${accounts} \
       --xbu j,c1,,${tidyname}/bin/tidyname,hook \
-      -v /var/lib/copyparty::r:rwmd,milotek:c,unlist='^lost.found/?$' \
-      -v ${friendsDir}/tmkcell:Friends/tmkcell:r:rwmd,tmkcell:rwmd,milotek
+      -v ${root}::r:rwmd,bros:A,milotek:c,unlist='^lost.found/?$' \
+      -v ${root}/Downloads:Downloads:r:rwm,friend:rwmd,bros:A,milotek
   '';
 in {
   users.users.copyparty = {
@@ -31,18 +39,13 @@ in {
   };
   users.groups.copyparty = {};
 
-  sops.secrets = lib.genAttrs [
-    "copyparty-password"
-    "copyparty-guest-password"
-    "copyparty-tmkcell-password"
-  ] (_: {
+  sops.secrets = lib.genAttrs (lib.attrValues secrets) (_: {
     owner = "copyparty";
     mode = "0400";
   });
 
   systemd.tmpfiles.rules = [
-    "d ${friendsDir} 0755 copyparty copyparty - -"
-    "d ${friendsDir}/tmkcell 0755 copyparty copyparty - -"
+    "d ${root}/Downloads 0755 copyparty copyparty - -"
   ];
 
   systemd.services.copyparty = {
