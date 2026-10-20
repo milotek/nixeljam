@@ -84,5 +84,9 @@
 
   home-manager.users."${config.var.username}" = import ./home.nix;
 
+  users.users.${config.var.username}.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAEplx89Tm1CKtBAy6pX4f67jucFExONChMp6foHWCXF hermes@shitbox"
+  ];
+
   system.stateVersion = "24.05";
 }
