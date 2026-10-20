@@ -1,24 +1,11 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }: let
   tidyname = import ../pkgs/tidyname/package.nix {inherit pkgs;};
 
   root = "/var/lib/copyparty";
-
-  secrets = {
-    milotek = "copyparty-password";
-    guest = "copyparty-guest-password";
-    friend = "copyparty-friend-password";
-    bros = "copyparty-bros-password";
-  };
-
-  accounts = lib.concatStringsSep " \\\n      " (lib.mapAttrsToList (
-      user: name: ''-a ${user}:"$(cat ${config.sops.secrets.${name}.path})"''
-    )
-    secrets);
 
   start = pkgs.writeShellScript "copyparty-start" ''
     exec ${pkgs.copyparty}/bin/copyparty \
@@ -27,7 +14,10 @@
       --rproxy 1 \
       --xff-src 100.117.236.50/32 \
       --daw \
-      ${accounts} \
+      -a guest:"$(cat ${config.sops.secrets.copyparty-guest-password.path})" \
+      -a friend:"$(cat ${config.sops.secrets.copyparty-friend-password.path})" \
+      -a bros:"$(cat ${config.sops.secrets.copyparty-bros-password.path})" \
+      -a milotek:"$(cat ${config.sops.secrets.copyparty-password.path})" \
       --xbu j,c1,,${tidyname}/bin/tidyname,hook \
       -v ${root}::r:rwmd,bros:A,milotek:c,unlist='^lost.found/?$' \
       -v ${root}/Downloads:Downloads:r:rwm,friend:rwmd,bros:A,milotek
@@ -39,10 +29,24 @@ in {
   };
   users.groups.copyparty = {};
 
-  sops.secrets = lib.genAttrs (lib.attrValues secrets) (_: {
-    owner = "copyparty";
-    mode = "0400";
-  });
+  sops.secrets = {
+    copyparty-password = {
+      owner = "copyparty";
+      mode = "0400";
+    };
+    copyparty-guest-password = {
+      owner = "copyparty";
+      mode = "0400";
+    };
+    copyparty-friend-password = {
+      owner = "copyparty";
+      mode = "0400";
+    };
+    copyparty-bros-password = {
+      owner = "copyparty";
+      mode = "0400";
+    };
+  };
 
   systemd.tmpfiles.rules = [
     "d ${root}/Downloads 0755 copyparty copyparty - -"
