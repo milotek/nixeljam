@@ -1,28 +1,3 @@
-# copyparty — browser-accessible file server with upload support.
-# Reachable over the tailnet only (firewall trusts tailscale0); Caddy on the
-# VPS fronts it publicly at https://files.<domain>. The VPS's tailnet address
-# must stay listed in --xff-src: without it copyparty distrusts Caddy's
-# X-Forwarded-For, bans it, and 403s every public request.
-# The whole share is anonymous-read: anyone who reaches files.<domain> can browse
-# and download it without logging in. The apex site (server-modules/site.nix)
-# hotlinks its gif from here, so anon read must stay on or tek.rip breaks.
-# Login passwords live in sops: `sops hosts/minipc/secrets/system-secrets.yaml`
-#   copyparty-password         -> milotek (rwmd, full access)
-#   copyparty-guest-password   -> guest   (no grant beyond anon read; removable)
-#   copyparty-tmkcell-password -> tmkcell (rwmd inside Friends/tmkcell only)
-#
-# Each friend gets a volume of their own under Friends/, never a shared writable
-# Friends volume: permissions attach to a volume and never to the folders inside
-# one, so a shared volume would let any friend delete another's uploads. Friends/
-# itself is not a volume: the root volume serves it, which is what makes the
-# separate piles browse as one folder. Nothing but the named account writes to a
-# friend volume, so rwmd there means they can only ever touch their own files.
-# Their uploads stay outside Music/, so nothing reaches navidrome until it is
-# moved into the library by hand.
-#
-# Uploads are renamed to lowercase snake_case on arrival by the tidyname xbu
-# hook, so the share never accumulates names with spaces or punctuation again.
-# reloc only fires over HTTP (up2k/basic/webdav) — fine here, no ftp/tftp/smb.
 {
   config,
   pkgs,
@@ -30,24 +5,22 @@
 }: let
   tidyname = import ../pkgs/tidyname/package.nix {inherit pkgs;};
 
-  friendsDir = "/var/lib/copyparty/Friends";
+  root = "/var/lib/copyparty";
 
   start = pkgs.writeShellScript "copyparty-start" ''
-    pw="$(cat ${config.sops.secrets.copyparty-password.path})"
-    guest_pw="$(cat ${config.sops.secrets.copyparty-guest-password.path})"
-    tmkcell_pw="$(cat ${config.sops.secrets.copyparty-tmkcell-password.path})"
     exec ${pkgs.copyparty}/bin/copyparty \
       -i 0.0.0.0 \
       -p 3923 \
       --rproxy 1 \
       --xff-src 100.117.236.50/32 \
       --daw \
-      -a milotek:"$pw" \
-      -a guest:"$guest_pw" \
-      -a tmkcell:"$tmkcell_pw" \
+      -a guest:"$(cat ${config.sops.secrets.copyparty-guest-password.path})" \
+      -a friend:"$(cat ${config.sops.secrets.copyparty-friend-password.path})" \
+      -a bros:"$(cat ${config.sops.secrets.copyparty-bros-password.path})" \
+      -a milotek:"$(cat ${config.sops.secrets.copyparty-password.path})" \
       --xbu j,c1,,${tidyname}/bin/tidyname,hook \
-      -v /var/lib/copyparty::r:rwmd,milotek:c,unlist='^lost.found/?$' \
-      -v ${friendsDir}/tmkcell:Friends/tmkcell:r:rwmd,tmkcell:rwmd,milotek
+      -v ${root}::r:rwmd,bros:A,milotek:c,unlist='^lost.found/?$' \
+      -v ${root}/Downloads:Downloads:r:rwm,friend:rwmd,bros:A,milotek
   '';
 in {
   users.users.copyparty = {
@@ -56,26 +29,27 @@ in {
   };
   users.groups.copyparty = {};
 
-  sops.secrets.copyparty-password = {
-    owner = "copyparty";
-    mode = "0400";
+  sops.secrets = {
+    copyparty-password = {
+      owner = "copyparty";
+      mode = "0400";
+    };
+    copyparty-guest-password = {
+      owner = "copyparty";
+      mode = "0400";
+    };
+    copyparty-friend-password = {
+      owner = "copyparty";
+      mode = "0400";
+    };
+    copyparty-bros-password = {
+      owner = "copyparty";
+      mode = "0400";
+    };
   };
 
-  sops.secrets.copyparty-guest-password = {
-    owner = "copyparty";
-    mode = "0400";
-  };
-
-  sops.secrets.copyparty-tmkcell-password = {
-    owner = "copyparty";
-    mode = "0400";
-  };
-
-  # copyparty does mkdir a missing volume path, but only as a side effect of
-  # laying down its .hist folder, and it warns on every boot until then.
   systemd.tmpfiles.rules = [
-    "d ${friendsDir} 0755 copyparty copyparty - -"
-    "d ${friendsDir}/tmkcell 0755 copyparty copyparty - -"
+    "d ${root}/Downloads 0755 copyparty copyparty - -"
   ];
 
   systemd.services.copyparty = {
