@@ -19,8 +19,9 @@
       -a bros:"$(cat ${config.sops.secrets.copyparty-bros-password.path})" \
       -a milotek:"$(cat ${config.sops.secrets.copyparty-password.path})" \
       --xbu j,c1,,${tidyname}/bin/tidyname,hook \
-      -v ${root}::r:rwmd,bros:A,milotek:c,unlist='^lost.found/?$' \
-      -v ${root}/Downloads:Downloads:r:rwm,friend:rwmd,bros:A,milotek
+      -v ${root}::g:r,guest,friend:rwmd,bros:A,milotek:c,unlist='^lost.found/?$' \
+      -v ${root}/Downloads:Downloads:r,guest:rwm,friend:rwmd,bros:A,milotek \
+      -v ${root}/Music/Songs/Singles:Music/Songs/Singles:r:rwmd,bros:A,milotek
   '';
 in {
   users.users.copyparty = {
