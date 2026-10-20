@@ -9,7 +9,7 @@ in
   # Shared agent instructions, fanned out to every installed AI tool.
   # AGENTS.md is the always-loaded ruleset; it points agents to ~/VOICE.md
   # (and ~/OPINIONS.md) to read on demand, so those live at the home root.
-  # skills.nix builds one skills tree shared by every harness (and hermes).
+  # skills.nix builds one skills tree shared by every harness.
 
   # opencode: reads ~/.config/opencode/AGENTS.md as global rules, and
   # discovers skills via {skill,skills}/**/SKILL.md under ~/.config/opencode.
