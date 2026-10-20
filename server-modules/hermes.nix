@@ -1,32 +1,3 @@
-# Hermes Agent (Nous Research) - self-hosted autonomous AI agent.
-# https://github.com/NousResearch/hermes-agent
-#
-# Runs alongside openclaw (server-modules/openclaw.nix), not instead of it.
-# Upstream ships a real NixOS module now, so this is a hardened systemd unit
-# with config rendered from Nix, rather than the Docker container the old
-# feat/hermes-agent branch used.
-#
-# The module is imported in hosts/minipc/flake.nix - `inputs` reaches this file
-# through _module.args, which cannot be used from `imports`.
-#
-# Native mode, not container mode: container mode would need a Docker or Podman
-# socket, and handing an agent that socket on this host is equivalent to giving
-# it root. State lives in /var/lib/hermes.
-#
-# SECURITY: this agent gets a shell and filesystem access on this host, same as
-# openclaw. It shares the box with home-assistant, navidrome and slskd.
-#
-# Upstream is a self-declared Tier 2 platform - "commits to main may break
-# packages" - so a bad upstream commit becomes a failed nixos-rebuild. Pin
-# hermes-agent in flake.lock and update it deliberately, not as part of a
-# blanket `nix flake update`.
-#
-# Secrets (sops hosts/minipc/secrets/system-secrets.yaml):
-#   hermes-env   env file, one KEY=value per line. Do not set ANTHROPIC_API_KEY
-#                when using Claude Code OAuth, because it can override OAuth.
-#                Carries TELEGRAM_BOT_TOKEN, which is what switches the Telegram
-#                platform on: the plugin registers on the token being present,
-#                so without it the gateway starts deaf.
 {
   config,
   inputs,
