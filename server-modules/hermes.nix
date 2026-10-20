@@ -86,9 +86,6 @@ in {
     settings = {
       model.default = "anthropic/claude-opus-5";
       toolsets = ["all"];
-      # Owner opted into yolo: no command-approval prompts. Does not disable
-      # secret redaction, and the systemd sandbox (NoNewPrivileges,
-      # ProtectSystem=strict) still bounds what the agent can touch.
       approvals.mode = "off";
       terminal = {
         backend = "local";
