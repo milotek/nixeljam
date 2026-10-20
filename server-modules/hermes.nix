@@ -6,6 +6,7 @@
 
   services.hermes-agent = {
     enable = true;
+    container.enable = true;
 
     settings = {
       model.default = "anthropic/claude-opus-5";
