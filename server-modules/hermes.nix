@@ -86,6 +86,7 @@ in {
     settings = {
       model.default = "anthropic/claude-opus-5";
       toolsets = ["all"];
+      approvals.mode = "off";
       terminal = {
         backend = "local";
         timeout = 180;
