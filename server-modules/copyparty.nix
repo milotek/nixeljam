@@ -7,6 +7,18 @@
 
   root = "/var/lib/copyparty";
 
+  upload-log = pkgs.writeShellScript "copyparty-upload-log" ''
+    user=$(${pkgs.jq}/bin/jq -r .user <<<"$1")
+    vp=$(${pkgs.jq}/bin/jq -r .vp <<<"$1")
+    sz=$(${pkgs.jq}/bin/jq -r .sz <<<"$1")
+    [ "$user" = milotek ] && exit 0
+    case "$vp" in
+      Downloads/*) ;;
+      *) exit 0 ;;
+    esac
+    ${pkgs.util-linux}/bin/logger -t copyparty-upload "user=$user path=$vp size=$sz"
+  '';
+
   start = pkgs.writeShellScript "copyparty-start" ''
     exec ${pkgs.copyparty}/bin/copyparty \
       -i 0.0.0.0 \
@@ -19,6 +31,7 @@
       -a bros:"$(cat ${config.sops.secrets.copyparty-bros-password.path})" \
       -a milotek:"$(cat ${config.sops.secrets.copyparty-password.path})" \
       --xbu j,c1,,${tidyname}/bin/tidyname,hook \
+      --xau j,${upload-log} \
       -v ${root}::g:r,guest,friend:rwmd,bros:A,milotek:c,unlist='^lost.found/?$' \
       -v ${root}/Downloads:Downloads:r,guest:rwm,friend:rwmd,bros:A,milotek \
       -v ${root}/Music/Songs/Singles:Music/Songs/Singles:r:rwmd,bros:A,milotek
