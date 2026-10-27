@@ -33,7 +33,7 @@
       --xbu j,c1,,${tidyname}/bin/tidyname,hook \
       --xau j,${upload-log} \
       -v ${root}::g:r,guest,friend:rwmd,bros:A,milotek:c,unlist='^lost.found/?$' \
-      -v ${root}/Downloads:Downloads:r,guest:rwm,friend:rwmd,bros:A,milotek \
+      -v ${root}/Downloads:Downloads:g:r,guest:rwm,friend:rwmd,bros:A,milotek \
       -v ${root}/Music/Songs/Singles:Music/Songs/Singles:r:rwmd,bros:A,milotek
   '';
 in {
