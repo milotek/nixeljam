@@ -1,117 +1,87 @@
-These are Milo Tekchandani's standing positions on tech, tools, and how software should be built.
+```markdown
+# Milo's opinions
 
-Read this before making a call that has more than one defensible answer.
-The point is that a decision made in one repo today matches the one made in another repo six months from now.
+My standing defaults on tech, tools, and how software should be built.
+Read this before making a technical call with more than one reasonable answer, so decisions stay consistent across repos.
 
 ## How to use this file
 
-- Find the section covering the decision at hand. If there is a position, follow it.
-- If a position exists but this case genuinely argues against it, make that argument out loud. Do not quietly ignore it.
-- If there is no position, ask, then write the answer back into this file under the right section.
-- Do not record one-offs. A choice made for a single job, with no intent to repeat it, does not belong here.
-- Prune what goes stale. A position about a tool no longer in use is worse than no position, because it still reads as current.
-
-## Entry format
-
-Every entry is a position and a reason, on one line.
-
-- **The position, stated flat.** Why. What it buys, or what it avoids.
-
-The reason carries the weight. A position with no reason can only be applied to cases it literally covers, and most cases are not literal matches.
-State positions strongly. "Prefer X" invites relitigating every time; "X, unless Y" does not.
+- Local repo conventions come first (see `AGENTS.md`).
+  Use this file for greenfield work or open choices.
+- If a section covers the decision, follow it.
+  If this specific problem genuinely argues for something else, make that case out loud instead of quietly ignoring the default.
+- If a recurring choice isn't covered here, ask me, then write the general rule back into this file.
+- Do not log one-offs.
+  Decisions that only matter to a single project belong in that repo, not here.
+- Delete anything that goes stale.
 
 ---
 
 ## Taste and defaults
 
-- **Simple beats powerful, and complexity is only earned by a wall actually hit.** Caddy's three-line site block over nginx's forty: the exotic routing that justifies the verbose tool is usually hypothetical, and the day it stops being hypothetical is the day to reconsider, not before.
-- **If it cannot be declared and rebuilt from the flake, it does not get installed.** Mutable undocumented state - configured by clicking, installed imperatively, existing on exactly one machine - is the single failure mode worth designing against, because it is invisible until the machine is gone.
-- **Prefer tools that compose over tools that enclose.** Plain text, pipes and standard formats mean the next tool in the chain is a choice; a walled garden means the whole chain has to be replaced at once.
-- **Aesthetics are a requirement, not a garnish.** Something looked at all day earns real attention to theming, typography and pixel-level polish, and that is a reason to pick one tool over an equivalent.
-- **New and niche is fine; a single maintainer is the risk that matters.** Ghostty, Hyprland and Zellij are worth the churn because they are better and the crowd running them is competent, but a tool with no bus factor strands a config when it dies.
-- **Absence from nixpkgs is a strike, not a veto.** It has to be worth packaging by hand, and sometimes it is.
-- **Dependency sprawl is a smell, not a law.** It says the project does not care, which is weighted heavily, but no good tool is rejected over a count.
-- **Rank the failures in this order: locked out, then data that cannot be recreated, then silent wrongness.** A box that is healthy but unreachable is the one that actually happens, and it is the one where every other safeguard is out of reach.
-- **Get it right the first time.** Nothing here ships against a deadline, so a shortcut is not bought with anything; it is just deferred onto the person who maintains it, who is the same person.
+- Simplicity is king across code, architecture, and UI.
+  Less is more, and less code is best code.
+- Do not spam comments explaining obvious code.
+  Only write a comment to explain why, or when something looks wrong at first glance and a reader would otherwise try to "fix" it.
+- Do it properly the first time.
+  Cutting corners when there's no hard deadline just leaves a mess for future me.
+- Care about aesthetics.
+  Anything I look at all day deserves real attention to theming, typography, and pixel-level polish, and looking better is a valid reason to pick one tool over another.
+- Snap dimensions, spacing, and controls to clean increments (4px/8px grids, powers of two, 15/30/45 degrees, steps of 5) rather than arbitrary off-grid values like 96.7273 or 37.
+- Reach for existing libraries, icon sets, and upstream defaults before rolling your own.
+  Every custom helper or hand-drawn SVG is something I now have to maintain myself.
+- New and shiny tools are fine when they're genuinely better (Ghostty, Hyprland, Zellij), as long as they have real bus factor and won't die if one maintainer burns out.
+- Keep shared config and constants in one place instead of repeating them across modules, and delete duplication before building an abstraction to keep copies in sync.
+- Name interfaces and modules after what they do rather than which library or provider backs them, so swapping the implementation later only touches one place.
 
-## Languages
+## Languages and packages
 
-- **Python is the default for anything that runs as a service.** Broadest library coverage for the glue work these systems are made of, and the fastest path from idea to something running.
-- **uv owns Python dependencies, inside a Nix devshell.** Nix supplies the interpreter and system libraries so the environment is reproducible; uv resolves and locks packages, because nixpkgs lags on Python libraries and fighting that is not worth it.
-- **Bash is for work that is ours and finite.** A one-off, or something run a handful of times by nobody else, does not need a real language. Anything recurring, shared, or handed off has already outgrown it.
-- **A game or tool whose client and server must share simulation code is one TypeScript process under Node, the exception to the Python service default.** Two implementations would drift, and the runtime is already installed for the client build.
-- **npm, not pnpm or bun.** It ships with Node, `buildNpmPackage` in nixpkgs understands its lockfile natively, and speed does not matter at this dependency count.
+- Python is my default for backend services and any script with real logic.
+  Manage packages with `uv` (inside a Nix devshell when using Nix, since `nixpkgs` lags on Python libraries).
+- Bash is fine for quick, finite scripts I run myself.
+  Once something gets shared, runs on a schedule, or grows real control flow, write it in Python.
+- Use TypeScript on Node on the backend only when client and server need to share code directly, like multiplayer simulation or shared validation.
+- Stick to `npm` over `pnpm` or `bun`.
+  It ships with Node and works out of the box with `buildNpmPackage` in Nix.
 
-## Frameworks and libraries
+## Web and UI
 
-- **A web UI is server-rendered HTML with minimal JavaScript until proven otherwise.** No build step, no framework churn, and nothing to migrate in two years.
-- **Reach for a standard generator before writing a builder, unless the generator would be the larger dependency.** A hand-rolled one re-implements markdown, front matter and URL rewriting, and owns every bug in all three, where Astro or an equivalent arrives with them solved and maintained. A handful of pages with no blog is the case where a short script still wins, and that is the case to check for rather than assume.
-- **Flask, not FastAPI or Django, for Python web.** It does what it is told and nothing else, which leaves the shape of the app to the app rather than to the framework's opinions.
-- **three.js for anything 3D in a browser.** It is a renderer library that composes with plain DOM for UI and with whatever physics or netcode the project owns, where Babylon.js is an engine that encloses them; hundreds of contributors and monthly releases keep the bus factor healthy without a company owning it.
-- **Vite for building browser TypeScript and Vitest for testing it.** One transform pipeline for dev, prod and tests means a module that runs in the app runs in the test.
-
-## Architecture and code structure
-
-- **Facts shared across modules are declared once, in `config.var`, and never repeated.** Username, domain, hostname and network interface are properties of the machine rather than of any module that happens to need them, so a module that hardcodes one is wrong even while it works.
-- **Delete the duplication before abstracting over it.** An abstraction that synchronises several copies of a fact is worth less than a change that leaves one copy, and it is easy to design the former without noticing the latter was available.
-- **Abstractions describe what is wanted, not which backend provides it.** Naming the intent rather than the implementation means swapping the implementation later touches one module instead of every caller.
-- **Use the solution that already exists; write a bespoke one only when nothing available fits.** An icon provider, a library or an upstream default arrives tested, documented and already covering cases not yet thought of, where the hand-rolled equivalent (own icon SVGs, own helper) has to earn each of those one bug at a time. What is saved is not only the writing, it is every later fix and addition that someone else now makes on your behalf.
-- **A movement game gets a hand-written deterministic tracer, not a physics engine.** Prediction, reconciliation, replays and validation need client and server to agree bit for bit, and a swept-AABB brush tracer is a few hundred lines doing exactly that.
-
-## Infrastructure and hosting
-
-- **Own the public ingress on a box with a real public IP; do not put the front door behind Cloudflare Tunnel.** A tunnel is HTTP-only in practice, caps proxied request bodies at 100 MB on free and Pro, cannot carry a public game server without Spectrum, and terminates TLS on someone else's hardware. A cheap VPS keeps arbitrary TCP, unlimited body size and end-to-end control.
-- **A service may be public; its admin interface is tailnet-only.** The thing users need and the thing that reconfigures it have different blast radii, and collapsing them means every authentication bug is a total compromise rather than a nuisance.
-- **Tailscale is the only admin path; no host exposes a public SSH port.** An out-of-band door that does not depend on local DNS, the reverse proxy, or the ingress host means a broken rebuild cannot lock you out.
-- **Machine-to-machine links between own hosts run over the tailnet, not hand-rolled SSH tunnels.** Tailscale already solves NAT traversal, reconnection and key rotation; an `ssh -R` loop with `Restart=always` only approximates them and needs a secret provisioned before it can even start.
-- **Self-host by default; pay only where the constraint is physical or the catalogue is the product.** Spotify wins not on software but on storage: holding every album of every liked song costs more than the subscription. Nothing about that argument applies to a service whose data is already yours.
-- **The flake declares the capability; the content lives in its own repo.** `programs.steam.enable` is portable and a Steam library is not, and the same line separates a Pelican module from which games run on it. Content gets a repo of its own that the flake clones and wires in, so it stays reproducible without being baked into a config other people could adopt.
-- **Write modules as though a stranger will enable them, even though none will.** The discipline is not really about the stranger; forcing the split between capability and personal detail is what keeps the config from calcifying around one machine.
-- **Anything that grants access is encrypted with sops; everything else stays plaintext.** Keys, tokens and passwords earn the ceremony. Hostnames, domains, ports and internal topology do not, and encrypting them buys no security while making the config unreadable.
-- **Back up what cannot be recreated, and nothing else.** Photos, notes, the vault and tagged music have no other source. Service state is rebuildable from the flake, so paying to store it offsite is paying twice for the same thing.
-- **A service runs native when nixpkgs ships a module for it or when it is the host's own plumbing; it gets a container when the alternative is hand-rolling the packaging.** The nspawn is an answer to "nobody has packaged this", not to "this might get compromised": a nixpkgs module arrives with hardening its maintainer wrote and keeps current, and an ingress, a power-management timer or a relay cannot be put in a private netns without destroying the thing they do. Isolation is a side benefit of the container, not the reason for it.
-- **A hand-rolled systemd unit owes its own hardening block.** Writing `systemd.services` directly means taking on the job the nixpkgs maintainer would otherwise have done, and `User=` alone is not that job; either it goes in a container or it carries `ProtectSystem`, `NoNewPrivileges` and the rest explicitly.
+- Default to server-rendered HTML with minimal JS until client state genuinely justifies a frontend build.
+  Having no framework churn to migrate in two years is a feature.
+- Use Flask over FastAPI or Django for Python web apps.
+  It routes requests and stays out of the way without dictating how the app is structured.
+- Use a static site generator like Astro for blogs and docs sites instead of hand-rolling markdown parsing and routing.
+  For a handful of static pages with no blog, plain HTML or a tiny script is fine.
+- When browser TypeScript is needed, build with Vite and test with Vitest so dev, prod, and tests share one pipeline.
+- Use `three.js` for browser 3D over full engines like Babylon.js, so rendering composes cleanly with plain DOM UI and whatever physics or netcode the project owns.
 
 ## Data and storage
 
-- **Postgres is the default database; SQLite only where the application already ships it.** Fluency in one database is worth more than the operational savings of a second one, and a daemon plus a dump schedule is a known, bounded cost. Where upstream has already chosen SQLite, leave it: fighting an application's own storage decision buys nothing.
-- **Structure carries capitals, content does not.** Base folders, nested folders and convention docs (`README.md`, `AGENTS.md`, `LICENSE`) keep the capitalisation they were given; everything else is lowercase. Capitalisation is what separates the scaffolding of a tree from the things stored in it, and lowercasing the scaffolding destroys that signal.
-- **No spaces or punctuation in a path segment, at any level; words join with `_`.** Spaces force quoting in every shell, script and URL that touches the path, and punctuation shifts meaning between filesystems and clients.
-- **Filenames are normalised on arrival, not swept up later.** A gate at the ingress point keeps a tree clean for free; a periodic cleanup pass only ever chases a backlog that regrows.
+- Postgres is my default database.
+  Only stick with SQLite when an upstream app already ships with it.
+- Where a language or repo doesn't already dictate file naming (like assets, media, and stored files), use `lowercase_snake_case` with no spaces or punctuation, and normalise filenames on arrival rather than sweeping them up later.
+  Keep capitalisation on folder names and standard docs (`README.md`, `AGENTS.md`, `LICENSE`) so directory structure stands out from content.
+- Back up irreplaceable data (photos, notes, vaults, media), and skip backing up service state that can be rebuilt from config.
+- Before running a bulk rename, migration, or data cleanup, emit a dry-run plan to review (never stage work by mutating records in place), and write an undo log so changes can be rolled back.
 
-## Tooling and workflow
+## Infra and self-hosting
 
-- **Flake inputs are bumped all at once and often.** A single big-bang update after six months is unbisectable, whereas frequent small bumps keep each breakage attributable to the commit that caused it.
-- **When a package in nixpkgs is outdated or broken, take it from unstable before writing anything.** An overlay, an `overrideAttrs` or a hand-written derivation is maintenance owned forever, and unstable has usually already fixed the problem for the price of one line.
-- **A document exists only for what the code cannot say itself.** Migrations, decisions and procedures a human has to perform earn a file; prose describing what a module does does not, because the module is right there and the prose is the half that goes stale.
-- **Small commits, one coherent change each.** The reason is not tidiness: a forty-line diff gets read and a nine-hundred-line one gets skimmed, so diff size is the real control on what actually gets reviewed.
-- **Where a commit boundary goes is decided by revertibility, not by size.** If reverting exactly that commit leaves a working system, it is one commit; if it does not, the boundary is in the wrong place.
-- **Commit messages carry the why; the diff carries the what.** A subject line naming the change is enough on its own, and a body exists only when there is a reason that the diff cannot show.
-- **Big or risky work gets a branch and a PR; small verified changes go straight to main.** History stays linear and readable either way, and rebasing rather than merging is what keeps it that way.
-- **Write a comment only to explain something that looks wrong but is not.** Nix and well-named code carry themselves; a comment earns its place when a reader would otherwise try to "fix" the line, and everything else is noise however true it is.
-- **No process that needs a second person.** Design docs, review gates and sign-offs exist to coordinate people, and alone they are pure overhead. Small diffs and readable code survive without a company around them; the rest does not.
-- **No monitoring stack.** Prometheus and Grafana for a house is more machinery than the thing it watches, and a dashboard that actually gets looked at beats alerts that get trained away. The exception is anything whose failure is silent and expensive, which earns an `OnFailure=` push and nothing more.
-- **In someone else's repo, match their conventions exactly, even the ones that are wrong.** A file that is internally coherent costs a reviewer nothing; a file that is 90% theirs and 10% yours makes every reader stop and work out which rules apply where. Personal standards apply to personally owned code.
-- **Pick the project first, but take the learning excuse when it is offered.** A project invented to justify a technology tends not to get finished, while a real project choosing between two viable stacks may as well pick the one that teaches something.
-- **A bulk mutation is reviewed before it touches anything, never staged in the thing being changed.** A dry run that emits an editable plan lets the whole change be judged at once and abandoned for free; marking records in-place (a prefix, a flag column) mutates the very field under review, doubles the write, and leaves a half-migrated mess if the pass is never finished.
-- **Anything that rewrites data in bulk ships with an undo log.** Recording old and new for each applied change costs one line and turns an irreversible operation into a reversible one.
+- Self-host by default when the data is already mine.
+  Only pay for hosted services when the catalogue is the product (like Spotify) or running the hardware/storage costs more than the subscription.
+- Put public ingress on a cheap VPS with a real public IP instead of Cloudflare Tunnel, which caps request bodies, limits you to HTTP, and terminates TLS on someone else's box.
+- Keep all private access on Tailscale: SSH, admin panels, and host-to-host links stay on the tailnet.
+  Never expose public SSH ports, public admin UIs, or hand-rolled `ssh -R` tunnel loops.
+- Encrypt actual secrets (keys, tokens, passwords) with `sops`, and leave hostnames, domains, ports, and topology in plaintext so configs stay readable.
+- Separate reusable infra/module config from personal content and state, and avoid hardcoding modules around one machine's quirks.
+- On NixOS: prefer native `nixpkgs` modules over containers (only containerise when native packaging isn't worth the pain), add explicit `systemd` hardening (`ProtectSystem`, `NoNewPrivileges`, etc.) to hand-written units, pull broken packages from `unstable` before writing overlays, and bump flake inputs often so breakages stay easy to bisect.
+- Skip heavy monitoring stacks (Prometheus, Grafana) on personal infra.
+  An `OnFailure=` push notification is plenty for jobs that might fail silently.
 
-## Testing
+## Workflow and verification
 
-- **For personal infrastructure, running it is the test.** A rebuild that boots and serves the thing is stronger evidence than a unit test over glue code, which mostly ends up testing its own mocks.
-- **Reviewing the diff, not writing a test, is the defence against code that works but is wrong.** The failure mode being guarded against is plausible-looking code that runs correctly, and a test written by whoever wrote the code inherits the same misunderstanding. Reading it does not.
-
-## AI and agents
-
-- **Every diff is read before it lands, with no exceptions.** That deliberately caps agent output at review capacity rather than generation capacity, which is the point: code nobody has read is not finished work, however well it runs.
-- **An agent has to say why, and the reasoning is what gets judged.** Weak or absent justification makes the change suspect even when it works, because working is exactly what the bad case also does.
-- **Reporting something as working means it was run.** An unverified claim of success is worse than an admitted uncertainty, because it spends the trust that makes the next report worth reading.
-- **Agent skills are pinned in the flake, never installed through a harness's plugin marketplace.** A `/plugin` install is mutable state inside one harness's dotfiles: unpinned, invisible to every other harness, and absent on the next machine, whereas a fetched revision is fanned to every harness on every host by the same rebuild.
-
----
-
-## Ruled out
-
-Things deliberately not used, and why. Saves re-proposing them.
-
-_No entries yet._
+- Keep commits small and independently revertible on a linear history (rebase over merge; straight to `main` for small verified changes, branch and PR for risky work).
+- Commit messages explain why; the diff already shows what.
+- Only write standalone docs for what the code can't say itself: decisions, migrations, and manual procedures.
+- Prefer running and testing the real thing end-to-end over unit tests full of mocks on glue code.
+- Never report something as working unless you actually ran it, and still read the diff carefully - passing tests don't catch code that solves the wrong problem.
+```
