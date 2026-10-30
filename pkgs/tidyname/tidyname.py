@@ -40,6 +40,7 @@ DOC_EXTS = {".md", ".txt", ".rst", ".adoc", ""}
 
 
 def slug(text, lower=True):
+    text = re.sub(r"['’ʼ]", "", text)
     decomposed = unicodedata.normalize("NFKD", text)
     stripped = "".join(c for c in decomposed if not unicodedata.combining(c))
     # Surviving non-ASCII becomes a separator rather than vanishing, so the word
