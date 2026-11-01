@@ -45,6 +45,7 @@
   services.usbguard.rules = "";
 
   services.timekpr.enable = true;
+  programs.gpu-screen-recorder.enable = true;
 
   # console keymap is derived from the xkb layout (gb -> uk) by nixos/utils.nix
   # via console.useXkbConfig, so no per-host console.keyMap override is needed.
