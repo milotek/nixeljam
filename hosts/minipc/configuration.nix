@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   ...
 }: {
@@ -81,6 +82,21 @@
   systemd.services.slskd.unitConfig.RequiresMountsFor = ["/var/lib/copyparty"];
 
   home-manager.users."${config.var.username}" = import ./home.nix;
+
+  systemd.user.units."hermes-gateway.service" = {
+    overrideStrategy = "asDropin";
+    text = let
+      root = "${inputs.hermes-agent.packages.x86_64-linux.default}/share/hermes-agent";
+    in ''
+      [Service]
+      Environment=HERMES_INSTALL_ROOT=${root}
+      Environment=HERMES_BUNDLED_LOCALES=${root}/locales
+      Environment=HERMES_BUNDLED_SKILLS=${root}/skills
+      Environment=HERMES_BUNDLED_PLUGINS=${root}/plugins
+      Environment=HERMES_OPTIONAL_SKILLS=${root}/optional-skills
+      Environment=HERMES_OPTIONAL_MCPS=${root}/optional-mcps
+    '';
+  };
 
   system.stateVersion = "24.05";
 }
