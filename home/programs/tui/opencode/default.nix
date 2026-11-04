@@ -5,8 +5,11 @@
   osConfig ? {},
   ...
 }: let
+  # Single source of truth is nixos/ollama.nix: a provider entry for a model the
+  # host never pulls is a menu option that fails at request time.
   ollamaModels = osConfig.services.ollama.loadModels or [];
 
+  # Display names only; anything unlisted falls back to its ollama tag.
   ollamaModelNames = {
     "gemma3:4b" = "Gemma 3 4B";
   };

@@ -10,6 +10,7 @@
     ripgrep
   ];
 
+  # Declarative Powerlevel10k config (generated via `p10k configure`)
   home.file.".p10k.zsh".source = ./p10k.zsh;
 
   home.sessionPath = ["$HOME/go/bin"];
@@ -72,6 +73,8 @@
       notes = "nvim ~/notes/index.md --cmd 'cd ~/notes' -c ':lua Snacks.picker.smart()'";
       nix-shell = "nix-shell --command zsh";
 
+      # learncpp.com's recommended warning set, promoted to errors: catches the
+      # narrowing and sign-conversion bugs a bare `clang++` silently compiles.
       cl = "clang++ -std=c++26 -ggdb -pedantic-errors -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -Werror";
 
       # git
@@ -101,13 +104,15 @@
     initContent =
       # bash
       ''
-        # p10k instant prompt: must stay at the top of initContent
+        # Powerlevel10k instant prompt - must be near the top of initContent
         if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
           source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
         fi
 
         bindkey -e
 
+        # Ctrl+Q closes the window at the compositor, so XON can never reach the
+        # terminal to undo an accidental Ctrl+S. Drop flow control instead.
         stty -ixon
 
         autoload -Uz edit-command-line
@@ -136,12 +141,15 @@
         bindkey "^[OA" history-beginning-search-backward-end
         bindkey "^[OB" history-beginning-search-forward-end
 
+        # word movement on ctrl/alt + arrows, word deletion on ctrl+backspace
         bindkey "^[[1;5C" forward-word
         bindkey "^[[1;5D" backward-word
         bindkey "^[[1;3C" forward-word
         bindkey "^[[1;3D" backward-word
         bindkey "^H" backward-kill-word
 
+        # Ghostty sends ^U for ctrl+backspace; killing back to the start of the line
+        # is closer to what that chord means elsewhere than zsh's kill-whole-line.
         bindkey "^U" backward-kill-line
 
         zstyle ':completion:*' completer _extensions _complete _approximate
@@ -195,6 +203,7 @@
           export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/$gnupg_path/S.gpg-agent.ssh"
         ''}
 
+        # Allow foot to pipe command output
         function precmd {
           if ! builtin zle; then
               print -n "\e]133;D\e\\"

@@ -6,12 +6,20 @@ let
   skills = import ./skills.nix { inherit pkgs; };
 in
 {
+  # AGENTS.md is the always-loaded ruleset; it points agents to ~/VOICE.md
+  # (and ~/OPINIONS.md) to read on demand, so those live at the home root.
+
+  # opencode: reads ~/.config/opencode/AGENTS.md as global rules, and
+  # discovers skills via {skill,skills}/**/SKILL.md under ~/.config/opencode.
   xdg.configFile."opencode/AGENTS.md".source = agents;
   xdg.configFile."opencode/skills".source = skills;
 
+  # Claude Code: reads ~/.claude/CLAUDE.md as global memory and user skills
+  # from ~/.claude/skills.
   home.file.".claude/CLAUDE.md".source = agents;
   home.file.".claude/skills".source = skills;
 
+  # Referenced by AGENTS.md via `read ~/VOICE.md` and `read ~/OPINIONS.md`
   home.file."VOICE.md".source = voice;
   home.file."OPINIONS.md".source = opinions;
 

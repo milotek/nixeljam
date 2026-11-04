@@ -23,6 +23,7 @@
     );
   in
     pkgs.writeShellScriptBin "menu" ''
+      # Re-pressing the bind should dismiss the open menu, not stack a second one.
       if ${pkgs.procps}/bin/pkill -x wlr-which-key; then
         exit 0
       fi
@@ -30,6 +31,8 @@
     '';
 
   tofi-drun-toggle = pkgs.writeShellScriptBin "tofi-drun-toggle" ''
+    # tofi-drun is a distinct process name from the plain "tofi" binary used by
+    # the emoji/icon/clipboard pickers, so this can't close those.
     if ${pkgs.procps}/bin/pkill -x tofi-drun; then
       exit 0
     fi
@@ -103,11 +106,11 @@ in {
 
         # Quick launch
         "$mod,RETURN, exec, ${pkgs.ghostty}/bin/ghostty +new-window" # Ghostty (terminal, via daemon D-Bus)
-        "$mod,E, exec, ${pkgs.thunar}/bin/thunar"
+        "$mod,E, exec, ${pkgs.thunar}/bin/thunar" # Thunar
 
         # Windows
         "$mod,Q, killactive," # Close window
-        "CTRL,Q, killactive,"
+        "CTRL,Q, killactive," # Close window
         "$mod,F, fullscreen" # Toggle Fullscreen
         "$shiftMod,F, togglefloating," # Toggle Floating
         "$shiftMod, SPACE, exec, ${scripts.focus-toggle}/bin/focus-toggle" # Toggle focus mode

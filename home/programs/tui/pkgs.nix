@@ -8,12 +8,12 @@
     pom # Pomodoro timer in your terminal
     tabiew # A terminal-based CSV viewer and manipulator
     jless # A pager for JSON
-    dua
-    lazyjournal
-    mcat
-    vhs
-    pkgs.nur.repos.anotherhadi.monitui
-    pkgs.nur.repos.anotherhadi.fztea
+    dua # Tool to conveniently learn about the disk usage of directories
+    lazyjournal # TUI for journalctl
+    mcat # Cat command for documents / images / videos and more
+    vhs # Create GIF from the command-line
+    pkgs.nur.repos.anotherhadi.monitui # Edit hyprland's monitor configuration
+    pkgs.nur.repos.anotherhadi.fztea # Flipper Zero from the terminal
     pkgs.nur.repos.anotherhadi.usbguard-tui # TUI for managing USBGuard rules
     pkgs.nur.repos.anotherhadi.settuings # Terminal based settings (wifi, bluetooth, audio, ...)
 
@@ -27,7 +27,7 @@
     chafa # Image to ANSI/Unicode converter and more.
 
     # Just cool
-    smassh
+    smassh # typing test, 10fastfinger like
     tty-solitaire
     bastet
     peaclock
