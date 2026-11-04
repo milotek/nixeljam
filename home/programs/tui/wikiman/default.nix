@@ -3,15 +3,6 @@
   lib,
   ...
 }: let
-  # wikiman ships without the ArchWiki/tldr-pages databases (too heavy to
-  # bundle). These are fetched declaratively from wikiman's own release
-  # snapshots and baked into a wrapped `wikiman` so `-S` shows them as
-  # installed offline, no manual `make source-*` step required.
-  # To refresh: bump the release tag/date below and update the hashes
-  # (`nix hash file --sri <downloaded file>`).
-  #
-  # Download size (compressed): ~17M ArchWiki + ~3.4M tldr-pages.
-  # Store size (unpacked): ~239M ArchWiki + ~147M tldr-pages (~385M total).
   archWikiSrc = pkgs.fetchurl {
     url = "https://github.com/filiparag/wikiman/releases/download/2.14.1/arch-wiki_20260810.source.tar.xz";
     hash = "sha256-82aiDvwZ07m9CfBVYIDLSUpWds4QxUbCbCPmQ26j1XI=";
@@ -21,9 +12,7 @@
     hash = "sha256-2vdszVMImSN1UF+OepKdj1v+lsG2jM68gcpnUJyqddw=";
   };
 
-  # Real files (not symlinks): wikiman's source-detection does `find -type f`
-  # on this dir, which doesn't match symlinks, so `pkgs.symlinkJoin` alone
-  # won't work here.
+  # Real files, not symlinks: wikiman detects sources with `find -type f`.
   data = pkgs.runCommand "wikiman-data" {nativeBuildInputs = [pkgs.xz];} ''
     mkdir -p $out
     cp -r ${pkgs.wikiman}/share $out/share
@@ -45,5 +34,5 @@
     meta.mainProgram = "wikiman";
   };
 in {
-  home.packages = [wikiman-full]; # Offline search engine for manual pages, ArchWiki and tldr
+  home.packages = [wikiman-full];
 }
