@@ -16,17 +16,12 @@ import unicodedata
 
 PLAN_HEADER = "# tidyname plan v1"
 
-# Only a short alphanumeric tail counts as an extension, so "onlymp3.to - foo.mp3"
-# keeps ".mp3" but treats the ".to" as part of the name.
 EXT_RE = re.compile(r"\.[A-Za-z0-9]{1,8}$")
 TAR_RE = re.compile(r"\.tar$", re.IGNORECASE)
 
-# .hist and .th hold copyparty's index db and thumbnail cache, keyed by exact
-# path; renaming anything inside them corrupts the cache.
+# .hist and .th are copyparty's path-keyed caches; renaming inside them corrupts them.
 DEFAULT_EXCLUDES = [".hist", ".th", ".git", ".svn", ".stfolder", "node_modules"]
 
-# Structure is capitalised, content is not: base folders and the files that
-# carry meaning through their capitalisation keep the name they were given.
 KEEP_NAMES = [
     "readme", "readme.md", "readme.txt", "license", "license.md", "licence",
     "licence.md", "copying", "notice", "authors", "contributors", "changelog",
@@ -34,8 +29,6 @@ KEEP_NAMES = [
     "makefile", "dockerfile", "vagrantfile", "justfile", "procfile",
 ]
 
-# Extensions on which an all-caps name reads as a convention doc rather than
-# as a shouted content filename.
 DOC_EXTS = {".md", ".txt", ".rst", ".adoc", ""}
 
 
@@ -43,8 +36,6 @@ def slug(text, lower=True):
     text = re.sub(r"['’ʼ]", "", text)
     decomposed = unicodedata.normalize("NFKD", text)
     stripped = "".join(c for c in decomposed if not unicodedata.combining(c))
-    # Surviving non-ASCII becomes a separator rather than vanishing, so the word
-    # boundary in "über—dash" is kept instead of yielding "uberdash".
     ascii_only = "".join(c if ord(c) < 128 else " " for c in stripped)
     if lower:
         ascii_only = ascii_only.lower()
@@ -122,8 +113,7 @@ def build_plan(root, excludes, keep_names, keep_roots, dir_case):
     lossy = []
     skipped = []
     for dirpath, entries, at_root in walk(root, excludes):
-        # Every current entry is reserved, not just the ones staying put: that
-        # way a rename can never land on a name the apply pass has not freed yet.
+        # Reserve every current name, or a rename can land on one not yet freed.
         taken = set(n for n, _ in entries)
         for name, is_dir in entries:
             if keeps(name, is_dir, at_root, keep_names, keep_roots, dir_case):
@@ -198,8 +188,7 @@ def read_plan(path):
 
 
 def apply_plan(root, pairs, undo_path, dry_run):
-    # Deepest first, so renaming a directory never invalidates the paths of the
-    # children still queued underneath it.
+    # Deepest first, or renaming a directory invalidates its queued children.
     pairs = sorted(pairs, key=lambda p: p[0].count(os.sep), reverse=True)
     done = failed = 0
     undo = None if dry_run else open(undo_path, "a", encoding="utf-8")
@@ -327,10 +316,8 @@ def cmd_hook(args):
         info = json.loads(args.json)
         old = os.path.basename(info["vp"])
         new = old if old.lower() in set(KEEP_NAMES) else normalize(old)[0]
-        # copyparty resolves its own collisions, so only speak up on a real change.
         print(json.dumps({"reloc": {"fn": new}} if new != old else {}))
     except Exception as e:
-        # Never block an upload because the hook tripped over something.
         warn("tidyname hook: %s" % e)
         print("{}")
     return 0
