@@ -21,6 +21,7 @@ in {
         use_x_forwarded_for = true;
         trusted_proxies = [vps "127.0.0.1" "::1"];
       };
+      sonos.media_player.hosts = ["192.168.50.218"];
     };
   };
 }
