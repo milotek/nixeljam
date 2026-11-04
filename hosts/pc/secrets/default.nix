@@ -21,7 +21,6 @@ in {
         path = "${home}/.ssh/id_ed25519.pub";
       };
       router-api-key = {};
-      # copyparty (files.tek.rip) WebDAV password, consumed by the rclone mount.
       copyparty-password = {};
     };
   };

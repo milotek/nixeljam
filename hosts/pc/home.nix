@@ -54,32 +54,30 @@
     ../../home/system/remote-desktop
 
     ./variables.nix # Mostly user-specific configuration
-    ./secrets # sops-managed home secrets
+    ./secrets
   ];
 
   home = {
     inherit (config.var) username;
     homeDirectory = "/home/" + config.var.username;
 
-    # Kept here rather than in gui/pkgs.nix: minipc imports that file too, and
-    # these closures (blender alone is ~4 GiB) would overflow its /nix/store.
+    # Not in gui/pkgs.nix: minipc imports it and these closures overflow its store.
     packages = with pkgs; [
-      discord # Chat
-      obs-studio # Streaming/recording
-      blender # 3D creation suite
-      godot # Game engine
-      unityhub # Unity editor launcher
+      discord
+      obs-studio
+      blender
+      godot
+      unityhub
     ];
 
     file.".face" = {
       source = ./profile_picture.png;
     };
 
-    # Don't touch this — existing install predates v6's 26.05 default.
+    # Don't touch this
     stateVersion = "24.05";
   };
 
-  # pc's dual displays (per-host, per v6 convention).
   wayland.windowManager.hyprland.settings.monitor = [
     "HDMI-A-1,2560x1440@144,0x0,1"
     "DP-1,2560x1440@144,2560x0,1"

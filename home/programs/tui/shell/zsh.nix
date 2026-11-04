@@ -10,10 +10,8 @@
     ripgrep
   ];
 
-  # Declarative Powerlevel10k config (generated via `p10k configure`)
   home.file.".p10k.zsh".source = ./p10k.zsh;
 
-  # Add go binaries to the PATH
   home.sessionPath = ["$HOME/go/bin"];
 
   home.sessionVariables = {
@@ -74,8 +72,6 @@
       notes = "nvim ~/notes/index.md --cmd 'cd ~/notes' -c ':lua Snacks.picker.smart()'";
       nix-shell = "nix-shell --command zsh";
 
-      # learncpp.com's recommended warning set, promoted to errors: catches the
-      # narrowing and sign-conversion bugs a bare `clang++` silently compiles.
       cl = "clang++ -std=c++26 -ggdb -pedantic-errors -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -Werror";
 
       # git
@@ -105,18 +101,15 @@
     initContent =
       # bash
       ''
-        # Powerlevel10k instant prompt — must be near the top of initContent
+        # p10k instant prompt: must stay at the top of initContent
         if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
           source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
         fi
 
         bindkey -e
 
-        # Ctrl+Q closes the window at the compositor, so XON can never reach the
-        # terminal to undo an accidental Ctrl+S. Drop flow control instead.
         stty -ixon
 
-        # Open command in VIM
         autoload -Uz edit-command-line
         zle -N edit-command-line
         bindkey '^X' edit-command-line
@@ -125,7 +118,7 @@
         alias -s {nix,md,txt,json,yml,yaml,go}=nvim
         alias -s {png,jpg,jpeg,gif,pdf}=xdg-open
 
-        # 3. Global Aliases (Remplacés n'importe où dans la commande, pas seulement au début)
+        # Global Aliases
         alias -g G="| grep"
         alias -g L="| less"
         alias -g V="| nvim"
@@ -137,42 +130,32 @@
         alias -g ND=">/dev/null"
         alias -g NUL=">/dev/null 2>1"
 
-        # search history based on what's typed in the prompt
         autoload -U history-search-end
         zle -N history-beginning-search-backward-end history-search-end
         zle -N history-beginning-search-forward-end history-search-end
         bindkey "^[OA" history-beginning-search-backward-end
         bindkey "^[OB" history-beginning-search-forward-end
 
-        # word movement on ctrl/alt + arrows, word deletion on ctrl+backspace
         bindkey "^[[1;5C" forward-word
         bindkey "^[[1;5D" backward-word
         bindkey "^[[1;3C" forward-word
         bindkey "^[[1;3D" backward-word
         bindkey "^H" backward-kill-word
 
-        # Ghostty sends ^U for ctrl+backspace; killing back to the start of the line
-        # is closer to what that chord means elsewhere than zsh's kill-whole-line.
         bindkey "^U" backward-kill-line
 
-        # General completion behavior
         zstyle ':completion:*' completer _extensions _complete _approximate
 
-        # Use cache
         zstyle ':completion:*' use-cache on
         zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
 
-        # Complete the alias
         zstyle ':completion:*' complete true
 
-        # Autocomplete options
         zstyle ':completion:*' complete-options true
 
-        # Completion matching control
         zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
         zstyle ':completion:*' keep-prefix true
 
-        # Group matches and describe
         zstyle ':completion:*' menu select
         zstyle ':completion:*' list-grouped false
         zstyle ':completion:*' list-separator '''
@@ -184,10 +167,8 @@
         zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
         zstyle ':completion:*:descriptions' format '[%d]'
 
-        # Colors
         zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
 
-        # Case insensitive tab completion
         zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
         zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
         zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
@@ -195,7 +176,6 @@
         zstyle ':completion:*' special-dirs true
         zstyle ':completion:*' squeeze-slashes true
 
-        # Sort
         zstyle ':completion:*' sort false
         zstyle ":completion:*:git-checkout:*" sort false
         zstyle ':completion:*' file-sort modification
@@ -215,7 +195,6 @@
           export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/$gnupg_path/S.gpg-agent.ssh"
         ''}
 
-        # Allow foot to pipe command output
         function precmd {
           if ! builtin zle; then
               print -n "\e]133;D\e\\"
@@ -225,7 +204,6 @@
           print -n "\e]133;C\e\\"
         }
 
-        # Source p10k config (placed declaratively via home.file)
         [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
       '';
   };

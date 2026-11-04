@@ -23,8 +23,6 @@
       email = "milo@milotek.dev";
     };
 
-    # Serve this host's zellij sessions to a browser at term.minipc.<domain>.
-    # Read by both server-modules/zellij-web.nix and the zellij home module.
     zellijWeb = true;
 
     autoUpgrade = false;
