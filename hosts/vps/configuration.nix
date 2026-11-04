@@ -1,3 +1,5 @@
+# Oracle Cloud aarch64 VPS - headless, deploy via nixos-anywhere.
+# nixos-anywhere --flake .#vps --build-on remote -i ~/.ssh/id_ed25519 root@<ip>
 {
   config,
   lib,
@@ -37,6 +39,9 @@
     LC_TIME = config.var.extraLocale;
   };
 
+  # The only host with a public IP, so the only one a scanner can reach. SSH
+  # still works over tailscale0 (a trusted interface); break-glass is Oracle's
+  # serial console.
   services.openssh.openFirewall = lib.mkForce false;
 
   environment.systemPackages = with pkgs; [wget curl git vim htop];
@@ -45,6 +50,8 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "hm-backup";
+    # vps home modules (shell/git/nix-utils) use neither pkgs-unstable nor NUR,
+    # so inputs is the only special arg they need.
     extraSpecialArgs = {inherit inputs;};
     users."${config.var.username}" = import ./home.nix;
   };

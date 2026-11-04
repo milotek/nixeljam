@@ -1,3 +1,5 @@
+# nix-darwin host for the work MacBook (milotek-mac, Apple Silicon).
+# Deploy with: darwin-rebuild switch --flake ~/.config/nixos#work-mac
 {
   inputs,
   nixpkgs,
