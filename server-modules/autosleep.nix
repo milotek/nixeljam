@@ -20,6 +20,8 @@ in {
           target=$(${pkgs.coreutils}/bin/date -d "tomorrow ${wakeAt}" +%s)
         fi
 
+        # -u because NixOS keeps the hardware clock in UTC; without it rtcwake
+        # would offset the alarm by however far local time is from UTC.
         ${pkgs.util-linux}/bin/rtcwake -m mem -u -s "$(( target - now ))"
       '';
     };

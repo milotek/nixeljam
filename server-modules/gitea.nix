@@ -15,6 +15,8 @@
     stripRoot = false;
   };
 
+  # Gitea's own "migrate" API does the mirroring; this only discovers repos
+  # that don't have a mirror yet, so it's safe to re-run and cheap when idle.
   giteaGithubMirror = pkgs.writeShellApplication {
     name = "gitea-github-mirror";
     runtimeInputs = [pkgs.curl pkgs.jq];
