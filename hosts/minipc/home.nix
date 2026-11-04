@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    # Programs (lighter than pc - no creative/gaming/media tooling)
+    # Programs (lighter than pc — no creative/gaming/media tooling)
 
     ## GUI
     ../../home/programs/gui/chrome
@@ -37,7 +37,6 @@
     ../../home/system/clipboard
     ../../home/system/mime
     ../../home/system/udiskie
-    ../../home/system/remote-desktop
 
     ./variables.nix
   ];
@@ -47,11 +46,11 @@
     homeDirectory = "/home/" + config.var.username;
     packages = [inputs.hermes-agent.packages.x86_64-linux.default];
 
-    # Don't touch this - existing install predates v6's 26.05 default.
+    # Don't touch this — existing install predates v6's 26.05 default.
     stateVersion = "24.05";
   };
 
-  # No machine-specific monitor override - minipc auto-detects displays
+  # No machine-specific monitor override — minipc auto-detects displays
   # (v6 hyprland default: ",preferred,auto,1").
 
   programs = {
