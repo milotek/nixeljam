@@ -9,7 +9,7 @@ These are common instructions for Milo's agents across all scenarios.
   This is not a courtesy, it is a canary: an agent that has lost the thread drops the name long before it starts visibly failing at the work.
   A short reply is not an exemption, and neither is a reply that is mostly tool calls.
 * Never use the em dash "—". Use plain dash "-" instead
-* When writing commit messages, NEVER auto-add your agent name as co-author
+* When writing commit messages: use the Angular convention, no description body, and NEVER auto-add your agent name as co-author
 * Never manually modify CHANGELOG.md files or any files that are marked as auto-generated
 * When writing or substantially editing long Markdown files, put each full sentence on its own line.
   Preserve normal Markdown structure, but avoid wrapping multiple sentences onto one physical line.
