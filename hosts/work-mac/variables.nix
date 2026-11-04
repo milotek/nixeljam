@@ -12,6 +12,7 @@
 
     git = {
       username = "Milo Tekchandani";
+      # CHANGEME: set a work email here if you want work commits attributed differently.
       email = "milo@milotek.dev";
     };
 

@@ -61,7 +61,8 @@
     inherit (config.var) username;
     homeDirectory = "/home/" + config.var.username;
 
-    # Not in gui/pkgs.nix: minipc imports it and these closures overflow its store.
+    # Kept here rather than in gui/pkgs.nix: minipc imports that file too, and
+    # these closures (blender alone is ~4 GiB) would overflow its /nix/store.
     packages = with pkgs; [
       discord
       obs-studio
@@ -74,7 +75,7 @@
       source = ./profile_picture.png;
     };
 
-    # Don't touch this
+    # Don't touch this - existing install predates v6's 26.05 default.
     stateVersion = "24.05";
   };
 

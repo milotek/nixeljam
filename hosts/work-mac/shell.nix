@@ -33,6 +33,8 @@
       size = 10000;
     };
 
+    # Autosuggestions + syntax highlighting
+    # are provided natively above, so they are not listed as omz plugins.
     oh-my-zsh = {
       enable = true;
       plugins = ["git" "history"];
@@ -82,7 +84,7 @@
     };
 
     initContent = ''
-      # p10k instant prompt must stay at the top.
+      # Powerlevel10k instant prompt - keep near the top.
       if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
         source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
       fi
@@ -108,6 +110,11 @@
       ul() { LC_ALL=C curl -s -F "reqtype=fileupload" -F "userhash=dd880b5205f68cf0614c39a0d" -F "fileToUpload=@$1" https://catbox.moe/user/api.php | pbcopy; pbpaste; echo ""; }
 
       fastfetch
+
+      # Corp-internal aliases left commented; re-enable/adjust as needed.
+      # alias rw="rw milotek.c.googlers.com"
+      # alias ws="jj jjd"
+      # alias gemini='/google/bin/releases/gemini-cli/tools/gemini'
 
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
     '';
