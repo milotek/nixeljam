@@ -7,9 +7,6 @@
   c = config.lib.stylix.colors;
   font = config.stylix.fonts.monospace.name;
 
-  # The frame is drawn as one pre-rendered text label, so every element has to
-  # be placed in the same character grid. These derive that grid from the font
-  # size rather than hardcoding pixel offsets that break when the font changes.
   fontSize = 16;
   em = fontSize * 4.0 / 3.0;
   charW = em * 0.6;
@@ -19,8 +16,7 @@
   px = x: toString (round x);
 
   paint = color: t: ''<span foreground="#${color}">${t}</span>'';
-  # hyprlock does not accept multi-line label text inline, so the frame is read
-  # back from a file at lock time.
+  # hyprlock can't take multi-line label text inline.
   fromFile = name: text: ''cmd[update:0] cat ${pkgs.writeText name text}'';
 
   inner = 42;
@@ -64,8 +60,7 @@
   dotPad = (inputH - lineH) / 2.0;
   inputX = colX (valueCol + 1) - dotPad;
   passwordRow = 4;
-  # An empty span rather than "": hyprlock reserves layout space for the
-  # placeholder either way, and a literal empty string shifts the dots.
+  # Not "": a literal empty string shifts the dots.
   hidden = "<span> </span>";
 in {
   stylix.targets.hyprlock.enable = false;

@@ -207,7 +207,6 @@
         desc = "Dedent and keep selection";
       }
 
-      # Scroll and center
       {
         key = "<C-d>";
         mode = ["n" "v"];

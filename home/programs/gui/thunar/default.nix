@@ -1,4 +1,3 @@
-# Thunar is a file explorer
 {
   pkgs,
   config,
@@ -7,7 +6,6 @@
 }: let
   user = config.var.username;
 in {
-  # ctrl + m to toggle the menubar
   home.packages =
     (with pkgs; [
       thunar
@@ -20,16 +18,12 @@ in {
       xarchiver
     ])
     ++ (with pkgs; [
-      # Icon themes: keep on global pkgs to avoid conflicts with other modules
       papirus-icon-theme
       material-icons
       material-design-icons
       material-symbols
     ]);
 
-  # gtk.enable, iconTheme, qt.enable and the icon/QT session variables are
-  # provided by home/system/hyprland (v6 moved them there). Only the thunar
-  # side-pane bookmarks are thunar-specific.
   gtk.gtk3.bookmarks = [
     "file:///home/${user}/Desktop Desktop"
     "file:///home/${user}/Documents Documents"
