@@ -107,7 +107,10 @@ in {
     # above already owns them correctly. Running as root instead leaves .env
     # root-owned, and php-fpm - which is www-data - then cannot write the
     # installer's database settings back into it.
-    ports = ["${toString panelPort}:80"];
+    # Same port on both sides, not 8085:80: the image's internal Caddy takes its
+    # listen address from APP_URL, so carrying a port there makes it bind that
+    # port rather than 80, and a mapping onto 80 reaches nothing.
+    ports = ["${toString panelPort}:${toString panelPort}"];
     volumes = [
       "${stateDir}/panel/data:/pelican-data"
       "${stateDir}/panel/logs:/var/www/html/storage/logs"
