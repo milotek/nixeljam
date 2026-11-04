@@ -1,3 +1,16 @@
+# Godot's text-editor (syntax) theme, generated from the active Stylix palette
+# so the code editor matches the rest of the system. This mirrors how gitea /
+# tuigreet / blender are themed straight from `config.lib.stylix.colors`
+# (Stylix has no godot target of its own).
+#
+# `.tet` files are Godot's drop-in text-editor themes: dropping this file makes
+# a theme named "Stylix" appear under
+#   Editor > Editor Settings > Text Editor > Theme.
+# Select it there once. Format reference: github.com/catppuccin/godot
+#
+# Note: this only themes the code editor. Godot's *interface* (UI chrome) colors
+# aren't a drop-in file - set base/accent under Interface > Theme manually if you
+# want the chrome to match too.
 {
   config,
   lib,

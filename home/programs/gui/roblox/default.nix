@@ -1,3 +1,7 @@
+# Sync is handled by azul (github.com/Ransomwave/azul), a two-way Studio <-> disk
+# sync where Studio is authoritative: it mirrors the DataModel to the filesystem
+# with no project/meta files to maintain, unlike Rojo. azul-sync isn't in
+# nixpkgs, so it's built here from its published git tag with buildNpmPackage.
 {pkgs, ...}: let
   azul = pkgs.buildNpmPackage rec {
     pname = "azul-sync";
@@ -12,6 +16,7 @@
 
     npmDepsHash = "sha256-pQ5ha8lUHZZyG0CvNHD7oihKlQFsyLXaIxi9UpQ2tCo=";
 
+    # `npm run build` is a plain `tsc` compile into dist/; no native modules.
     dontNpmBuild = false;
 
     meta = {

@@ -7,6 +7,7 @@
 in {
   imports = [inputs.spicetify-nix.homeManagerModules.default];
 
+  # Theme and colors are handled automatically by stylix's spicetify target.
   programs.spicetify = {
     enable = true;
     enabledExtensions = with spicePkgs.extensions; [

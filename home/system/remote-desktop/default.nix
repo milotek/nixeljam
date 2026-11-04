@@ -1,3 +1,13 @@
+# Browser-accessible remote desktop for this Hyprland (wlroots) session.
+#
+# wayvnc mirrors the live Wayland session as a VNC server, and websockify
+# serves the noVNC web client on 6080, bridging the browser's WebSocket to that
+# VNC port. Reachable at http://<this host's tailnet ip>:6080 from any tailnet
+# device; the firewall trusts tailscale0 only, so nothing is exposed publicly.
+#
+# VNC itself is unauthenticated, so the tailnet IS the authentication.
+# wayvnc attaches to the running compositor, so remote access only works while
+# the user is logged into Hyprland - at the greeter there is no session to mirror.
 {
   pkgs,
   ...
@@ -32,7 +42,6 @@ in {
     };
     Service = {
       Type = "simple";
-      # VNC is unauthenticated: 0.0.0.0 is only safe while the firewall trusts tailscale0 alone.
       ExecStart = "${websockify}/bin/websockify --web=${novncRoot} 0.0.0.0:${toString webPort} 127.0.0.1:${toString vncPort}";
       Restart = "on-failure";
       RestartSec = 5;
