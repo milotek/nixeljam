@@ -25,7 +25,6 @@
     ../../server-modules/navidrome.nix
     ../../server-modules/slskd.nix
     ../../server-modules/home-assistant.nix
-    ../../server-modules/openclaw.nix
     ../../server-modules/glance
     ../../server-modules/zellij-web.nix
     ../../server-modules/pelican.nix
