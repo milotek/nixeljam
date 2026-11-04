@@ -72,9 +72,7 @@ in {
     power-profiles-daemon.enable = true;
     udisks2.enable = true;
   };
-  # Derive the console keymap from the xkb layout via ckbcomp. The console keymap
-  # names differ from xkb (e.g. xkb "gb" -> console "uk"), so mapping directly with
-  # console.keyMap = keyboardLayout would fail loadkeys; useXkbConfig keeps them consistent.
+  # Not console.keyMap = keyboardLayout: xkb "gb" is console "uk", so loadkeys fails.
   console.useXkbConfig = true;
 
   environment = {
