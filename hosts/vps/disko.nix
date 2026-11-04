@@ -1,5 +1,3 @@
-# Disk layout for Oracle Cloud aarch64 VPS (/dev/sda, 46.6G, UEFI).
-# systemd-boot lives on the ESP (/boot); root is a single ext4 partition.
 {...}: {
   disko.devices = {
     disk = {

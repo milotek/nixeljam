@@ -1,19 +1,17 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    # ── From your Homebrew leaves, now via nix ──
-    beancount # plain-text accounting
-    btop # resource monitor (aliased `larpmaxx`)
-    chezmoi # dotfile manager
-    duti # set default apps by UTI (macOS)
-    fastfetch # system info (aliased `larp`)
-    ffmpeg # media swiss-army knife
-    gh # GitHub CLI
-    kotlin # Kotlin compiler
-    nmap # network scanner
-    stow # symlink farm manager
-    yt-dlp # media downloader (used by the `dl` function)
+    beancount
+    btop
+    chezmoi
+    duti
+    fastfetch
+    ffmpeg
+    gh
+    kotlin
+    nmap
+    stow
+    yt-dlp
 
-    # ── Core CLI niceties (pc-parity, all build on macOS) ──
     ripgrep
     fd
     jq
@@ -23,17 +21,16 @@
     htop
     ncdu
 
-    # ── TUIs / extras from your pc set that build on macOS ──
-    gh-dash # GitHub dashboard TUI
-    httpie # friendly HTTP client
-    imagemagick # image manipulation
-    chafa # images -> ANSI
-    tealdeer # fast tldr client
-    jless # JSON pager
-    figlet # ASCII art text
-    pastel # color tool
-    glow # markdown renderer
-    hexyl # hex viewer
-    exiftool # media metadata
+    gh-dash
+    httpie
+    imagemagick
+    chafa
+    tealdeer
+    jless
+    figlet
+    pastel
+    glow
+    hexyl
+    exiftool
   ];
 }
