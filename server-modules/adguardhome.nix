@@ -1,6 +1,17 @@
-# Adguard is a network-wide ad blocker
+# Adguard is a network-wide ad blocker, reachable at http://minipc:3000 over
+# tailscale.
+#
+# Tailnet-only, and so unauthenticated, on the same trust model as glance.
+# Without a declarative `settings` block AdGuard never leaves its first-run
+# install wizard: it serves /install.html on the web port and binds no DNS
+# listener at all, so nothing pointed at it resolves.
+#
+# bind_hosts is the tailnet address rather than 0.0.0.0 because systemd-resolved
+# (enabled by nixos/tailscale.nix) already holds 127.0.0.53:53. The LAN address
+# is deliberately absent - it comes from DHCP, and AdGuard refuses to start if
+# an address in bind_hosts is missing.
 {...}: let
-  listenAddress = "100.85.180.11";
+  listenAddress = "100.85.180.11"; # minipc's tailnet address
   port = 3000;
 in {
   services.adguardhome = {
@@ -12,7 +23,6 @@ in {
       http.address = "${listenAddress}:${toString port}";
 
       dns = {
-        # Not 0.0.0.0 (resolved holds :53) and not the DHCP LAN address (missing ones stop startup).
         bind_hosts = [listenAddress];
         bootstrap_dns = ["1.1.1.1" "9.9.9.10"];
         upstream_dns = ["https://dns.cloudflare.com/dns-query" "https://dns.quad9.net/dns-query"];

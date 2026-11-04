@@ -32,7 +32,7 @@ in {
 
   hardware = {
     nvidia = {
-      open = false;
+      open = false; # Proprietary driver for better performance
       nvidiaSettings = true;
       powerManagement = {
         enable = true;

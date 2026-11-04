@@ -1,3 +1,4 @@
+# Disk layout for Oracle Cloud aarch64 VPS (/dev/sda, 46.6G, UEFI).
 {...}: {
   disko.devices = {
     disk = {

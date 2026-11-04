@@ -206,7 +206,6 @@
         action = "<gv";
         desc = "Dedent and keep selection";
       }
-
       {
         key = "<C-d>";
         mode = ["n" "v"];

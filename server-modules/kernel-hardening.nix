@@ -9,8 +9,12 @@
     "net.core.bpf_jit_harden" = 2;
     "kernel.unprivileged_bpf_disabled" = 1;
 
+    # Disable kexec (loading a new kernel at runtime)
     "kernel.kexec_load_disabled" = 1;
+
     "kernel.sysrq" = 0;
+
+    # Deny perf_event_open to unprivileged users entirely
     "kernel.perf_event_paranoid" = 3;
 
     # Reverse path filtering (anti-spoofing)
@@ -37,14 +41,18 @@
     "kernel.yama.ptrace_scope" = 1;
 
     "net.ipv4.icmp_ignore_bogus_error_responses" = 1;
+
+    # Protect against time-wait assassination
     "net.ipv4.tcp_rfc1337" = 1;
   };
 
+  # These cost a few percent of throughput; worth it on a box that faces the
+  # internet, which is why they live here and not in the shared nixos/ modules.
   boot.kernelParams = [
-    "init_on_alloc=1"
-    "init_on_free=1"
-    "slab_nomerge"
-    "page_alloc.shuffle=1"
-    "randomize_kstack_offset=1"
+    "init_on_alloc=1" # zero freshly allocated kernel memory
+    "init_on_free=1" # zero freed kernel memory
+    "slab_nomerge" # don't merge slab caches of different sizes (harder heap grooming)
+    "page_alloc.shuffle=1" # randomize page allocator freelists
+    "randomize_kstack_offset=1" # randomize the kernel stack offset on syscall entry
   ];
 }

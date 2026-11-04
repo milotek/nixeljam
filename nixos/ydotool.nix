@@ -1,3 +1,4 @@
+# ydotool: Wayland-compatible input automation (autoclicker / key + mouse injection).
 {config, ...}: {
   programs.ydotool.enable = true;
 

@@ -1,12 +1,19 @@
+# ShadowPlay-like instant replay via gpu-screen-recorder.
+#
+# An always-on replay daemon continuously buffers the last N seconds of the
+# primary monitor (HDMI-A-1) in RAM using NVENC. Pressing the save key (see
+# home/system/hyprland/bindings.nix) sends SIGUSR1 to flush that buffer to a
+# clip file in ~/Videos/Recordings/Clips/.
 {
   pkgs,
   config,
   ...
 }: let
   clipsDir = "${config.home.homeDirectory}/Videos/Recordings/Clips";
-  monitor = "HDMI-A-1"; # Not "focused": a persistent replay buffer can't follow focus on Wayland
+  monitor = "HDMI-A-1"; # Primary AORUS FI27Q-X; Wayland can't follow focus in a persistent buffer
   replaySeconds = 30;
 
+  # Runs after each save with the saved file path as $1; gives ShadowPlay-style feedback.
   onSave = pkgs.writeShellScript "gsr-clip-saved" ''
     ${pkgs.libnotify}/bin/notify-send -a "Clips" -i video-x-generic \
       "Clip saved" "$(${pkgs.coreutils}/bin/basename "$1")"

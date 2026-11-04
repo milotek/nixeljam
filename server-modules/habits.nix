@@ -1,3 +1,11 @@
+# Habit tracker rendered as a GitHub-style activity grid, for a wall-mounted
+# kiosk. Source and NixOS module live in github:milotek/habits.
+#
+# /var/lib/habits is bind-mounted from the host: the SQLite database is the only
+# state here that cannot be rebuilt from source, so it stays outside the
+# container and is the one thing worth backing up.
+#
+# No authentication, by choice - see the vhost comment in caddy.nix.
 {
   config,
   inputs,
@@ -32,6 +40,9 @@ in {
     })
   ];
 
+  # Caddy on the VPS dials this host's tailscale address, so the container's
+  # private network needs a way in. The cloudflared services reach their
+  # containers directly by IP and need no equivalent.
   containers.habits.forwardPorts = [
     {
       containerPort = 8095;

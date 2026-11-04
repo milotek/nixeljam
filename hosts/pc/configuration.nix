@@ -30,14 +30,21 @@
     ./variables.nix
   ];
 
-  # Sunshine screen capture needs video + input.
+  # Sunshine screen capture needs the primary user in video + input groups.
   users.users.${config.var.username}.extraGroups = ["video" "input"];
 
-  # Keep "allow" until rules are generated, or "block" with empty rules blocks every USB device.
+  # Once stable, run `sudo usbguard generate-policy` with all devices plugged in,
+  # paste the output into rules below, then switch implicitPolicyTarget back to "block".
   services.usbguard.implicitPolicyTarget = lib.mkForce "allow";
+
+  # Cleared - rules were from the laptop and don't match this machine's devices.
+  # Regenerate with: sudo usbguard generate-policy
   services.usbguard.rules = "";
 
   services.timekpr.enable = true;
+
+  # console keymap is derived from the xkb layout (gb -> uk) by nixos/utils.nix
+  # via console.useXkbConfig, so no per-host console.keyMap override is needed.
 
   environment.etc."libinput/local-overrides.quirks".text = ''
     [Logitech G502 X Plus]

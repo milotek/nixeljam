@@ -1,16 +1,16 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
     beancount
-    btop
+    btop # aliased `larpmaxx`
     chezmoi
     duti
-    fastfetch
+    fastfetch # aliased `larp`
     ffmpeg
     gh
     kotlin
     nmap
     stow
-    yt-dlp
+    yt-dlp # used by the `dl` function
 
     ripgrep
     fd

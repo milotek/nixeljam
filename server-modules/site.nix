@@ -1,3 +1,6 @@
+# The apex domain: one page, a gif and a random single, both hotlinked from the
+# public copyparty share at files.<domain>. Served here; the VPS's caddy fronts
+# it at https://<domain>.
 {
   config,
   pkgs,
