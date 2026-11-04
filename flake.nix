@@ -85,6 +85,10 @@
       url = "github:milotek/habits";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # midi playback for copyparty until it lands upstream. Deliberately NOT
+    # following our nixpkgs: the fork's flake is pinned to 25.05, and the
+    # python packageset it overlays does not exist in 26.05 unchanged.
+    copyparty-midi.url = "github:milotek/copyparty-midi-support/midi-support";
   };
 
   outputs = inputs @ {

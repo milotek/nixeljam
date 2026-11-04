@@ -103,7 +103,29 @@ in {
     virtualHosts."term.minipc.${config.var.domain}".extraConfig = ''
       reverse_proxy ${minipc}:8082
     '';
+
+    # minipc's live Hyprland session in a browser (wayvnc -> noVNC on 6080).
+    #
+    # Basic auth is not optional here the way it is for the vhosts above: VNC
+    # itself is unauthenticated, so without it this vhost is an unattended root
+    # shell on the public internet. The pre-tailnet version of this endpoint
+    # carried the same guard (see 2cdb8a1f).
+    virtualHosts."remote.minipc.${config.var.domain}".extraConfig = ''
+      basic_auth {
+        ${config.var.username} {env.REMOTE_DESKTOP_HASH}
+      }
+      reverse_proxy ${minipc}:6080
+    '';
   };
+
+  sops.secrets.remote-desktop-hash = {};
+
+  sops.templates."remote-desktop.env".content = ''
+    REMOTE_DESKTOP_HASH=${config.sops.placeholder.remote-desktop-hash}
+  '';
+
+  systemd.services.caddy.serviceConfig.EnvironmentFile =
+    config.sops.templates."remote-desktop.env".path;
 
   # 80 lets Caddy solve the ACME challenge and redirect http -> https; 443 serves the site.
   networking.firewall.allowedTCPPorts = [80 443];

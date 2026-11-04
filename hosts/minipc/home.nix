@@ -37,6 +37,7 @@
     ../../home/system/clipboard
     ../../home/system/mime
     ../../home/system/udiskie
+    ../../home/system/remote-desktop
 
     ./variables.nix
   ];
