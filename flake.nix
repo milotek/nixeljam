@@ -27,7 +27,6 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # macOS system management (work-mac host).
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -45,7 +44,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # nixeljam additions
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -101,7 +99,6 @@
     };
     merge = nixpkgs.lib.foldl nixpkgs.lib.recursiveUpdate {};
 
-    # Args passed to Darwin (nix-darwin) host flakes.
     darwinSystem = "aarch64-darwin";
     darwinArgs = {
       inherit inputs nixpkgs;
@@ -134,7 +131,7 @@
           vps = import ./hosts/vps/flake.nix args;
           wsl = import ./hosts/wsl/flake.nix args;
         };
-        # nix-darwin hosts — deploy with: darwin-rebuild switch --flake .#<name>
+        # nix-darwin hosts - deploy with: darwin-rebuild switch --flake .#<name>
         darwinConfigurations = {
           work-mac = import ./hosts/work-mac/flake.nix darwinArgs; # milotek-mac
         };
