@@ -8,7 +8,7 @@
     type = lib.types.attrs;
     default = {
       rounding = 20;
-      bar-height = 36; # waybar/tofi read bar-height
+      bar-height = 36; # v6 schema: replaced bar-rounding/bar-thickness (waybar/tofi read bar-height)
       gaps-in = 8;
       gaps-out = 8 * 2;
       active-opacity = 0.96;
