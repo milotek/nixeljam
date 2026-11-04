@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  pkgs,
   ...
 }: {
   imports = [
@@ -44,6 +45,7 @@
   home = {
     inherit (config.var) username;
     homeDirectory = "/home/" + config.var.username;
+    packages = [inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default];
 
     # Don't touch this — existing install predates v6's 26.05 default.
     stateVersion = "24.05";

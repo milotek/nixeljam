@@ -55,6 +55,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak"; # gaming.nix flatpak (Sober)
+    hermes-agent.url = "github:NousResearch/hermes-agent";
     minegrub-world-sel-theme = {
       url = "github:Lxtharia/minegrub-world-sel-theme";
       inputs.nixpkgs.follows = "nixpkgs";
