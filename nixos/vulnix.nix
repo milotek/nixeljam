@@ -1,3 +1,5 @@
+# Vulnix scans the Nix store against the NVD CVE feed to find packages with
+# known vulnerabilities. Results land in the journal: `journalctl -u vulnix-scan`.
 {pkgs, ...}: {
   environment.systemPackages = [pkgs.vulnix];
 
@@ -7,7 +9,8 @@
       Type = "oneshot";
       ExecStart = "${pkgs.vulnix}/bin/vulnix --system --cache-dir /var/cache/vulnix";
       CacheDirectory = "vulnix";
-      # vulnix exits 1/2 when it finds vulnerabilities, not when the scan fails.
+      # vulnix exits non-zero when it finds vulnerabilities; that's expected,
+      # don't let systemd treat the scan itself as a failure.
       SuccessExitStatus = "1 2";
     };
   };

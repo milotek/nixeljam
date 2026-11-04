@@ -11,6 +11,7 @@ in {
     allowBroken = false;
   };
 
+  # Ask for password once per SSH session (tied to the tty, expires when session closes)
   security.sudo.extraConfig = ''
     Defaults timestamp_type=tty,timestamp_timeout=-1
   '';

@@ -12,6 +12,8 @@
 
   programs.gamemode.enable = true;
 
+  # protonup-ng installs Proton-GE builds here; Steam only picks them up if
+  # this path is exported.
   environment.sessionVariables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/${config.var.username}/.steam/root/compatibilitytools.d";
 
   services.flatpak = {
@@ -35,7 +37,7 @@
   services.sunshine = {
     enable = true;
     autoStart = true;
-    capSysAdmin = true;
+    capSysAdmin = true; # needed for KMS/DRM screen capture on Wayland
     openFirewall = true;
   };
 
