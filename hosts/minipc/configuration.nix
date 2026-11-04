@@ -25,7 +25,6 @@
     ../../server-modules/navidrome.nix
     ../../server-modules/slskd.nix
     ../../server-modules/home-assistant.nix
-    ../../server-modules/openclaw.nix
     ../../server-modules/glance
     ../../server-modules/zellij-web.nix
     ../../server-modules/pelican.nix
@@ -83,6 +82,11 @@
   systemd.services.slskd.unitConfig.RequiresMountsFor = ["/var/lib/copyparty"];
 
   home-manager.users."${config.var.username}" = import ./home.nix;
+
+  systemd.user.services.hermes-gateway = {
+    overrideStrategy = "asDropin";
+    path = ["/run/wrappers" "/etc/profiles/per-user/${config.var.username}" "/run/current-system/sw"];
+  };
 
   system.stateVersion = "24.05";
 }

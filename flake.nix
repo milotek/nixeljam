@@ -40,10 +40,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    helium-browser = {
-      url = "github:oxcl/nix-flake-helium-browser";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,6 +51,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak"; # gaming.nix flatpak (Sober)
+    hermes-agent.url = "github:NousResearch/hermes-agent";
     minegrub-world-sel-theme = {
       url = "github:Lxtharia/minegrub-world-sel-theme";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -68,12 +65,6 @@
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # OpenClaw - self-hosted AI agent (first-party nix packaging).
-    # Deliberately NOT following our nixpkgs: the upstream garnix cache
-    # (cache.garnix.io) is built against their pinned nixos-unstable, and
-    # overriding it changes the derivation hash into a full source build.
-    nix-openclaw.url = "github:openclaw/nix-openclaw";
 
     # Server
     nixarr.url = "github:nix-media-server/nixarr";
