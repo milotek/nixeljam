@@ -8,6 +8,7 @@ in {
       "met"
       "esphome"
       "tuya"
+      "sonos"
     ];
     config = {
       default_config = {};
