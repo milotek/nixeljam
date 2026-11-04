@@ -1,5 +1,5 @@
 {config, ...}: let
-  vps = "100.117.236.50"; # the VPS's tailnet address; caddy proxies home.<domain> from there
+  vps = "100.117.236.50";
 in {
   services.home-assistant = {
     enable = true;
