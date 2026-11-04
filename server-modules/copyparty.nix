@@ -1,21 +1,11 @@
 {
   config,
-  inputs,
   pkgs,
   ...
 }: let
   tidyname = import ../pkgs/tidyname/package.nix {inherit pkgs;};
 
   root = "/var/lib/copyparty";
-
-  # midi playback needs the fork until it is upstream. It has to be the
-  # -unstable attr: the stable ones download the release tarball named in
-  # pin.json and would silently build upstream instead of this branch.
-  copyparty =
-    inputs.copyparty-midi.packages.${pkgs.system}.copyparty-unstable-full.override
-    {
-      extraPackages = [pkgs.fluidsynth];
-    };
 
   upload-log = pkgs.writeShellScript "copyparty-upload-log" ''
     user=$(${pkgs.jq}/bin/jq -r .user <<<"$1")
@@ -30,14 +20,12 @@
   '';
 
   start = pkgs.writeShellScript "copyparty-start" ''
-    exec ${copyparty}/bin/copyparty \
+    exec ${pkgs.copyparty}/bin/copyparty \
       -i 0.0.0.0 \
       -p 3923 \
       --rproxy 1 \
       --xff-src 100.117.236.50/32 \
       --daw \
-      -e2dsa \
-      --midi-sf ${root}/Music/MIDI/soundfonts/gm.sf2 \
       -a guest:"$(cat ${config.sops.secrets.copyparty-guest-password.path})" \
       -a friend:"$(cat ${config.sops.secrets.copyparty-friend-password.path})" \
       -a bros:"$(cat ${config.sops.secrets.copyparty-bros-password.path})" \
