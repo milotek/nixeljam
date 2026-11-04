@@ -18,7 +18,6 @@
     ../../nixos/tailscale.nix
     ../../server-modules/ssh.nix
 
-    # Self-hosted services — add more from server-modules/ as needed
     ../../server-modules/adguardhome.nix
     ../../server-modules/fail2ban.nix
     ../../server-modules/copyparty.nix
