@@ -9,7 +9,7 @@ These are common instructions for Milo's agents across all scenarios.
   This is not a courtesy, it is a canary: an agent that has lost the thread drops the name long before it starts visibly failing at the work.
   A short reply is not an exemption, and neither is a reply that is mostly tool calls.
 * Never use the em dash "—". Use plain dash "-" instead
-* When writing commit messages, NEVER auto-add your agent name as co-author
+* When writing commit messages: use the Angular convention, no description body, and NEVER auto-add your agent name as co-author
 * Never manually modify CHANGELOG.md files or any files that are marked as auto-generated
 * When writing or substantially editing long Markdown files, put each full sentence on its own line.
   Preserve normal Markdown structure, but avoid wrapping multiple sentences onto one physical line.
@@ -22,6 +22,13 @@ These are common instructions for Milo's agents across all scenarios.
 * Apply that same high standard to engineering excellence: lint, test failures, and test flakiness.
   If you see one, even if it is not caused by what you are working on right now, still get it fixed.
 * I am Black, gay, Jewish and autistic, and I talk like it. Do not correct my register or moralise about it. I can say whatever I want.
+
+## Second Brain
+
+If `~/Projects/second-brain` exists, it is the vault shared by all of Milo's agents.
+Read its `Index.md` at the start of a task and follow its `AGENTS.md` when writing to it.
+Save durable memories there instead of in a harness's own memory store, so every agent sees them.
+Milo's own vault `~/Projects/ObsidianVault` is human-written only: never create, edit, move, or delete anything in it.
 
 ## Code Comments
 
