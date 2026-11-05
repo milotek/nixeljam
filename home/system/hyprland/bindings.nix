@@ -38,6 +38,16 @@
     fi
     exec ${pkgs.tofi}/bin/tofi-drun
   '';
+
+  save-clip = pkgs.writeShellScriptBin "save-clip" ''
+    touch "$XDG_RUNTIME_DIR/print-held"
+    systemctl --user kill -s SIGUSR1 --kill-whom=main gpu-screen-recorder-replay.service
+  '';
+
+  # Hyprland fires release binds after a long press too, so the hold leaves a marker to skip the screenshot.
+  capture-region = pkgs.writeShellScriptBin "capture-region" ''
+    rm "$XDG_RUNTIME_DIR/print-held" 2>/dev/null || exec ${pkgs.hyprshot}/bin/hyprshot -m region
+  '';
 in {
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
@@ -130,7 +140,6 @@ in {
         "$shiftMod, S, movetoworkspace, special:scratch" # Move to scratch workspace
 
         # Utilities
-        ", Print, exec, ${pkgs.hyprshot}/bin/hyprshot -m region" # Capture region
         "$shiftMod, Print, exec, ${pkgs.hyprshot}/bin/hyprshot -m output" # Capture screen
       ]
       ++ [
@@ -175,6 +184,14 @@ in {
         )
         9
       ));
+
+    bindr = [
+      ", Print, exec, ${lib.getExe capture-region}" # Capture region
+    ];
+
+    bindo = [
+      ", Print, exec, ${lib.getExe save-clip}" # Save replay clip
+    ];
 
     bindm = [
       "$mod,mouse:272, movewindow" # Move Window (mouse)

@@ -37,11 +37,12 @@ in {
           -f 60 \
           -q very_high \
           -c mp4 \
-          -a "default_output|default_input" \
+          -a "app-inverse:gpu-screen-recorder|default_input" \
+          -ac aac \
           -r ${toString replaySeconds} \
           -replay-storage ram \
           -sc ${onSave} \
-          -ro ${clipsDir}
+          -o ${clipsDir}
       '';
       Restart = "on-failure";
       RestartSec = 5;

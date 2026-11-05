@@ -45,7 +45,7 @@
     moonlight-qt
     vinegar
     prismlauncher
-    modrinth-app
+    lunar-client
     mangohud
     protonup-ng
   ];
