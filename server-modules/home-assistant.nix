@@ -9,6 +9,7 @@ in {
       "esphome"
       "tuya"
       "sonos"
+      "homekit_controller"
     ];
     config = {
       default_config = {};
