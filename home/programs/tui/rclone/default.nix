@@ -12,7 +12,7 @@
 
   mount = pkgs.writeShellScript "rclone-copyparty-mount" ''
     set -euo pipefail
-    pass="$(${pkgs.rclone}/bin/rclone obscure "$(cat ${config.sops.secrets.copyparty-password.path})")"
+    pass="$(${pkgs.rclone}/bin/rclone obscure "$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.copyparty-password.path})")"
     exec ${pkgs.rclone}/bin/rclone mount :webdav: ${mountPoint} \
       --webdav-url "https://files.tek.rip" \
       --webdav-vendor other \
@@ -33,7 +33,7 @@ in {
     };
     Service = {
       Type = "notify";
-      Environment = ["PATH=${lib.makeBinPath [pkgs.fuse3]}"];
+      Environment = ["PATH=/run/wrappers/bin"];
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${mountPoint}";
       ExecStart = "${mount}";
       ExecStop = "${pkgs.fuse3}/bin/fusermount3 -u ${mountPoint}";
