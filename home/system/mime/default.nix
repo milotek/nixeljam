@@ -144,10 +144,6 @@ in {
       enable = true;
       setSessionVariables = true;
       createDirectories = true;
-      desktop = null;
-      music = null;
-      publicShare = null;
-      templates = null;
     };
   };
 }
