@@ -31,9 +31,6 @@ in {
     Service = {
       Type = "simple";
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${clipsDir}";
-      # default_output only hears the default sink, so a game playing on any other output
-      # was missing from clips. Excluding an app that never plays sound captures every app.
-      # AAC rather than the mp4 default Opus so clips play inline on Discord mobile.
       ExecStart = ''
         ${pkgs.gpu-screen-recorder}/bin/gpu-screen-recorder \
           -w ${monitor} \

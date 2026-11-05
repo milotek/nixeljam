@@ -8,9 +8,7 @@
 
   root = "/var/lib/copyparty";
 
-  # midi playback needs the fork until it is upstream. It has to be the
-  # -unstable attr: the stable ones download the release tarball named in
-  # pin.json and would silently build upstream instead of this branch.
+  # TODO: remove after PR
   copyparty =
     inputs.copyparty-midi.packages.${pkgs.stdenv.hostPlatform.system}.copyparty-unstable-full.override
     {
