@@ -27,7 +27,6 @@ in {
     (with pkgs-unstable; [
       qt5.qtwayland
       qt6.qtwayland
-      hyprland-qtutils
     ])
     ++ (with pkgs; [
       libsForQt5.qt5ct
@@ -170,6 +169,10 @@ in {
 
       ecosystem = {
         no_update_news = true;
+      };
+
+      binds = {
+        disable_keybind_grabbing = true;
       };
     };
   };

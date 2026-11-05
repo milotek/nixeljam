@@ -31,17 +31,21 @@ in {
     Service = {
       Type = "simple";
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${clipsDir}";
+      # default_output only hears the default sink, so a game playing on any other output
+      # was missing from clips. Excluding an app that never plays sound captures every app.
+      # AAC rather than the mp4 default Opus so clips play inline on Discord mobile.
       ExecStart = ''
         ${pkgs.gpu-screen-recorder}/bin/gpu-screen-recorder \
           -w ${monitor} \
           -f 60 \
           -q very_high \
           -c mp4 \
-          -a "default_output|default_input" \
+          -a "app-inverse:gpu-screen-recorder|default_input" \
+          -ac aac \
           -r ${toString replaySeconds} \
           -replay-storage ram \
           -sc ${onSave} \
-          -ro ${clipsDir}
+          -o ${clipsDir}
       '';
       Restart = "on-failure";
       RestartSec = 5;
