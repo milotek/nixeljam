@@ -12,7 +12,7 @@
   # -unstable attr: the stable ones download the release tarball named in
   # pin.json and would silently build upstream instead of this branch.
   copyparty =
-    inputs.copyparty-midi.packages.${pkgs.system}.copyparty-unstable-full.override
+    inputs.copyparty-midi.packages.${pkgs.stdenv.hostPlatform.system}.copyparty-unstable-full.override
     {
       extraPackages = [pkgs.fluidsynth];
     };
