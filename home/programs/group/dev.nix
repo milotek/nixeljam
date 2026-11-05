@@ -7,10 +7,12 @@
     [
       go
       claude-code
+      codex
       uv
     ]
     ++ (with pkgs; [
       nodejs
+      bun
       air
       clang
       clang-tools

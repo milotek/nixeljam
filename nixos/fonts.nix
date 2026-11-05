@@ -19,6 +19,7 @@
       nerd-fonts.meslo-lg
       openmoji-color
       twitter-color-emoji
+      liberation_ttf
     ];
 
     enableDefaultPackages = false;
