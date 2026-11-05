@@ -24,21 +24,13 @@ in {
 
     settings =
       {
-        # Compact bar keeps the on-screen keybind hints but wastes less space -
-        # nicer on a phone-sized viewport.
         default_layout = "compact";
         pane_frames = false;
 
-        # Non-default: keep pane viewports on disk too, so a dropped phone
-        # connection reattaches to exactly what was on screen.
+        # So a dropped phone connection reattaches to exactly what was on screen.
         serialize_pane_viewport = true;
 
-        # Each client gets its own cursor and its own focused tab. Note this
-        # does not give clients their own size: a session has one viewport,
-        # clamped to the smallest attached client, mirrored or not. That is why
-        # local windows get a session each below.
         mirror_session = false;
-        # Colors are left to stylix's zellij target, matching the rest of the setup.
       }
       // lib.optionalAttrs (copyCommand != null) {copy_command = copyCommand;}
       # Sessions started in a terminal are not reachable from the web client
@@ -48,10 +40,10 @@ in {
   };
 
   # A tiling WM retiles on every new terminal, so no two windows are the same
-  # size. Sharing one session across them would clamp every window to the
-  # smallest one, so each local window gets a session of its own. These are
-  # throwaway, hence serialization off - otherwise every closed window leaves a
-  # resurrectable corpse in `zellij ls`.
+  # size. A shared session would clamp every window to the smallest one, so each
+  # local window gets a session of its own. These are throwaway, hence
+  # serialization off - otherwise every closed window leaves a resurrectable
+  # corpse in `zellij ls`.
   #
   # SSH is the opposite case: one shared "main" per host that survives a dropped
   # phone or Mac connection and reattaches where it left off.
