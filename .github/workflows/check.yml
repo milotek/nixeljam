@@ -1,0 +1,27 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v31
+
+      - name: Check formatting
+        run: nix run nixpkgs#alejandra -- --check .
+
+      - name: Evaluate the example host
+        run: nix eval --raw .#nixosConfigurations.computer.config.system.build.toplevel.drvPath
+
+      - name: Evaluate the template
+        run: |
+          cd "$(mktemp -d)"
+          nix flake init -t "path:$GITHUB_WORKSPACE"
+          git init -q && git add .
+          nix eval --raw .#nixosConfigurations.nixos.config.system.build.toplevel.drvPath \
+            --override-input nixeljam "path:$GITHUB_WORKSPACE"
