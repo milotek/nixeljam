@@ -48,12 +48,20 @@
       noctalia
       desktop
       ghostty
+      google-chrome
+      nautilus
+      loupe
+      evince
+      file-roller
       vlc
       obsidian
       onlyoffice
       signal
       vscode
       gnome-text-editor
+      discord
+      spotify
+      obs-studio
     ];
   };
 }

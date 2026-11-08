@@ -10,12 +10,12 @@
         defaultApps = {
           text = ["nvim-ghostty.desktop"];
           code = ["nvim-ghostty.desktop"];
-          image = ["imv-dir.desktop"];
+          image = ["org.gnome.Loupe.desktop"];
           audio = ["vlc.desktop"];
           video = ["vlc.desktop"];
           directory = ["org.gnome.Nautilus.desktop"];
           office = ["onlyoffice-desktopeditors.desktop"];
-          pdf = ["google-chrome.desktop"];
+          pdf = ["org.gnome.Evince.desktop"];
           archive = ["org.gnome.FileRoller.desktop"];
           browser = ["google-chrome.desktop"];
         };
