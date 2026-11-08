@@ -81,7 +81,7 @@
       toString (builtins.floor (l * 100.0 + 0.5))
     }";
 
-    c = config.stylix.base16Scheme;
+    c = config.theme.colors;
   in {
     # 0444 so the glance user inside the container can read the bind-mounted file
     # TODO: too broad (world-readable), scope to the container's mapped uid/gid instead

@@ -5,7 +5,7 @@
     lib,
     ...
   }: let
-    c = config.lib.stylix.colors;
+    c = config.theme.colors;
     tuigreet = pkgs.tuigreet;
 
     theme = lib.concatStringsSep ";" [

@@ -13,7 +13,6 @@
           rev = "06d4e90fb5410e9c4d0b3131584060adddf89406";
           hash = "sha256-G/UIr1bKnxn1AcHl/4FL/jou6b7M2VeREslYVELxdmw=";
         };
-        c = config.lib.stylix.colors;
       in {
         home.sessionVariables = {
           TERMINAL = "ghostty";
@@ -25,6 +24,7 @@
           installVimSyntax = true;
           enableZshIntegration = true;
           settings = {
+            theme = "noctalia";
             window-padding-x = 10;
             confirm-close-surface = false;
             window-padding-y = 10;

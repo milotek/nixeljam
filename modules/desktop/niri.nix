@@ -22,7 +22,7 @@
           pkgs,
           ...
         }: let
-          c = config.lib.stylix.colors;
+          c = config.theme.colors;
           inherit (config) theme;
           noctalia = cmd: ''spawn "${pkgs.noctalia-shell}/bin/noctalia-shell" "ipc" "call" ${lib.concatMapStringsSep " " (a: ''"${a}"'') (lib.splitString " " cmd)}'';
           playerctl = "${pkgs.playerctl}/bin/playerctl";
@@ -149,6 +149,8 @@
                 XF86MonBrightnessUp allow-when-locked=true { ${noctalia "brightness increase"}; }
                 XF86MonBrightnessDown allow-when-locked=true { ${noctalia "brightness decrease"}; }
             }
+
+            include "./noctalia.kdl"
           '';
         }
       )

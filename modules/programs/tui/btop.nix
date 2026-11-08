@@ -8,6 +8,7 @@
           enable = true;
           package = btopPackage;
           settings = {
+            color_theme = "noctalia";
             vim_keys = true;
             shown_boxes = "cpu mem net proc gpu0";
           };

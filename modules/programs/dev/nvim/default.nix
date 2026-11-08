@@ -39,9 +39,9 @@ in {
         programs.nvf = {
           enable = true;
           settings = {
-            vim.luaConfigRC = lib.mkIf (config ? stylix && config.stylix.enable) {
+            vim.luaConfigRC = {
               hl-overrides = let
-                c = config.lib.stylix.colors;
+                c = config.theme.colors;
               in ''
                 local function apply_hl()
                   vim.api.nvim_set_hl(0, "MiniStarterHeader",   { fg = "#${c.base0D}", bold = true })

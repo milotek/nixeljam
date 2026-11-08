@@ -7,9 +7,9 @@
         lib,
         ...
       }: let
-        accent = "#" + config.lib.stylix.colors.base0D;
-        foreground = "#" + config.lib.stylix.colors.base05;
-        muted = "#" + config.lib.stylix.colors.base03;
+        accent = "#" + config.theme.colors.base0D;
+        foreground = "#" + config.theme.colors.base05;
+        muted = "#" + config.theme.colors.base03;
         previewCmd = "bat --color=always --style=plain,numbers --line-range=:500 {}";
       in {
         programs.fzf = {

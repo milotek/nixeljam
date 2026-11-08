@@ -7,8 +7,8 @@
         lib,
         ...
       }: let
-        accent = "#${config.lib.stylix.colors.base0D}";
-        background-alt = "#${config.lib.stylix.colors.base01}";
+        accent = "#${config.theme.colors.base0D}";
+        background-alt = "#${config.theme.colors.base01}";
       in {
         programs.starship = {
           enable = true;

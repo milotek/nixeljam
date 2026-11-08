@@ -7,8 +7,8 @@
         lib,
         ...
       }: let
-        accent = "#${config.lib.stylix.colors.base0D}";
-        muted = "#${config.lib.stylix.colors.base03}";
+        accent = "#${config.theme.colors.base0D}";
+        muted = "#${config.theme.colors.base03}";
       in {
         programs.lazygit = {
           enable = true;

@@ -5,8 +5,6 @@
       {pkgs, ...}: {
         home.packages = [pkgs.wl-clipboard pkgs.cliphist];
 
-        programs.noctalia-shell.settings.appLauncher.enableClipboardHistory = true;
-
         systemd.user.services.cliphist-wipe = {
           Unit.Description = "Wipe cliphist history on login and logout";
           Service = {
