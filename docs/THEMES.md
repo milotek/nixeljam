@@ -1,9 +1,8 @@
 # Themes
 
-Themes are defined in `themes/`. They define the colors, fonts, icons, wallpaper, and other visual settings used by Hyprland and all apps/programs.
-You can change the selected theme by changing the import statement in your host's `variables.nix` file.
+The theme is defined in `modules/theme/default.nix`. It sets the colors, fonts, cursor, icons and wallpaper used by niri, noctalia and all apps/programs (through Stylix).
 
 ## Create your theme
 
-Create a copy of `themes/nixy.nix` and change the variables.
-Wallpapers are loaded from my [awesome-wallpapers](https://github.com/anotherhadi/awesome-wallpapers) repo.
+Change the `base16Scheme`, fonts and `image` in `modules/theme/default.nix`.
+See the [tinted gallery](https://tinted-theming.github.io/tinted-gallery/) for more schemes, and [awesome-wallpapers](https://github.com/anotherhadi/awesome-wallpapers) for wallpapers.
