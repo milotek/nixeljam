@@ -4,24 +4,24 @@
   ...
 }: {
   config.var = {
-    hostname = "h-laptop";
-    username = "hadi";
+    hostname = "laptop"; # CHANGEME
+    username = "user"; # CHANGEME
     configDirectory = "/home/" + config.var.username + "/.config/nixos"; # The path of the nixos configuration directory
 
-    keyboardLayout = "fr";
+    keyboardLayout = "us"; # CHANGEME
 
-    timeZone = "Europe/Paris";
+    timeZone = "America/New_York"; # CHANGEME
     defaultLocale = "en_US.UTF-8";
-    extraLocale = "fr_FR.UTF-8";
+    extraLocale = "en_US.UTF-8"; # CHANGEME
 
     git = {
-      username = "Hadi";
-      email = "112569860+anotherhadi@users.noreply.github.com";
+      username = "Your Name"; # CHANGEME
+      email = "you@example.com"; # CHANGEME
     };
 
     autoUpgrade = false;
     autoGarbageCollector = true;
-    impermanenceEnabled = true;
+    impermanenceEnabled = false; # CHANGEME: true wipes / on every boot (needs the tmpfs root in disko.nix)
   };
 
   # DON'T TOUCH THIS

@@ -1,4 +1,5 @@
 # Hardware detection - filesystems are managed by disko.nix
+# CHANGEME: replace with the output of `nixos-generate-config --no-filesystems --show-hardware-config`
 {
   config,
   lib,
