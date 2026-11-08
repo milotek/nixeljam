@@ -44,6 +44,7 @@
 
             layout {
                 gaps ${toString theme.gaps-in}
+                background-color "transparent"
                 center-focused-column "never"
                 preset-column-widths {
                     proportion 0.33333

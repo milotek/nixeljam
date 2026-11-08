@@ -11,6 +11,13 @@
           systemd.enable = true;
           settings.appLauncher.terminalCommand = "${pkgs.ghostty}/bin/ghostty -e";
         };
+
+        # Marks this version as already set up: no first-run wizard or changelog popup
+        systemd.user.tmpfiles.rules = [
+          "C %h/.cache/noctalia/shell-state.json - - - - ${(pkgs.formats.json {}).generate "shell-state.json" {
+            changelogState.lastSeenVersion = "v${pkgs.noctalia-shell.version}";
+          }}"
+        ];
       }
     )
   ];
