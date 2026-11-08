@@ -13,8 +13,6 @@
 
     environment.persistence."/persist".enable = lib.mkDefault (config.var.impermanenceEnabled or false);
 
-    nixpkgs.overlays = [inputs.nur.overlays.default];
-
     _module.args.pkgs-unstable = import inputs.nixpkgs-unstable {
       inherit (pkgs.stdenv.hostPlatform) system;
       config.allowUnfree = true;

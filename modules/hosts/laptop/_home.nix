@@ -37,11 +37,6 @@
     stateVersion = "26.05";
   };
 
-  wayland.windowManager.hyprland.settings.monitor = [
-    "eDP-2,highres,0x0,1" # My internal laptop screen
-    "desc:AOC U34G2G1 0x00000E06,3440x1440@99.98,auto,1" # My external monitor
-  ];
-
   programs = {
     home-manager.enable = true;
     nixy = {

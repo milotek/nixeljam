@@ -14,16 +14,16 @@
     };
     import-tree.url = "github:vic/import-tree";
     nvf.url = "github:notashelf/nvf";
-    nur = {
-      url = "github:nix-community/nur";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell/v4.7.6";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {

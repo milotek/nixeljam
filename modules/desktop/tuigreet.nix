@@ -22,7 +22,7 @@
       exec ${tuigreet}/bin/tuigreet \
         --time \
         --time-format '%H:%M  %A %d %B' \
-        --sessions /run/current-system/sw/share/wayland-sessions \
+        --sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions \
         --remember \
         --remember-user-session \
         --asterisks \

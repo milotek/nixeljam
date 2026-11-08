@@ -42,9 +42,10 @@
       glance
     ];
 
-    # Graphical session: hyprland + desktop, gui apps
+    # Graphical session: niri + noctalia + desktop, gui apps
     gui.imports = [
-      hyprland
+      niri
+      noctalia
       desktop
       ghostty
       vlc
