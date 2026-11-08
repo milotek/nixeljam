@@ -8,12 +8,12 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nvf.url = "github:notashelf/nvf";
-    nvf-config = {
-      url = "path:./home/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nvf.follows = "nvf";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    import-tree.url = "github:vic/import-tree";
+    nvf.url = "github:notashelf/nvf";
     nur = {
       url = "github:nix-community/nur";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,49 +56,7 @@
     nixarr.url = "github:nix-media-server/nixarr";
   };
 
-  outputs = inputs @ {
-    nixpkgs,
-    nixpkgs-unstable,
-    git-hooks,
-    ...
-  }: let
-    system = "x86_64-linux";
-    pkgs-unstable = import nixpkgs-unstable {
-      inherit system;
-      config.allowUnfree = true;
-    };
-    pkgs = nixpkgs.legacyPackages.${system};
-    args = {
-      inherit
-        inputs
-        nixpkgs
-        system
-        pkgs-unstable
-        pkgs
-        ;
-    };
-    merge = nixpkgs.lib.foldl nixpkgs.lib.recursiveUpdate {};
-    supportedSystems = ["x86_64-linux" "aarch64-linux"];
-
-    forAllSystems = f:
-      nixpkgs.lib.genAttrs supportedSystems
-      (system: f system (import nixpkgs {inherit system;}));
-  in
-    merge [
-      (import ./home/tui/nixy/flake.nix args)
-      {
-        formatter.${system} = pkgs.alejandra;
-        packages.${system}.nvim = inputs.nvf-config.packages.${system}.nvim;
-        apps.${system}.nvim = inputs.nvf-config.apps.${system}.nvim;
-        nixosConfigurations = {
-          h-laptop = import ./hosts/laptop/flake.nix args;
-        };
-        devShells = forAllSystems (system: pkgs: {
-          default = import ./shell.nix {
-            inherit pkgs;
-            gitHooksLib = git-hooks.lib.${system};
-          };
-        });
-      }
-    ];
+  # Dendritic layout: every file under ./modules is a flake-parts module
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 }
