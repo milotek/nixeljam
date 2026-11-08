@@ -22,6 +22,12 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpak = {
+      # Pinned: lib/sandbox.nix patches its launcher source
+      url = "github:nixpak/nixpak/dd037bd073edc9f8ce2186c6c1975f47db245bed";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell/v4.7.6";
       inputs.nixpkgs.follows = "nixpkgs";
