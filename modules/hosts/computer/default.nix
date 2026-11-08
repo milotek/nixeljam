@@ -3,7 +3,7 @@
   inputs,
   ...
 }: {
-  flake.nixosConfigurations.laptop = inputs.nixpkgs.lib.nixosSystem {
+  flake.nixosConfigurations.computer = inputs.nixpkgs.lib.nixosSystem {
     modules = with aspects; [
       base
 

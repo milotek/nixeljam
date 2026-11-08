@@ -4,7 +4,7 @@
   ...
 }: {
   config.var = {
-    hostname = "laptop"; # CHANGEME
+    hostname = "computer"; # CHANGEME
     username = "user"; # CHANGEME
     configDirectory = "/home/" + config.var.username + "/.config/nixos"; # The path of the nixos configuration directory
 

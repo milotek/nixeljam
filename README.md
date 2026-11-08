@@ -94,12 +94,12 @@ Pick the bundles and aspects you want in `flake.nix`, and fill in
 git clone https://github.com/<you>/nixeljam ~/.config/nixos
 ```
 
-2. Copy `modules/hosts/laptop`, rename it to match your system’s hostname, and
+2. Copy `modules/hosts/computer`, rename it to match your system’s hostname, and
    update `_variables.nix` with your machine’s settings.
 3. Replace `_hardware-configuration.nix` with your own
    (`nixos-generate-config --no-filesystems --show-hardware-config`) and set
    your disk in `_disko.nix`.
-4. Rename `flake.nixosConfigurations.laptop` in your host's `default.nix`.
+4. Rename `flake.nixosConfigurations.computer` in your host's `default.nix`.
 
 > [!TIP]
 > When you add new files, don't forget to run `git add .` to add them to the git
