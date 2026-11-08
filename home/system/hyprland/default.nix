@@ -131,8 +131,6 @@ in {
 
       windowrule = [
         "match:class .*, suppress_event maximize"
-        "match:class helium, suppress_event fullscreen"
-        "match:class helium, sync_fullscreen false"
 
         "match:class ^(steam_app_.*)$, suppress_event fullscreen"
         "match:class ^(steam_app_.*)$, sync_fullscreen false"

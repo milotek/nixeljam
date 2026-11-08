@@ -68,7 +68,6 @@
       df = "df -h";
 
       # Shortcuts
-      spt = "myx";
       open = "${pkgs.xdg-utils}/bin/xdg-open";
 
       notes = "nvim ~/Notes/index.md --cmd 'cd ~/notes' -c ':lua Snacks.picker.smart()'";

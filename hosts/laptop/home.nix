@@ -12,7 +12,6 @@ in {
     ++ utils.importAll ../../home/system # System (Desktop environment like stuff)
     ++ [
       inputs.nvf-config.homeManagerModules.default # My vim config
-      ../../home/tui/git/signing.nix # CHANGEME: Change the key or remove this file
       ./variables.nix # Mostly user-specific configuration
     ];
 

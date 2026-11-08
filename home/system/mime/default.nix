@@ -8,13 +8,13 @@
     text = ["nvim-ghostty.desktop"];
     code = ["nvim-ghostty.desktop"];
     image = ["imv-dir.desktop"];
-    audio = ["kew.desktop"];
+    audio = ["vlc.desktop"];
     video = ["vlc.desktop"];
-    directory = ["elio.desktop"];
+    directory = ["org.gnome.Nautilus.desktop"];
     office = ["onlyoffice-desktopeditors.desktop"];
-    pdf = ["helium.desktop"];
-    archive = ["elio.desktop"];
-    browser = ["helium.desktop"];
+    pdf = ["google-chrome.desktop"];
+    archive = ["org.gnome.FileRoller.desktop"];
+    browser = ["google-chrome.desktop"];
   };
 
   mimeMap = {

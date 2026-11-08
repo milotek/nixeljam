@@ -43,20 +43,9 @@
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    helium-browser = {
-      url = "github:oxcl/nix-flake-helium-browser";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    elio = {
-      url = "github:elio-fm/elio";
-    };
-    default-creds = {
-      url = "github:anotherhadi/default-creds";
-      flake = false;
     };
     tldr-pages-src = {
       url = "github:tldr-pages/tldr";
@@ -65,7 +54,6 @@
 
     # Server
     nixarr.url = "github:nix-media-server/nixarr";
-    default-creds-web.url = "github:anotherhadi/default-creds-web";
   };
 
   outputs = inputs @ {
@@ -104,8 +92,6 @@
         apps.${system}.nvim = inputs.nvf-config.apps.${system}.nvim;
         nixosConfigurations = {
           h-laptop = import ./hosts/laptop/flake.nix args;
-          h-work = import ./hosts/work/flake.nix args;
-          jack = import ./hosts/server/flake.nix args;
         };
         devShells = forAllSystems (system: pkgs: {
           default = import ./shell.nix {

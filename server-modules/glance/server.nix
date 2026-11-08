@@ -79,11 +79,6 @@
                       icon = "sh:bentopdf";
                     }
                     {
-                      title = "Default-creds";
-                      url = "https://default-creds.${domain}";
-                      icon = "si:passbolt";
-                    }
-                    {
                       title = "Cyberchef";
                       url = "https://cyberchef.${domain}";
                       icon = "si:codechef";
