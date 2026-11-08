@@ -28,7 +28,7 @@
     users.users.${config.var.username}.initialPassword = "changeme"; # CHANGEME: run `passwd` after the first login
 
     home-manager.users.${config.var.username} = {
-      programs.nixy = {
+      programs.njam = {
         enable = true;
         configDirectory = config.var.configDirectory;
       };

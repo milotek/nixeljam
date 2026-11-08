@@ -1,7 +1,7 @@
 {
-  # https://github.com/anotherhadi/nixy
+  # Forked from https://github.com/anotherhadi/nixy
   description = ''
-    Nixy simplifies and unifies the Hyprland ecosystem with a minimalist & easily customizable NixOS setup, heavily focused on TUIs.
+    nixeljam: a ready-to-use NixOS desktop built on niri and noctalia, for people new to NixOS.
   '';
 
   inputs = {

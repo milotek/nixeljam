@@ -20,7 +20,7 @@
       cli-tools
       tldr
       nix-utils
-      nixy
+      njam
       nvim
       dev
     ];

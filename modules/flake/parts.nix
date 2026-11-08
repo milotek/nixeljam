@@ -20,7 +20,7 @@
 
     flake.nixosModules =
       lib.mapAttrs (name: module: {
-        key = "nixy#aspects.${name}";
+        key = "nixeljam#aspects.${name}";
         imports = [module];
       })
       config.flake.modules.nixos;

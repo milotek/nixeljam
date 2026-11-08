@@ -9,7 +9,7 @@
 
     persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
       directories = [
-        ".config/nixos" # this repo itself (nixy manages it here)
+        ".config/nixos" # this repo itself (njam manages it here)
         ".local/share"
         ".local/state"
         ".cache"
@@ -35,7 +35,7 @@
 
   programs = {
     home-manager.enable = true;
-    nixy = {
+    njam = {
       enable = true;
       configDirectory = config.var.configDirectory;
     };
