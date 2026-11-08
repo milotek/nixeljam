@@ -14,7 +14,10 @@
 in {
   networking = {
     hostName = hostname;
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      wifi.powersave = false;
+    };
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;
