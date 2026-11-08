@@ -5,42 +5,35 @@
   config,
   ...
 }: let
-  # Using beta driver for recent GPUs like RTX 4070
   nvidiaDriverChannel = config.boot.kernelPackages.nvidiaPackages.production;
 in {
-  # Video drivers configuration for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"]; # Simplified - other modules are loaded automatically
+  services.xserver.videoDrivers = ["nvidia"];
 
-  # Kernel parameters for better Wayland and Hyprland integration
   boot.kernelParams = [
-    "nvidia-drm.modeset=1" # Enable mode setting for Wayland
+    "nvidia-drm.modeset=1"
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1" # Improves resume after sleep
   ];
 
-  # Blacklist nouveau to avoid conflicts
   boot.blacklistedKernelModules = ["nouveau"];
 
-  # Environment variables for better compatibility
   environment.variables = {
-    LIBVA_DRIVER_NAME = "nvidia"; # Hardware video acceleration
-    GBM_BACKEND = "nvidia-drm"; # Graphics backend for Wayland
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia"; # Use Nvidia driver for GLX
-    NIXOS_OZONE_WL = "1"; # Wayland support for Electron apps
-    __GL_GSYNC_ALLOWED = "1"; # Enable G-Sync if available
-    __GL_VRR_ALLOWED = "1"; # Enable VRR (Variable Refresh Rate)
-    NVD_BACKEND = "direct"; # Configuration for new driver
+    LIBVA_DRIVER_NAME = "nvidia";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    NIXOS_OZONE_WL = "1";
+    __GL_GSYNC_ALLOWED = "1";
+    __GL_VRR_ALLOWED = "1";
+    NVD_BACKEND = "direct";
   };
 
-  # Configuration for proprietary packages
   nixpkgs.config = {
     nvidia.acceptLicense = true;
   };
 
-  # Nvidia configuration
   hardware = {
     nvidia = {
-      open = false; # Proprietary driver for better performance
-      nvidiaSettings = true; # Nvidia settings utility
+      open = false;
+      nvidiaSettings = true;
       powerManagement = {
         enable = true;
         finegrained = false;
@@ -50,7 +43,6 @@ in {
       forceFullCompositionPipeline = true;
     };
 
-    # Enhanced graphics support
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -75,13 +67,11 @@ in {
     ];
   };
 
-  # Additional useful packages
   environment.systemPackages = with pkgs; [
     vulkan-tools
     mesa-demos
-    libva-utils # VA-API debugging tools
+    libva-utils
   ];
 
-  # Enable Nvidia container toolkit for GPU acceleration in containers (docker)
   hardware.nvidia-container-toolkit.enable = false;
 }

@@ -24,7 +24,6 @@
       rsync
     ]);
 
-  # Default GOPATH is ~/go, which puts a build cache in the middle of $HOME.
   home.sessionVariables.GOPATH = "$HOME/.local/share/go";
   home.sessionPath = ["$HOME/.local/share/go/bin"];
 }

@@ -27,7 +27,6 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # macOS system management (work-mac host).
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,21 +39,16 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    helium-browser = {
-      url = "github:oxcl/nix-flake-helium-browser";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # nixeljam additions
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-flatpak.url = "github:gmodena/nix-flatpak"; # gaming.nix flatpak (Sober)
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     hermes-agent.url = "github:NousResearch/hermes-agent";
     minegrub-world-sel-theme = {
       url = "github:Lxtharia/minegrub-world-sel-theme";
@@ -69,12 +63,6 @@
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # OpenClaw - self-hosted AI agent (first-party nix packaging).
-    # Deliberately NOT following our nixpkgs: the upstream garnix cache
-    # (cache.garnix.io) is built against their pinned nixos-unstable, and
-    # overriding it changes the derivation hash into a full source build.
-    nix-openclaw.url = "github:openclaw/nix-openclaw";
 
     # Server
     nixarr.url = "github:nix-media-server/nixarr";
@@ -111,7 +99,6 @@
     };
     merge = nixpkgs.lib.foldl nixpkgs.lib.recursiveUpdate {};
 
-    # Args passed to Darwin (nix-darwin) host flakes.
     darwinSystem = "aarch64-darwin";
     darwinArgs = {
       inherit inputs nixpkgs;
@@ -144,9 +131,8 @@
           vps = import ./hosts/vps/flake.nix args;
           wsl = import ./hosts/wsl/flake.nix args;
         };
-        # nix-darwin hosts — deploy with: darwin-rebuild switch --flake .#<name>
         darwinConfigurations = {
-          work-mac = import ./hosts/work-mac/flake.nix darwinArgs; # milotek-mac
+          work-mac = import ./hosts/work-mac/flake.nix darwinArgs;
         };
         devShells = forAllSystems (system: pkgs: {
           default = import ./shell.nix {

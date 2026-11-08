@@ -1,7 +1,3 @@
-# Mounts files.tek.rip (the copyparty file server) as an always-on drive at
-# ~/files over WebDAV, via a systemd user service. The login password is read
-# at runtime from the sops secret `copyparty-password` (see ../../hosts/pc/secrets),
-# obscured for rclone, and never written to the store.
 {
   config,
   pkgs,

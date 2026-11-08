@@ -2,8 +2,6 @@
   pkgs,
   config,
 }: let
-  # Session-scoped rather than /tmp: these are per-user UI state, and a shared
-  # /tmp name collides between users on the same machine.
   osdPath = "$XDG_RUNTIME_DIR/waybar-osd";
   focusModePath = "$XDG_RUNTIME_DIR/hypr-focus-mode";
 

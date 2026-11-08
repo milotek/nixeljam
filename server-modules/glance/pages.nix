@@ -24,8 +24,6 @@ in {
               cache = "1m";
               sites = [
                 {
-                  # AdGuard has no caddy vhost, so this link only resolves for a
-                  # viewer on the tailnet. The up/down dot still works for everyone.
                   title = "AdGuard";
                   url = "http://100.85.180.11:3000";
                   icon = "sh:adguard-home";
