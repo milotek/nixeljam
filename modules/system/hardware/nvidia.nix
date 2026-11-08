@@ -42,8 +42,8 @@
             enableOffloadCmd = true;
           };
           sync.enable = false; # offload mode is better for battery life
-          amdgpuBusId = "PCI:5:0:0";
-          nvidiaBusId = "PCI:1:0:0";
+          amdgpuBusId = "PCI:5:0:0"; # CHANGEME: lspci | grep -E "VGA|3D"
+          nvidiaBusId = "PCI:1:0:0"; # CHANGEME
         };
       };
 

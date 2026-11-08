@@ -17,9 +17,7 @@
       models = lib.mkIf impermanence modelsDir;
 
       loadModels = [
-        "qwen3.5:35b-a3b"
-        "huihui_ai/qwen3.5-abliterated:35b-a3b"
-        "qwen3.5:9b"
+        "qwen3.5:9b" # CHANGEME
       ];
 
       environmentVariables = {

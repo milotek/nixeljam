@@ -134,7 +134,7 @@
               type = "dns-stats";
               service = "adguard";
               url = adguardUrl;
-              username = "hadi";
+              username = "hadi"; # CHANGEME
               password = "\${secret:adguard-pwd}";
             }
 
@@ -160,7 +160,7 @@
                     }
                     {
                       title = "Cloudflare Access";
-                      url = "https://anotherhadi.cloudflareaccess.com";
+                      url = "https://anotherhadi.cloudflareaccess.com"; # CHANGEME
                     }
                   ];
                 }

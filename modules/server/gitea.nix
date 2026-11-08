@@ -15,7 +15,7 @@
     };
 
     giteaUrl = "http://10.233.11.2:3002";
-    githubUsername = "anotherhadi";
+    githubUsername = "anotherhadi"; # CHANGEME
 
     giteaGithubMirror = pkgs.writeShellApplication {
       name = "gitea-github-mirror";
@@ -102,7 +102,7 @@
                 HTTP_PORT = 3002;
                 ROOT_URL = "https://git.${domain}/";
                 DOMAIN = "git.${domain}";
-                LANDING_PAGE = "/anotherhadi";
+                LANDING_PAGE = "/anotherhadi"; # CHANGEME
               };
               service = {
                 REGISTER_MANUAL_CONFIRM = true;
