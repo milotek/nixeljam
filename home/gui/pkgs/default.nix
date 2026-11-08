@@ -9,6 +9,7 @@
     obsidian # Note taking app
     onlyoffice-desktopeditors # Office suite
     signal-desktop # Messaging app
+    vscode # Code editor
 
     gnome-text-editor
   ];
@@ -17,6 +18,8 @@
     directories = [
       ".config/Signal"
       ".config/obsidian"
+      ".config/Code"
+      ".vscode"
     ];
   };
 }
