@@ -45,25 +45,14 @@
             layout {
                 gaps ${toString theme.gaps-in}
                 background-color "transparent"
-                center-focused-column "never"
-                preset-column-widths {
-                    proportion 0.33333
-                    proportion 0.5
-                    proportion 0.66667
-                }
-                default-column-width { proportion 0.5; }
                 focus-ring {
                     width ${toString theme.border-size}
                     active-color "#${c.base0D}"
                     inactive-color "#${c.base03}"
                 }
-                border {
-                    off
-                }
             }
 
             prefer-no-csd
-            screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
             hotkey-overlay {
                 skip-at-startup
