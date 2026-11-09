@@ -11,14 +11,14 @@
       type = lib.types.attrs;
       default = {
         rounding = 20;
-        bar-height = 36;
+        bar-height = 36; # v6 schema: replaced bar-rounding/bar-thickness (waybar/tofi read bar-height)
         gaps-in = 8;
         gaps-out = 8 * 2;
         active-opacity = 0.96;
         inactive-opacity = 0.92;
-        blur = false;
+        blur = true;
         border-size = 2;
-        animation-speed = "very-fast"; # "very-fast" | "fast" | "medium" | "slow"
+        animation-speed = "medium"; # "very-fast" | "fast" | "medium" | "slow"
       };
       description = "Theme configuration options";
     };
@@ -28,22 +28,22 @@
 
       # See https://tinted-theming.github.io/tinted-gallery/ for more schemes
       base16Scheme = {
-        base00 = "0A0A0C"; # Default Background
-        base01 = "110F12"; # Lighter Background (Used for status bars, line number and folding marks)
-        base02 = "2D2A36"; # Selection Background
-        base03 = "514D63"; # Comments, Invisibles, Line Highlighting
-        base04 = "8E8AA0"; # Dark Foreground (Used for status bars)
-        base05 = "C2BED6"; # Default Foreground, Caret, Delimiters, Operators
-        base06 = "D8D5EA"; # Light Foreground (Not often used)
-        base07 = "EAE7F7"; # Light Background (Not often used)
-        base08 = "E07080"; # Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
-        base09 = "D49070"; # Integers, Boolean, Constants, XML Attributes, Markup Link Url
-        base0A = "C4B060"; # Classes, Markup Bold, Search Text Background
-        base0B = "80B880"; # Strings, Inherited Class, Markup Code, Diff Inserted
-        base0C = "70B8C0"; # Support, Regular Expressions, Escape Characters, Markup Quotes
-        base0D = "9E97F8"; # Functions, Methods, Attribute IDs, Headings, Accent color
-        base0E = "C090E8"; # Keywords, Storage, Selector, Markup Italic, Diff Changed
-        base0F = "D080A0"; # Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
+        base00 = "1e1e2e"; # Default Background
+        base01 = "181825"; # Lighter Background (Used for status bars, line number and folding marks)
+        base02 = "313244"; # Selection Background
+        base03 = "45475a"; # Comments, Invisibles, Line Highlighting
+        base04 = "585b70"; # Dark Foreground (Used for status bars)
+        base05 = "cdd6f4"; # Default Foreground, Caret, Delimiters, Operators
+        base06 = "f5c2e7"; # Light Foreground (Not often used)
+        base07 = "b4befe"; # Light Background (Not often used)
+        base08 = "f38ba8"; # Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
+        base09 = "fab387"; # Integers, Boolean, Constants, XML Attributes, Markup Link Url
+        base0A = "f9e2af"; # Classes, Markup Bold, Search Text Background
+        base0B = "a6e3a1"; # Strings, Inherited Class, Markup Code, Diff Inserted
+        base0C = "94e2d5"; # Support, Regular Expressions, Escape Characters, Markup Quotes
+        base0D = "ffbdbd"; # Functions, Methods, Attribute IDs, Headings, Accent color
+        base0E = "cba4f7"; # Keywords, Storage, Selector, Markup Italic, Diff Changed
+        base0F = "f2cdcd"; # Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
       };
 
       cursor = {
@@ -54,31 +54,34 @@
 
       fonts = {
         monospace = {
-          package = pkgs.maple-mono.NF;
-          name = "Maple Mono NF";
+          package = pkgs.nerd-fonts.meslo-lg;
+          name = "MesloLGS Nerd Font Mono";
         };
         sansSerif = {
-          package = pkgs.rubik;
-          name = "Rubik";
+          package = pkgs.source-sans;
+          name = "Source Sans 3";
         };
-        serif = config.stylix.fonts.sansSerif;
+        serif = {
+          package = pkgs.montserrat;
+          name = "Montserrat";
+        };
         emoji = {
-          package = pkgs.noto-fonts-color-emoji;
-          name = "Noto Color Emoji";
+          package = pkgs.twitter-color-emoji;
+          name = "Twitter Color Emoji";
         };
         sizes = {
-          applications = 13;
-          desktop = 13;
-          popups = 13;
-          terminal = 13;
+          applications = 12;
+          desktop = 12;
+          popups = 12;
+          terminal = 12;
         };
       };
 
       polarity = "dark";
-      image = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/anotherhadi/awesome-wallpapers/main/wallpapers/another-one.png";
-        sha256 = "sha256-bKke8RNz6qNxHSfLbU5xVVkG3tbFZW1sFjLB1hltcoI=";
-      };
+      image = ./wallpapers/tf2_watchtower.jpg;
+      # The wallpapers are mixed aspect ratios; filling the screen matters more
+      # than keeping their proportions.
+      imageScalingMode = "stretch";
     };
   };
 }
