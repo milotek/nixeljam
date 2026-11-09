@@ -22,7 +22,6 @@
 
       autoUpgrade = false;
       autoGarbageCollector = true;
-      impermanenceEnabled = false;
     };
 
     users.users.${config.var.username}.initialPassword = "changeme"; # CHANGEME: run `passwd` after the first login

@@ -21,7 +21,6 @@
 
     autoUpgrade = false;
     autoGarbageCollector = true;
-    impermanenceEnabled = false; # CHANGEME: true wipes / on every boot (needs the tmpfs root in disko.nix)
   };
 
   # DON'T TOUCH THIS
