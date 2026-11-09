@@ -13,18 +13,6 @@
       Defaults timestamp_type=tty,timestamp_timeout=-1
     '';
 
-    security.sudo.extraRules = [
-      {
-        users = [config.var.username];
-        commands = [
-          {
-            command = "/run/current-system/sw/bin/nixos-rebuild";
-            options = ["NOPASSWD"];
-          }
-        ];
-      }
-    ];
-
     nix = {
       nixPath = ["nixpkgs=${inputs.nixpkgs}"];
       channel.enable = false;
