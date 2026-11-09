@@ -1,5 +1,5 @@
 # Vulnix scans the Nix store against the NVD CVE feed to find packages with
-# known vulnerabilities.
+# known vulnerabilities. Results land in the journal: `journalctl -u vulnix-scan`.
 {
   flake.modules.nixos.vulnix = {pkgs, ...}: {
     environment.systemPackages = [pkgs.vulnix];
@@ -25,9 +25,5 @@
         RandomizedDelaySec = "1h";
       };
     };
-
-    environment.persistence."/persist".directories = [
-      "/var/cache/vulnix"
-    ];
   };
 }

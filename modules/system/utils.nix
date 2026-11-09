@@ -15,7 +15,10 @@
   in {
     networking = {
       hostName = hostname;
-      networkmanager.enable = true;
+      networkmanager = {
+        enable = true;
+        wifi.powersave = false;
+      };
     };
 
     systemd.services.NetworkManager-wait-online.enable = false;
@@ -69,20 +72,19 @@
         ];
       };
       gvfs.enable = true;
-      upower = {
-        enable = true;
-        percentageLow = 10;
-        percentageCritical = 5;
-        percentageAction = 3;
-      };
+      upower.enable = true;
       power-profiles-daemon.enable = true;
       udisks2.enable = true;
     };
-    console.keyMap = keyboardLayout;
+    # Derive the console keymap from the xkb layout via ckbcomp. The console keymap
+    # names differ from xkb (e.g. xkb "gb" -> console "uk"), so mapping directly with
+    # console.keyMap = keyboardLayout would fail loadkeys; useXkbConfig keeps them consistent.
+    console.useXkbConfig = true;
 
     environment = {
       variables = {
         PASSWORD_STORE_DIR = "$HOME/.local/share/password-store";
+        EDITOR = "nvim";
       };
       # enable zsh autocompletion for system packages (systemd, etc)
       pathsToLink = ["/share/zsh"];
@@ -108,6 +110,7 @@
         btop
         unrar
         p7zip
+        ffmpeg
       ];
     };
 

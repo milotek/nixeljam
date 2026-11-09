@@ -13,45 +13,44 @@
           ripgrep
         ];
 
-        home = {
-          sessionVariables = {
-            COLORTERM = "truecolor";
-            MANPAGER = "bat -l man -p";
-          };
+        # Declarative Powerlevel10k config (generated via `p10k configure`)
+        home.file.".p10k.zsh".source = ./_p10k.zsh;
+
+        home.sessionPath = ["$HOME/go/bin"];
+
+        home.sessionVariables = {
+          COLORTERM = "truecolor";
         };
 
         programs.zsh = {
-          enable = true;
-          autocd = true;
-          enableCompletion = true;
-          autosuggestion.enable = true;
-          syntaxHighlighting.enable = true;
-          historySubstringSearch.enable = true;
-
           plugins = [
             {
-              name = "zsh-vi-mode";
-              src = pkgs.zsh-vi-mode;
-              file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+              name = "powerlevel10k";
+              src = pkgs.zsh-powerlevel10k;
+              file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
             }
           ];
+          enable = true;
+          enableCompletion = true;
+          autosuggestion.enable = true;
+          syntaxHighlighting = {
+            enable = true;
+            highlighters = [
+              "main"
+              "brackets"
+              "pattern"
+              "regexp"
+              "root"
+              "line"
+            ];
+          };
+          historySubstringSearch.enable = true;
 
           history = {
-            path = lib.mkIf (config.var.impermanenceEnabled or false) "/persist${config.home.homeDirectory}/.zsh_history";
             ignoreDups = true;
-            findNoDups = true;
-            expireDuplicatesFirst = true;
-            ignoreSpace = true;
-            append = true;
             save = 10000;
             size = 10000;
           };
-
-          setOptions = [
-            "NOBEEP"
-            "AUTOCD"
-            "NUMERIC_GLOB_SORT"
-          ];
 
           profileExtra = lib.optionalString (config.home.sessionPath != []) ''
             export PATH="$PATH''${PATH:+:}${lib.concatStringsSep ":" config.home.sessionPath}"
@@ -64,21 +63,28 @@
             cd = "z";
             ls = "eza --icons=always --no-quotes";
             tree = "eza --icons=always --tree --no-quotes";
+            cat = "bat --theme=base16 --paging=never --tabs=2 --wrap=never --plain";
             mkdir = "mkdir -p";
-            nix-shell = "nix-shell --command zsh";
-            grep = "rg --color=auto";
-            diff = "diff --color=auto";
-            df = "df -h";
 
             # Shortcuts
+            spt = "spotatui";
+            v = "nvim";
+            c = "clear";
+            e = "exit";
             open = "${pkgs.xdg-utils}/bin/xdg-open";
 
-            notes = "nvim ~/Notes/index.md --cmd 'cd ~/notes' -c ':lua Snacks.picker.smart()'";
+            notes = "nvim ~/notes/index.md --cmd 'cd ~/notes' -c ':lua Snacks.picker.smart()'";
+            nix-shell = "nix-shell --command zsh";
+
+            # learncpp.com's recommended warning set, promoted to errors: catches the
+            # narrowing and sign-conversion bugs a bare `clang++` silently compiles.
+            cl = "clang++ -std=c++26 -ggdb -pedantic-errors -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion -Werror";
 
             # git
             g = "lazygit";
             ga = "git add";
             gc = "git commit";
+            gcu = "git add . && git commit -m 'Update'";
             gp = "git push";
             gpl = "git pull";
             gs = "git status";
@@ -91,11 +97,6 @@
             gaa = "git add .";
             gcm = "git commit -m";
 
-            # Original binaries
-            ocat = "/run/current-system/sw/bin/cat";
-            ols = "/run/current-system/sw/bin/ls";
-            ocd = "builtin cd";
-
             # Typo
             clera = "clear";
             celar = "clear";
@@ -103,55 +104,30 @@
             sl = "ls";
           };
 
-          initContent = lib.mkMerge [
-            (lib.mkOrder 550 ''
-              function zvm_config() {
-                ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM
-                ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
-                ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
-
-                ZVM_VI_HIGHLIGHT_BACKGROUND=none
-                ZVM_VI_HIGHLIGHT_FOREGROUND=none
-                ZVM_VI_HIGHLIGHT_EXTRASTYLE=none
-              }
-            '')
+          initContent =
             # bash
             ''
-              # cat: preview images inline (kitty graphics protocol, works in Ghostty)
-              # instead of dumping bat's binary garbage; falls back to bat otherwise.
-              cat() {
-                local -a imgs rest
-                local f
-                for f in "$@"; do
-                  case "''${f:l}" in
-                    *.png|*.jpg|*.jpeg|*.gif|*.bmp|*.webp|*.tiff|*.ico)
-                      imgs+=("$f")
-                      ;;
-                    *)
-                      rest+=("$f")
-                      ;;
-                  esac
-                done
+              # Powerlevel10k instant prompt - must be near the top of initContent
+              if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+                source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+              fi
 
-                if (( ''${#imgs} )); then
-                  for f in "''${imgs[@]}"; do
-                    chafa --format=kitty "$f"
-                  done
-                fi
+              bindkey -e
 
-                if (( ''${#rest} || ! ''${#imgs} )); then
-                  bat --theme=base16 --color=always --paging=never --tabs=2 --wrap=never --plain "''${rest[@]}"
-                fi
-              }
+              # Ctrl+Q closes the window at the compositor, so XON can never reach the
+              # terminal to undo an accidental Ctrl+S. Drop flow control instead.
+              stty -ixon
+
+              autoload -Uz edit-command-line
+              zle -N edit-command-line
+              bindkey '^X' edit-command-line
 
               # Suffix Aliases
-              alias -s {nix,md,txt,yml,yaml,go}=nvim
-              alias -s {json,jsonl}=jless
-              alias -s {csv,tsv,parquet,pqt,arrow,db,sqlite,xls,xlsx,xlsm,xlsb,fwf}=tw
+              alias -s {nix,md,txt,json,yml,yaml,go}=nvim
               alias -s {png,jpg,jpeg,gif,pdf}=xdg-open
 
               # Global Aliases
-              alias -g G="| rg"
+              alias -g G="| grep"
               alias -g L="| less"
               alias -g V="| nvim"
               alias -g H="| head"
@@ -160,23 +136,88 @@
               alias -g C="| wl-copy"
               alias -g NE="2>/dev/null"
               alias -g ND=">/dev/null"
-              alias -g NUL=">/dev/null 2>&1"
+              alias -g NUL=">/dev/null 2>1"
 
-              autoload zmv # Mv for multiple files
+              autoload -U history-search-end
+              zle -N history-beginning-search-backward-end history-search-end
+              zle -N history-beginning-search-forward-end history-search-end
+              bindkey "^[OA" history-beginning-search-backward-end
+              bindkey "^[OB" history-beginning-search-forward-end
+
+              # word movement on ctrl/alt + arrows, word deletion on ctrl+backspace
+              bindkey "^[[1;5C" forward-word
+              bindkey "^[[1;5D" backward-word
+              bindkey "^[[1;3C" forward-word
+              bindkey "^[[1;3D" backward-word
+              bindkey "^H" backward-kill-word
+
+              # Ghostty sends ^U for ctrl+backspace; killing back to the start of the line
+              # is closer to what that chord means elsewhere than zsh's kill-whole-line.
+              bindkey "^U" backward-kill-line
+
+              zstyle ':completion:*' completer _extensions _complete _approximate
+
+              zstyle ':completion:*' use-cache on
+              zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+
+              zstyle ':completion:*' complete true
+
+              zstyle ':completion:*' complete-options true
+
+              zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+              zstyle ':completion:*' keep-prefix true
 
               zstyle ':completion:*' menu select
-              zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+              zstyle ':completion:*' list-grouped false
+              zstyle ':completion:*' list-separator '''
+              zstyle ':completion:*' group-name '''
+              zstyle ':completion:*' verbose yes
+              zstyle ':completion:*:matches' group 'yes'
+              zstyle ':completion:*:warnings' format '%F{red}%B-- No match for: %d --%b%f'
+              zstyle ':completion:*:messages' format '%d'
+              zstyle ':completion:*:corrections' format '%B%d (errors: %e)%b'
+              zstyle ':completion:*:descriptions' format '[%d]'
 
-              zvm_after_init() {
-                bindkey '^[[1;5C' forward-word
-                bindkey '^[[1;5D' backward-word
-                bindkey '^F' _fzf_file_no_hidden
-                bindkey '^R' fzf-history-widget
-                bindkey '^[[A' history-substring-search-up
-                bindkey '^[[B' history-substring-search-down
+              zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
+
+              zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+              zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+              zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+              zstyle ':completion:*:*:-command-:*:*' group-order aliases builtins functions commands
+              zstyle ':completion:*' special-dirs true
+              zstyle ':completion:*' squeeze-slashes true
+
+              zstyle ':completion:*' sort false
+              zstyle ":completion:*:git-checkout:*" sort false
+              zstyle ':completion:*' file-sort modification
+              zstyle ':completion:*:eza' sort false
+              zstyle ':completion:complete:*:options' sort false
+              zstyle ':completion:files' sort false
+
+              autoload zmv
+
+              hash -d dl=~/Downloads
+              hash -d ni=~/.config/nixos
+              hash -d de=~/dev
+              hash -d cy=~/Cyber
+
+              ${lib.optionalString config.services.gpg-agent.enable ''
+                gnupg_path=$(ls $XDG_RUNTIME_DIR/gnupg)
+                export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/$gnupg_path/S.gpg-agent.ssh"
+              ''}
+
+              # Allow foot to pipe command output
+              function precmd {
+                if ! builtin zle; then
+                    print -n "\e]133;D\e\\"
+                fi
               }
-            ''
-          ];
+              function preexec {
+                print -n "\e]133;C\e\\"
+              }
+
+              [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+            '';
         };
       }
     )

@@ -4,37 +4,34 @@
       {
         pkgs,
         pkgs-unstable,
-        config,
-        lib,
         ...
       }: {
-        home = {
-          packages = with pkgs-unstable;
-            [
-              go
-              claude-code
-              bun
-            ]
-            ++ (with pkgs; [
-              nodejs
-              air
-              duckdb
-              python3
-              jq
-              nix-prefetch-github
-              rsync
-            ]);
+        home.packages = with pkgs-unstable;
+          [
+            go
+            claude-code
+            codex
+            uv
+          ]
+          ++ (with pkgs; [
+            nodejs
+            bun
+            air
+            clang
+            clang-tools
+            cmake
+            gnumake
+            gdb
+            duckdb
+            python3
+            jq
+            nix-prefetch-github
+            rsync
+          ]);
 
-          persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
-            directories = [
-              ".claude"
-            ];
-            files = [".claude.json"];
-          };
-
-          sessionPath = ["$HOME/.local/share/go/bin"];
-          sessionVariables.GOPATH = "$HOME/.local/share/go";
-        };
+        # Default GOPATH is ~/go, which puts a build cache in the middle of $HOME.
+        home.sessionVariables.GOPATH = "$HOME/.local/share/go";
+        home.sessionPath = ["$HOME/.local/share/go/bin"];
       }
     )
   ];

@@ -1,37 +1,29 @@
-# Ollama: local LLM server with CUDA acceleration
 {
   flake.modules.nixos.ollama = {
     config,
-    lib,
     pkgs,
     ...
-  }: let
-    impermanence = config.var.impermanenceEnabled or false;
-    modelsDir = "/persist/ollama/models";
-  in {
+  }: {
     services.ollama = {
       enable = true;
-      package = pkgs.ollama-cuda;
-      user = "ollama";
 
-      models = lib.mkIf impermanence modelsDir;
+      # Nothing here is authenticated, and the tailnet counts as a network.
+      host = "127.0.0.1";
 
-      loadModels = [
-        "qwen3.5:9b" # CHANGEME
-      ];
+      # ollama-cuda is not in cache.nixos.org, so selecting it turns every
+      # rebuild that touches this file into a multi-hour local CUDA build.
+      # Vulkan is cached, accelerates on the Nvidia card, and falls back to CPU
+      # elsewhere rather than failing to build.
+      package = pkgs.ollama-vulkan;
 
-      environmentVariables = {
-        OLLAMA_CONTEXT_LENGTH = "32768"; # Default context is too small for opencode tool calls
-        OLLAMA_MAX_LOADED_MODELS = "1"; # Never keep two big models in memory
-        OLLAMA_KEEP_ALIVE = "30m"; # Reloading the 35B takes ~15s, keep it in memory between messages
-        OLLAMA_FLASH_ATTENTION = "1";
-        OLLAMA_KV_CACHE_TYPE = "q8_0";
-      };
+      # home/programs/tui/opencode reads this back out of osConfig, so the
+      # provider menu cannot offer a model the host has not pulled.
+      loadModels = ["gemma3:4b"];
+
+      # The KV cache for the full window is allocated up front, so this is a
+      # memory commitment, not just a ceiling - hence per-host rather than fixed.
+      environmentVariables.OLLAMA_CONTEXT_LENGTH =
+        toString (config.var.ollamaContextLength or 8192);
     };
-
-    systemd.tmpfiles.rules = lib.mkIf impermanence [
-      "d /persist/ollama 0750 ollama ollama -"
-      "d ${modelsDir} 0750 ollama ollama -"
-    ];
   };
 }

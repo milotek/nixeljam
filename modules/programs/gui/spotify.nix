@@ -1,18 +1,22 @@
-# Spotify: music player
 {
   flake.modules.nixos.spotify.home-manager.sharedModules = [
     (
       {
-        config,
-        lib,
+        inputs,
         pkgs,
         ...
-      }: {
-        home.packages = [pkgs.spotify];
+      }: let
+        spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+      in {
+        imports = [inputs.spicetify-nix.homeManagerModules.default];
 
-        home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
-          directories = [
-            ".config/spotify"
+        # Theme and colors are handled automatically by stylix's spicetify target.
+        programs.spicetify = {
+          enable = true;
+          enabledExtensions = with spicePkgs.extensions; [
+            adblockify
+            keyboardShortcut
+            shuffle
           ];
         };
       }

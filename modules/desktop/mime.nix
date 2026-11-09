@@ -2,7 +2,6 @@
   flake.modules.nixos.desktop.home-manager.sharedModules = [
     (
       {
-        config,
         lib,
         pkgs,
         ...
@@ -10,13 +9,13 @@
         defaultApps = {
           text = ["nvim-ghostty.desktop"];
           code = ["nvim-ghostty.desktop"];
-          image = ["org.gnome.Loupe.desktop"];
+          image = ["imv-dir.desktop"];
           audio = ["vlc.desktop"];
           video = ["vlc.desktop"];
-          directory = ["org.gnome.Nautilus.desktop"];
+          directory = ["thunar.desktop"];
           office = ["onlyoffice-desktopeditors.desktop"];
-          pdf = ["org.gnome.Evince.desktop"];
-          archive = ["org.gnome.FileRoller.desktop"];
+          pdf = ["onlyoffice-desktopeditors.desktop"];
+          archive = ["xarchiver.desktop"];
           browser = ["google-chrome.desktop"];
         };
 
@@ -56,24 +55,21 @@
             "image/bmp"
             "image/gif"
             "image/jpeg"
+            "image/jpg"
             "image/png"
             "image/svg+xml"
             "image/tiff"
             "image/vnd.microsoft.icon"
             "image/webp"
-            "image/heif"
-            "image/avif"
           ];
           audio = [
             "audio/aac"
             "audio/mpeg"
             "audio/ogg"
             "audio/opus"
-            "audio/vnd.wave"
+            "audio/wav"
             "audio/webm"
             "audio/x-matroska"
-            "audio/flac"
-            "audio/mp4"
           ];
           video = [
             "video/mp2t"
@@ -84,7 +80,6 @@
             "video/x-flv"
             "video/x-matroska"
             "video/x-msvideo"
-            "video/quicktime"
           ];
           directory = ["inode/directory"];
           office = [
@@ -111,8 +106,6 @@
             "application/x-xz"
             "application/x-zstd"
             "application/x-compressed-tar"
-            "application/x-bzip2-compressed-tar"
-            "application/x-xz-compressed-tar"
           ];
           browser = [
             "text/html"
@@ -140,7 +133,7 @@
           )
         );
       in {
-        home.packages = [nvim-ghostty];
+        home.packages = [nvim-ghostty pkgs.imv];
 
         xdg = {
           configFile."mimeapps.list".force = true;
@@ -152,13 +145,8 @@
 
           userDirs = {
             enable = true;
+            setSessionVariables = true;
             createDirectories = true;
-            desktop = null;
-            publicShare = null;
-            templates = null;
-            extraConfig = {
-              NOTES = "${config.home.homeDirectory}/Notes";
-            };
           };
         };
       }

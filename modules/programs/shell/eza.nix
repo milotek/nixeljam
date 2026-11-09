@@ -2,9 +2,6 @@
 {
   flake.modules.nixos.shell.home-manager.sharedModules = [
     {
-      programs.zsh.initContent = ''
-        compdef eza=ls
-      '';
       programs.eza = {
         enable = true;
         icons = "auto";

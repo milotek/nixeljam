@@ -1,4 +1,3 @@
-# SSH configuration
 {
   flake.modules.nixos.ssh = {config, ...}: let
     username = config.var.username;
@@ -10,38 +9,38 @@
       settings = {
         PermitRootLogin = "no";
         PasswordAuthentication = false;
+        # Not redundant with the above: UsePAM defaults on, so leaving
+        # keyboard-interactive enabled lets PAM prompt for a password anyway.
+        KbdInteractiveAuthentication = false;
         AllowUsers = [username];
         MaxAuthTries = 3;
         LoginGraceTime = 20;
         X11Forwarding = false;
-        AllowAgentForwarding = false;
-        AllowTcpForwarding = false;
         ClientAliveInterval = 300;
         ClientAliveCountMax = 2;
+
+        # TCP and agent forwarding deliberately stay at their defaults (on):
+        # -L reaches services Caddy doesn't front, and -A carries the Mac's agent
+        # when hopping in from a host that has no milo key of its own.
+
+        # PQ hybrids first. Pinning to bare curve25519 is a downgrade on
+        # OpenSSH >= 10, which negotiates mlkem by default - the client warns
+        # about store-now-decrypt-later if it is missing.
         KexAlgorithms = [
+          "mlkem768x25519-sha256"
+          "sntrup761x25519-sha512@openssh.com"
           "curve25519-sha256"
           "curve25519-sha256@libssh.org"
-          "ecdh-sha2-nistp256"
-          "ecdh-sha2-nistp384"
-          "ecdh-sha2-nistp521"
         ];
         Ciphers = [
           "chacha20-poly1305@openssh.com"
           "aes256-gcm@openssh.com"
-          "aes128-gcm@openssh.com"
-          "aes256-ctr"
-          "aes192-ctr"
-          "aes128-ctr"
         ];
-        HostKeyAlgorithms = "ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-rsa";
       };
     };
 
-    # Add my public SSH key to my user
     users.users."${username}".openssh.authorizedKeys.keys = [
-      # CHANGEME: "ssh-ed25519 AAAA... you@host"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEX5YUtG4lyBcGJPe2ze+MJZ6Lv/L8evoCR3ASw2fFVo milo@milotek.dev"
     ];
-
-    services.cloudflared.tunnels."${config.var.tunnelId}".ingress."ssh.${config.var.domain}" = "ssh://localhost:22";
   };
 }

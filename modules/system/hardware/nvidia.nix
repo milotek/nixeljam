@@ -11,40 +11,37 @@
     services.xserver.videoDrivers = ["nvidia"];
 
     boot.kernelParams = [
+      "nvidia-drm.modeset=1"
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1" # Improves resume after sleep
     ];
 
+    boot.blacklistedKernelModules = ["nouveau"];
+
     environment.variables = {
       LIBVA_DRIVER_NAME = "nvidia";
+      GBM_BACKEND = "nvidia-drm";
       __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      NIXOS_OZONE_WL = "1";
       __GL_GSYNC_ALLOWED = "1";
       __GL_VRR_ALLOWED = "1";
       NVD_BACKEND = "direct";
     };
 
-    nixpkgs.config.nvidia.acceptLicense = true;
+    nixpkgs.config = {
+      nvidia.acceptLicense = true;
+    };
 
     hardware = {
       nvidia = {
-        open = true; # Open kernel modules, recommended for Turing and newer (RTX 4070 = Ada Lovelace)
+        open = false; # Proprietary driver for better performance
         nvidiaSettings = true;
         powerManagement = {
           enable = true;
-          finegrained = true;
+          finegrained = false;
         };
         modesetting.enable = true;
         package = nvidiaDriverChannel;
-        # forceFullCompositionPipeline = true; # Only useful when display is connected directly to Nvidia GPU, not in PRIME offload mode
-
-        prime = {
-          offload = {
-            enable = true;
-            enableOffloadCmd = true;
-          };
-          sync.enable = false; # offload mode is better for battery life
-          amdgpuBusId = "PCI:5:0:0"; # CHANGEME: lspci | grep -E "VGA|3D"
-          nvidiaBusId = "PCI:1:0:0"; # CHANGEME
-        };
+        forceFullCompositionPipeline = true;
       };
 
       graphics = {
@@ -54,8 +51,10 @@
           nvidia-vaapi-driver
           libva-vdpau-driver
           libvdpau-va-gl
+          mesa
           egl-wayland
           vulkan-loader
+          vulkan-validation-layers
           libva
         ];
       };
@@ -63,11 +62,9 @@
 
     # Nix cache for CUDA
     nix.settings = {
-      substituters = [
-        "https://cache.nixos-cuda.org"
-      ];
+      substituters = ["https://cuda-maintainers.cachix.org"];
       trusted-public-keys = [
-        "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+        "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
       ];
     };
 
@@ -76,5 +73,7 @@
       mesa-demos
       libva-utils
     ];
+
+    hardware.nvidia-container-toolkit.enable = false;
   };
 }

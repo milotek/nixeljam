@@ -7,12 +7,26 @@
       allowUnfree = true;
       allowBroken = false;
     };
+
+    # Ask for password once per SSH session (tied to the tty, expires when session closes)
+    security.sudo.extraConfig = ''
+      Defaults timestamp_type=tty,timestamp_timeout=-1
+    '';
+
+    security.sudo.extraRules = [
+      {
+        users = [config.var.username];
+        commands = [
+          {
+            command = "/run/current-system/sw/bin/nixos-rebuild";
+            options = ["NOPASSWD"];
+          }
+        ];
+      }
+    ];
+
     nix = {
       nixPath = ["nixpkgs=${inputs.nixpkgs}"];
-      registry = {
-        nixpkgs.flake = inputs.nixpkgs;
-        nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
-      };
       channel.enable = false;
       extraOptions = ''
         warn-dirty = false
@@ -20,6 +34,7 @@
       settings = {
         download-buffer-size = 262144000; # 250 MB (250 * 1024 * 1024)
         auto-optimise-store = true;
+        trusted-users = [config.var.username];
         experimental-features = [
           "nix-command"
           "flakes"

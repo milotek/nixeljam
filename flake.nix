@@ -60,6 +60,29 @@
 
     # Server
     nixarr.url = "github:nix-media-server/nixarr";
+
+    nur = {
+      url = "github:nix-community/nur";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-flatpak.url = "github:gmodena/nix-flatpak"; # gaming.nix flatpak (Sober)
+    hermes-agent.url = "github:NousResearch/hermes-agent";
+    minegrub-world-sel-theme = {
+      url = "github:Lxtharia/minegrub-world-sel-theme";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    habits = {
+      url = "github:milotek/habits";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # midi playback for copyparty until it lands upstream. Deliberately NOT
+    # following our nixpkgs: the fork's flake is pinned to 25.05, and the
+    # python packageset it overlays does not exist in 26.05 unchanged.
+    copyparty-midi.url = "github:milotek/copyparty-midi-support/midi-support";
   };
 
   # Dendritic layout: every file under ./modules is a flake-parts module

@@ -1,14 +1,16 @@
-# USBGuard: block USB devices that aren't explicitly allowed
-# Hosts set their own rules (services.usbguard.rules), they depend on the hardware:
-#   run `sudo usbguard generate-policy` with your devices plugged in and paste the output.
-# Until a policy is configured, allow everything from the host with
-#   services.usbguard.implicitPolicyTarget = lib.mkForce "allow";
+# USBGuard:
+# The following line allow all USB devices until a proper policy is configured.
+# Run `sudo usbguard generate-policy` with your devices plugged in,
+# then set rules = "<output>" and switch implicitPolicyTarget to "block".
+# services.usbguard.implicitPolicyTarget = lib.mkForce "allow";
 {
   flake.modules.nixos.usbguard = {
     services.usbguard = {
       enable = true;
       implicitPolicyTarget = "block";
-      IPCAllowedUsers = ["root"];
+      IPCAllowedUsers = [
+        "root"
+      ];
     };
   };
 }
