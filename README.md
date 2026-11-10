@@ -3,32 +3,29 @@
 <br>
 <div align="center">
     <a href="https://github.com/milotek/nixeljam/stargazers">
-        <img src="https://img.shields.io/github/stars/milotek/nixeljam?color=A89AD1&labelColor=0b0b0b&style=for-the-badge&logo=starship&logoColor=A89AD1">
+        <img src="https://img.shields.io/github/stars/milotek/nixeljam?color=FFBDBD&labelColor=0b0b0b&style=for-the-badge&logo=starship&logoColor=FFBDBD">
     </a>
     <a href="https://nixos.org">
-        <img src="https://img.shields.io/badge/NixOS-26.05-blue.svg?style=for-the-badge&labelColor=0b0b0b&logo=NixOS&logoColor=A89AD1&color=A89AD1">
+        <img src="https://img.shields.io/badge/NixOS-26.05-blue.svg?style=for-the-badge&labelColor=0b0b0b&logo=NixOS&logoColor=FFBDBD&color=FFBDBD">
     </a>
     <a href="https://github.com/milotek/nixeljam/blob/main/LICENSE">
-        <img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&colorA=0b0b0b&colorB=A89AD1&logo=unlicense&logoColor=A89AD1"/>
+        <img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&colorA=0b0b0b&colorB=FFBDBD&logo=unlicense&logoColor=FFBDBD"/>
     </a>
 </div>
 <br>
 
-**nixeljam is a ready-to-use NixOS desktop** for people new to NixOS. It gives
-you a polished niri + noctalia desktop with the apps most people install first,
-and keeps everything in one modular, declarative config you can grow into. It
-started as a fork of [nixy](https://github.com/anotherhadi/nixy).
+**nixeljam is a ready-to-use NixOS config/setup**, for people new to NixOS to start from.
+It gives you a polished, fancy and riced desktop with typical tools and apps you would expect, keeping everything in one neat-yet-scalable config with room for you to grow from.
+
+tl;dr: [omarchy](https://israelilinux.com) if it wasn't dogshit
 
 **Features:**
 
-- 🪟 niri & noctalia: a scrollable-tiling compositor with a complete shell (bar,
-  launcher, notifications, lock screen, OSD, clipboard history)
-- 📦 The usual apps: Google Chrome, Discord, Spotify, Steam, VS Code, OBS,
-  Obsidian, Signal, OnlyOffice, VLC and the GNOME file apps
-- 🎨 Consistent Theming: Base16 & Stylix-powered themes, the shell included
+- 🪟 Desktop: Niri + Noctalia, a very flashy yet productive desktop environment stack!
+- 📦 Apps: Chrome, Discord, Spotify, Steam, VSCode, OBS, Obsidian...
+- 🎨 Theming: One theme automatcially applied for every app. Automatic ricing, yay!
 - 🧩 Dendritic: one file per feature, hosts pick the bundles they want
-- 🔒 Hardening when you want it: LUKS, impermanence, secure boot, USBGuard,
-  kernel hardening and app sandboxing are all one line away
+- 🔒 Hardening: LUKS, impermanence, secure boot, USBGuard, kernel hardening and app sandboxing are all one line away.
 
 ## Table of Content
 
@@ -109,11 +106,9 @@ git clone https://github.com/<you>/nixeljam ~/.config/nixos
 sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 ```
 
-## Using it
+## Usage
 
 ### Keybinds
-
-`Super` is the Windows key. `Super + Shift + /` shows every keybind on screen.
 
 | Keys                            | Action                                  |
 | ------------------------------- | --------------------------------------- |
@@ -138,14 +133,9 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 | `Print`                         | Screenshot (region)                     |
 | `Shift + Print` / `Alt + Print` | Screenshot the screen / the window      |
 
-Volume, brightness and media keys work as expected. Everything else (wifi,
-bluetooth, audio, night light, wallpaper, color scheme...) is in the bar and in
-noctalia's settings.
+### Management
 
-### njam
-
-`njam` manages the system from the terminal. Run it without arguments for a
-menu, or:
+We
 
 | Command        | What it does                               |
 | -------------- | ------------------------------------------ |
