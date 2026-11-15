@@ -90,8 +90,9 @@
                 // Windows
                 Mod+Q repeat=false { close-window; }
                 Mod+F { maximize-column; }
-                Mod+Ctrl+F { fullscreen-window; }
-                Mod+Shift+F { toggle-window-floating; }
+                Mod+Shift+F { fullscreen-window; }
+                Mod+M { maximize-window-to-edges; }
+                Mod+Shift+V { toggle-window-floating; }
                 Mod+R { switch-preset-column-width; }
                 Mod+C { center-column; }
                 Mod+O repeat=false { toggle-overview; }
