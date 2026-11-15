@@ -76,7 +76,7 @@
                 Mod+Return { spawn "${pkgs.ghostty}/bin/ghostty" "+new-window"; }
                 Mod+B { spawn "${pkgs.google-chrome}/bin/google-chrome-stable"; }
                 Mod+Space { ${noctalia "launcher toggle"}; }
-                Mod+Shift+V { ${noctalia "launcher clipboard"}; }
+                Mod+V { ${noctalia "launcher clipboard"}; }
                 Mod+N { ${noctalia "notifications toggleHistory"}; }
                 Mod+X { ${noctalia "sessionMenu toggle"}; }
                 Super+Alt+L { ${noctalia "lockScreen lock"}; }
@@ -86,7 +86,7 @@
                 Mod+F { fullscreen-window; }
                 Mod+Shift+F { toggle-window-floating; }
                 Mod+R { switch-preset-column-width; }
-                Mod+Shift+C { center-column; }
+                Mod+C { center-column; }
                 Mod+O repeat=false { toggle-overview; }
 
                 // Focus
