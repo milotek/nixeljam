@@ -19,7 +19,10 @@
           };
           recorder = cmd: "${pkgs.noctalia-shell}/bin/noctalia-shell ipc call plugin:screen-recorder ${cmd}";
         in {
-          xdg.configFile."noctalia/plugins/screen-recorder".source = "${plugins}/screen-recorder";
+          xdg.configFile."noctalia/plugins/screen-recorder" = {
+            source = "${plugins}/screen-recorder";
+            recursive = true;
+          };
 
           programs.noctalia-shell = {
             plugins = {
