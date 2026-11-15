@@ -10,6 +10,20 @@
   clipSaved = pkgs.writeShellScript "clip-saved" ''
     ${pkgs.libnotify}/bin/notify-send -a Clips "Clip saved" "$(basename "$1")"
   '';
+  # Print: 1 tap region screenshot, 2 taps full screen, 3 taps save a clip
+  printTap = pkgs.writeShellScript "print-tap" ''
+    state="$XDG_RUNTIME_DIR/print-tap"
+    n=$(( $(cat "$state" 2>/dev/null || echo 0) + 1 ))
+    echo "$n" > "$state"
+    sleep 0.3
+    [ "$(cat "$state" 2>/dev/null)" = "$n" ] || exit 0
+    rm -f "$state"
+    case $n in
+      1) ${pkgs.niri}/bin/niri msg action screenshot ;;
+      2) ${pkgs.niri}/bin/niri msg action screenshot-screen ;;
+      *) ${pkgs.systemd}/bin/systemctl --user kill -s SIGUSR1 replay.service ;;
+    esac
+  '';
 in {
   imports = [inputs.sops-nix.homeManagerModules.sops];
 
@@ -137,6 +151,7 @@ in {
   xdg.configFile."niri/binds.kdl".text = ''
     binds {
         Mod+Print { spawn "systemctl" "--user" "kill" "-s" "SIGUSR1" "replay.service"; }
+        Print { spawn "${printTap}"; }
     }
   '';
 
