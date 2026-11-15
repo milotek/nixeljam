@@ -95,7 +95,7 @@
                 Mod+Shift+V { toggle-window-floating; }
                 Mod+R { switch-preset-column-width; }
                 Mod+C { center-column; }
-                Mod+O repeat=false { toggle-overview; }
+                Mod+Space repeat=false { toggle-overview; }
 
                 // Focus
                 Mod+H { focus-column-left; }
