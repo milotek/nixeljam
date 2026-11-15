@@ -6,24 +6,6 @@
   ...
 }: let
   home = config.home.homeDirectory;
-  clips = "${home}/Videos/Recordings/Clips";
-  clipSaved = pkgs.writeShellScript "clip-saved" ''
-    ${pkgs.libnotify}/bin/notify-send -a Clips "Clip saved" "$(basename "$1")"
-  '';
-  # Print: 1 tap region screenshot, 2 taps full screen, 3 taps save a clip
-  printTap = pkgs.writeShellScript "print-tap" ''
-    state="$XDG_RUNTIME_DIR/print-tap"
-    n=$(( $(cat "$state" 2>/dev/null || echo 0) + 1 ))
-    echo "$n" > "$state"
-    sleep 0.3
-    [ "$(cat "$state" 2>/dev/null)" = "$n" ] || exit 0
-    rm -f "$state"
-    case $n in
-      1) ${pkgs.niri}/bin/niri msg action screenshot ;;
-      2) ${pkgs.niri}/bin/niri msg action screenshot-screen ;;
-      *) ${pkgs.systemd}/bin/systemctl --user kill -s SIGUSR1 replay.service ;;
-    esac
-  '';
 in {
   imports = [inputs.sops-nix.homeManagerModules.sops];
 
@@ -90,6 +72,8 @@ in {
 
     zellij.enable = true;
 
+    noctalia-shell.pluginSettings.screen-recorder.videoSource = "HDMI-A-1";
+
     ghostty.settings.keybind = [
       "performable:ctrl+c=copy_to_clipboard"
       "ctrl+v=paste_from_clipboard"
@@ -134,27 +118,6 @@ in {
     };
   };
 
-  systemd.user.services.replay = {
-    Unit = {
-      Description = "Instant replay buffer";
-      After = ["graphical-session.target"];
-      PartOf = ["graphical-session.target"];
-    };
-    Service = {
-      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${clips}";
-      ExecStart = "${pkgs.gpu-screen-recorder}/bin/gpu-screen-recorder -w HDMI-A-1 -f 60 -c mp4 -a default_output -r 30 -replay-storage ram -sc ${clipSaved} -o ${clips}";
-      Restart = "on-failure";
-    };
-    Install.WantedBy = ["graphical-session.target"];
-  };
-
-  xdg.configFile."niri/binds.kdl".text = ''
-    binds {
-        Mod+Print { spawn "systemctl" "--user" "kill" "-s" "SIGUSR1" "replay.service"; }
-        Print { spawn "${printTap}"; }
-    }
-  '';
-
   xdg.configFile."niri/config.kdl".text = lib.mkAfter ''
     output "HDMI-A-1" {
         mode "2560x1440@143.999"
@@ -167,6 +130,5 @@ in {
     window-rule {
         open-floating false
     }
-    include "./binds.kdl"
   '';
 }

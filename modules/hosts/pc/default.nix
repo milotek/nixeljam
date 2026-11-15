@@ -33,6 +33,7 @@
       discord
       spotify
       obs-studio
+      replay
 
       # Programs
       tui

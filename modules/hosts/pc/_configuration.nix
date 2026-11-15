@@ -55,7 +55,6 @@
 
   programs.ydotool.enable = true;
   programs.thunar.enable = true;
-  programs.gpu-screen-recorder.enable = true;
   services.hardware.openrgb.enable = true;
 
   environment.etc."libinput/local-overrides.quirks".text = ''
