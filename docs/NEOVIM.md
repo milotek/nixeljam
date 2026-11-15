@@ -1,7 +1,7 @@
 # Neovim
 
 The Neovim configuration is built with [nvf](https://github.com/notashelf/nvf) and exposed as a standalone flake output.
-It can be used in three ways: run it directly, import it into another flake's NixOS config, or use it as part of this config.
+It can be used in two ways: run it directly, or use it as part of this config.
 
 ## Run directly
 
@@ -9,22 +9,6 @@ No installation needed:
 
 ```sh
 nix run github:milotek/nixeljam#nvim
-```
-
-## Use in another flake
-
-Add this repo as an input:
-
-```nix
-inputs.nixeljam.url = "github:milotek/nixeljam";
-```
-
-Then import the `nvim` aspect in your NixOS configuration:
-
-```nix
-{ inputs, ... }: {
-  imports = [ inputs.nixeljam.nixosModules.nvim ];
-}
 ```
 
 ## What's included

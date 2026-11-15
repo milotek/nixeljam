@@ -16,19 +16,12 @@
   };
 
   config = {
-    _module.args.aspects = config.flake.nixosModules;
-
-    flake.nixosModules =
+    _module.args.aspects =
       lib.mapAttrs (name: module: {
         key = "nixeljam#aspects.${name}";
         imports = [module];
       })
       config.flake.modules.nixos;
-
-    flake.templates.default = {
-      path = ../../templates/default;
-      description = "A machine built from nixeljam's bundles";
-    };
 
     systems = ["x86_64-linux" "aarch64-linux"];
     perSystem = {
