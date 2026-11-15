@@ -76,13 +76,10 @@ in {
 
     zellij.enable = true;
 
-    ghostty.settings = {
-      selection-clear-on-copy = true;
-      keybind = [
-        "performable:ctrl+c=copy_to_clipboard"
-        "ctrl+v=paste_from_clipboard"
-      ];
-    };
+    ghostty.settings.keybind = [
+      "performable:ctrl+c=copy_to_clipboard"
+      "ctrl+v=paste_from_clipboard"
+    ];
 
     git = {
       signing = {
