@@ -155,8 +155,8 @@
                 Mod+Ctrl+Shift+WheelScrollUp { move-column-left; }
 
                 // Screenshots
-                Print { spawn "niri-tap" "print" "niri msg action screenshot" "niri msg action screenshot-screen"; }
-                Shift+Print { screenshot-screen; }
+                Print { screenshot-screen; }
+                Mod+Print { screenshot; }
                 Alt+Print { screenshot-window; }
 
                 // Sound
