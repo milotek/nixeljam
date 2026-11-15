@@ -77,11 +77,8 @@ in {
     zellij.enable = true;
 
     ghostty.settings.keybind = [
-      "super+c=copy_to_clipboard"
-      "super+v=paste_from_clipboard"
-      "super+a=select_all"
-      "super+t=new_tab"
-      "super+w=close_surface"
+      "performable:ctrl+c=copy_to_clipboard"
+      "ctrl+v=paste_from_clipboard"
     ];
 
     git = {
