@@ -161,6 +161,7 @@ A host lists bundles and single aspects in its `default.nix`:
 | --------- | ------------------------------------------------------------------- |
 | `base`    | Nix settings, users, networking, locale, home-manager and the theme |
 | `tui`     | zsh, git, btop, Neovim, `njam` and command line tools               |
+| `ai`      | Claude Code, Codex, opencode, pi and agy, from llm-agents.nix       |
 | `gui`     | niri, noctalia, ghostty and the desktop apps                        |
 | `homelab` | The self-hosted services in `modules/server`                        |
 

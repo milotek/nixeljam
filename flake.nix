@@ -57,6 +57,7 @@
       url = "github:tldr-pages/tldr";
       flake = false;
     };
+    llm-agents.url = "github:numtide/llm-agents.nix";
 
     # Server
     nixarr.url = "github:nix-media-server/nixarr";

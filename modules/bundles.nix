@@ -25,6 +25,14 @@
       dev
     ];
 
+    ai.imports = [
+      claude-code
+      codex
+      opencode
+      pi
+      agy
+    ];
+
     # Self-hosted services exposed through the Cloudflare tunnel (modules/server)
     homelab.imports = [
       ssh
