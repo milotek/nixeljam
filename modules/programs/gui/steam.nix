@@ -4,13 +4,40 @@
     config,
     pkgs,
     ...
-  }: {
+  }: let
+    # Steam launch option: `game %command%`, or `game -w 1280 -h 960 %command%` for a stretched res
+    game = pkgs.writeShellApplication {
+      name = "game";
+      runtimeInputs = with pkgs; [gamescope jq niri];
+      text = ''
+        mode=$(niri msg -j focused-output 2>/dev/null | jq -r '.modes[.current_mode] | "\(.width) \(.height) \(.refresh_rate / 1000 | round)"' || true)
+        read -r W H R <<< "''${mode:-1920 1080 60}"
+        w=$W
+        h=$H
+        while [[ $# -gt 0 ]]; do
+          case $1 in
+            -w) w=$2; shift 2 ;;
+            -h) h=$2; shift 2 ;;
+            --) shift; break ;;
+            *) break ;;
+          esac
+        done
+
+        # gamescope's SDL breaks on Steam's LD_LIBRARY_PATH, but the game itself needs it.
+        # LD_PRELOAD (the Steam overlay) slows games down after ~24 min under gamescope.
+        exec env -u LD_LIBRARY_PATH -u LD_PRELOAD \
+          gamescope -W "$W" -H "$H" -w "$w" -h "$h" -r "$R" -S stretch -- \
+          env LD_LIBRARY_PATH="''${LD_LIBRARY_PATH:-}" "$@"
+      '';
+    };
+  in {
     programs.steam = {
       enable = true;
       gamescopeSession.enable = true;
     };
 
     environment.systemPackages = with pkgs; [
+      game
       mangohud
       protonup-ng
     ];
@@ -21,12 +48,4 @@
 
     programs.gamemode.enable = true;
   };
-  # Example of recommanded launch options for your games in Steam :
-  # Regular gaming :
-  # LD_PRELOAD="" gamescope -W 2560 -H 1440 -r 360 -f -- %command%
-  # LD_PRELOAD="" gamescope -W 3440 -H 1440 -r 140 -f -- %command%
-  # HDR gaming :
-  # LD_PRELOAD="" ENABLE_HDR_WSI=1 gamescope -w 2560 -h 1440 -r 360 -f --hdr-enabled --hdr-debug-force-output --hdr-sdr-content-nits 600 -- env ENABLE_GAMESCOPE_WSI=1 DXVK_HDR=1 DISABLE_HDR_WSI=1 VKD3D_DISABLE_EXTENSIONS=VK_KHR_present_wait %command%
-  # LD_PRELOAD="" removes a glitch causing games to slow down after roughly 24 minutes
-  # For the rest of the command, you can change the values to match your screen resolution and refresh rate
 }
