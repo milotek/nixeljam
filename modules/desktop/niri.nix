@@ -63,6 +63,13 @@
                 clip-to-geometry true
             }
 
+            // Games declare a fixed size, which niri would otherwise open floating
+            window-rule {
+                match app-id="^gamescope$"
+                match app-id="^steam_app_"
+                open-floating false
+            }
+
             // noctalia's wallpaper stays visible behind the overview
             layer-rule {
                 match namespace="^noctalia-wallpaper"
