@@ -62,7 +62,6 @@
     nixarr.url = "github:nix-media-server/nixarr";
   };
 
-  # Dendritic layout: every file under ./modules is a flake-parts module
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 }
