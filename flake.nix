@@ -60,6 +60,8 @@
 
     # Server
     nixarr.url = "github:nix-media-server/nixarr";
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
   };
 
   # Dendritic layout: every file under ./modules is a flake-parts module
