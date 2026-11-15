@@ -37,8 +37,6 @@ started as a fork of [nixy](https://github.com/anotherhadi/nixy).
 
 - [Screenshots](#screenshots)
 - [Installation](#installation)
-  - [From the template](#from-the-template)
-  - [From a fork](#from-a-fork)
 - [Using it](#using-it)
   - [Keybinds](#keybinds)
   - [njam](#njam)
@@ -66,24 +64,6 @@ started as a fork of [nixy](https://github.com/anotherhadi/nixy).
 > ```sh
 > rg "CHANGEME" ~/.config/nixos
 > ```
-
-### From the template
-
-Install NixOS with the [graphical installer](https://nixos.org/download), then
-keep nixeljam as an input and only write your own machine:
-
-```sh
-mkdir -p ~/.config/nixos && cd ~/.config/nixos
-nix flake init -t github:milotek/nixeljam
-cp /etc/nixos/hardware-configuration.nix .
-git init && git add .
-sudo nixos-rebuild switch --flake .#nixos
-```
-
-Pick the bundles and aspects you want in `flake.nix`, and fill in
-`configuration.nix`.
-
-### From a fork
 
 1. [Fork](https://github.com/milotek/nixeljam/fork) this repo and clone it to
    your system:
