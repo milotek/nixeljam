@@ -137,11 +137,11 @@ in {
 
   xdg.configFile."niri/config.kdl".text = lib.mkAfter ''
     output "HDMI-A-1" {
-        mode "2560x1440@144"
+        mode "2560x1440@143.999"
         position x=0 y=0
     }
     output "DP-1" {
-        mode "2560x1440@144"
+        mode "2560x1440@143.972"
         position x=2560 y=0
     }
     include "./replay.kdl"
