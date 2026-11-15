@@ -4,7 +4,26 @@
     programs.niri.enable = true;
 
     # X11 apps (Steam, games...): niri starts it on demand when it's in PATH
-    environment.systemPackages = [pkgs.xwayland-satellite];
+    environment.systemPackages = [
+      pkgs.xwayland-satellite
+
+      # `niri-tap <id> <cmd for 1 tap> <cmd for 2 taps> ...`: one bind, an action per tap count
+      (pkgs.writeShellApplication {
+        name = "niri-tap";
+        runtimeInputs = [pkgs.niri];
+        text = ''
+          state="$XDG_RUNTIME_DIR/niri-tap-$1"
+          shift
+          n=$(($(cat "$state" 2>/dev/null || echo 0) + 1))
+          echo "$n" > "$state"
+          sleep 0.3
+          [[ $(cat "$state" 2>/dev/null) == "$n" ]] || exit 0
+          rm -f "$state"
+          ((n > $#)) && n=$#
+          exec sh -c "''${!n}"
+        '';
+      })
+    ];
 
     # Generic Wayland hints (Chromium/Electron and Firefox), applied on every
     # niri host regardless of the GPU.
@@ -136,7 +155,7 @@
                 Mod+Ctrl+Shift+WheelScrollUp { move-column-left; }
 
                 // Screenshots
-                Print { screenshot; }
+                Print { spawn "niri-tap" "print" "niri msg action screenshot" "niri msg action screenshot-screen"; }
                 Shift+Print { screenshot-screen; }
                 Alt+Print { screenshot-window; }
 
