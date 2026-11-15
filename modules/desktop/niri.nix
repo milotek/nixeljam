@@ -137,16 +137,8 @@
             '') (lib.range 1 9)}
                 Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
                 Mod+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
-                Mod+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
-                Mod+Ctrl+WheelScrollUp cooldown-ms=150 { move-column-to-workspace-up; }
                 Mod+WheelScrollRight { focus-column-right; }
                 Mod+WheelScrollLeft { focus-column-left; }
-                Mod+Ctrl+WheelScrollRight { move-column-right; }
-                Mod+Ctrl+WheelScrollLeft { move-column-left; }
-                Mod+Shift+WheelScrollDown { focus-column-right; }
-                Mod+Shift+WheelScrollUp { focus-column-left; }
-                Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
-                Mod+Ctrl+Shift+WheelScrollUp { move-column-left; }
 
                 // Screenshots
                 Print { screenshot-screen; }
