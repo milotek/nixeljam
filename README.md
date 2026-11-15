@@ -112,7 +112,7 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 | `Super + Shift + H/L`           | Focus the monitor on the left / right   |
 | `Super + 1..9`                  | Go to a workspace                       |
 | `Super + Shift + 1..9`          | Send the window to a workspace          |
-| `Super + Shift + Scroll`        | Scroll the columns left / right         |
+| `Super + Scroll left / right`   | Scroll the columns left / right         |
 | `Print` / `Super + Print`       | Screenshot the screen / a region        |
 | `Alt + Print`                   | Screenshot the window                   |
 
