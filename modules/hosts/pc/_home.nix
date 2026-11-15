@@ -77,7 +77,7 @@ in {
     zellij.enable = true;
 
     ghostty.settings.keybind = [
-      "performable:ctrl+c=copy_to_clipboard"
+      "ctrl+c=copy_to_clipboard"
       "ctrl+v=paste_from_clipboard"
     ];
 
