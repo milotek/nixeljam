@@ -81,7 +81,7 @@
                 // Quick launch
                 Mod+Return { spawn "${pkgs.ghostty}/bin/ghostty" "+new-window"; }
                 Mod+B { spawn "${pkgs.google-chrome}/bin/google-chrome-stable"; }
-                Mod+Space { ${noctalia "launcher toggle"}; }
+                Alt+Space { ${noctalia "launcher toggle"}; }
                 Mod+V { ${noctalia "launcher clipboard"}; }
                 Mod+N { ${noctalia "notifications toggleHistory"}; }
                 Mod+X { ${noctalia "sessionMenu toggle"}; }
