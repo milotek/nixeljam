@@ -113,8 +113,8 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 | `Super + 1..9`                  | Go to a workspace                       |
 | `Super + Shift + 1..9`          | Send the window to a workspace          |
 | `Super + Shift + Scroll`        | Scroll the columns left / right         |
-| `Print` / twice                 | Screenshot a region / the screen        |
-| `Shift + Print` / `Alt + Print` | Screenshot the screen / the window      |
+| `Print` / `Super + Print`       | Screenshot the screen / a region        |
+| `Alt + Print`                   | Screenshot the window                   |
 
 ### Management
 

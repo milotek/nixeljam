@@ -1,5 +1,5 @@
 # Instant replay and screen recording, through noctalia's screen-recorder plugin (gpu-screen-recorder)
-# Mod+Print: once saves the last 30s, twice starts/stops a recording
+# Print twice saves the last 30s, Mod+Print twice starts/stops a recording
 {
   flake.modules.nixos.replay = {
     programs.gpu-screen-recorder.enable = true;
@@ -72,7 +72,8 @@
 
           xdg.configFile."niri/replay.kdl".text = ''
             binds {
-                Mod+Print { spawn "niri-tap" "replay" "${recorder "saveReplay"}" "${recorder "toggle"}"; }
+                Print { spawn "niri-tap" "print" "niri msg action screenshot-screen" "${recorder "saveReplay"}"; }
+                Mod+Print { spawn "niri-tap" "mod-print" "niri msg action screenshot" "${recorder "toggle"}"; }
             }
           '';
           xdg.configFile."niri/config.kdl".text = lib.mkAfter ''
