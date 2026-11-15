@@ -92,7 +92,7 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 
 | Keys                            | Action                                  |
 | ------------------------------- | --------------------------------------- |
-| `Super + Space`                 | App launcher                            |
+| `Alt + Space`                   | App launcher                            |
 | `Super + Return`                | Terminal (ghostty)                      |
 | `Super + B`                     | Browser (Google Chrome)                 |
 | `Super + V`                     | Clipboard history                       |
@@ -100,17 +100,20 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 | `Super + X`                     | Power menu (lock, log out, reboot, ...) |
 | `Super + Alt + L`               | Lock the screen                         |
 | `Super + Q`                     | Close the window                        |
-| `Super + F`                     | Fullscreen                              |
-| `Super + Shift + F`             | Float / tile the window                 |
+| `Super + F`                     | Maximize the column                     |
+| `Super + Shift + F`             | Fullscreen                              |
+| `Super + M`                     | Maximize to the screen edges            |
+| `Super + Shift + V`             | Float / tile the window                 |
 | `Super + R`                     | Cycle the column width                  |
 | `Super + C`                     | Center the column                       |
-| `Super + O`                     | Overview of all workspaces              |
+| `Super + Space`                 | Overview of all workspaces              |
 | `Super + H/J/K/L` or arrows     | Move focus                              |
 | `Super + Ctrl + H/J/K/L`        | Move the window                         |
 | `Super + Shift + H/L`           | Focus the monitor on the left / right   |
 | `Super + 1..9`                  | Go to a workspace                       |
 | `Super + Shift + 1..9`          | Send the window to a workspace          |
-| `Print`                         | Screenshot (region)                     |
+| `Super + Shift + Scroll`        | Scroll the columns left / right         |
+| `Print` / twice                 | Screenshot a region / the screen        |
 | `Shift + Print` / `Alt + Print` | Screenshot the screen / the window      |
 
 ### Management
@@ -155,7 +158,7 @@ A host lists bundles and single aspects in its `default.nix`:
 | `gui`     | niri, noctalia, ghostty and the desktop apps                        |
 | `homelab` | The self-hosted services in `modules/server`                        |
 
-Aspects you add on their own: `audio`, `bluetooth`, `fonts`, `steam`,
+Aspects you add on their own: `audio`, `bluetooth`, `fonts`, `steam`, `replay`,
 `ollama`, `nvidia`, `amd-graphics`, `systemd-boot` or `lanzaboote`,
 `tuigreet`, `autologin`, `kernel-hardening`, `usbguard`, `vulnix`, `docker`...
 
