@@ -36,6 +36,8 @@ in {
           VISUAL = "nvim";
         };
 
+        stylix.targets.nvf.enable = false;
+
         programs.nvf = {
           enable = true;
           settings = {

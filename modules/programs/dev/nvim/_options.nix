@@ -1,4 +1,4 @@
-{lib, ...}: {
+{...}: {
   vim = {
     viAlias = false;
     vimAlias = true;
@@ -37,9 +37,9 @@
     '';
     theme = {
       enable = true;
-      name = lib.mkForce "catppuccin";
-      style = lib.mkForce "mocha";
-      transparent = lib.mkForce true;
+      name = "catppuccin";
+      style = "mocha";
+      transparent = true;
     };
   };
 }
