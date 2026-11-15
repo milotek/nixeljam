@@ -127,8 +127,5 @@ in {
         mode "2560x1440@143.972"
         position x=2560 y=0
     }
-    window-rule {
-        open-floating false
-    }
   '';
 }
