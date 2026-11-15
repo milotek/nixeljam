@@ -63,10 +63,9 @@
                 clip-to-geometry true
             }
 
-            // Games declare a fixed size, which niri would otherwise open floating
+            // Games run through `game` can declare a fixed size, which niri would otherwise open floating
             window-rule {
                 match app-id="^gamescope$"
-                match app-id="^steam_app_"
                 open-floating false
             }
 
