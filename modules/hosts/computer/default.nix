@@ -26,6 +26,7 @@
 
       # Programs
       tui
+      ai
       steam
       # ollama # CHANGEME: Local LLMs, CUDA build (Nvidia only)
 

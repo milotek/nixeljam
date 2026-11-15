@@ -57,14 +57,13 @@
       url = "github:tldr-pages/tldr";
       flake = false;
     };
+    llm-agents.url = "github:numtide/llm-agents.nix";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
 
     # Server
     nixarr.url = "github:nix-media-server/nixarr";
-
-    nix-flatpak.url = "github:gmodena/nix-flatpak";
   };
 
-  # Dendritic layout: every file under ./modules is a flake-parts module
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 }
