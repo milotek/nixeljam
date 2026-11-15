@@ -5,10 +5,10 @@
       {
         config,
         lib,
-        pkgs,
+        pkgs-unstable,
         ...
       }: {
-        home.packages = [pkgs.vscode];
+        home.packages = [pkgs-unstable.vscode];
 
         home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
           directories = [
