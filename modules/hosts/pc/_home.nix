@@ -137,7 +137,6 @@ in {
   xdg.configFile."niri/binds.kdl".text = ''
     binds {
         Mod+Print { spawn "systemctl" "--user" "kill" "-s" "SIGUSR1" "replay.service"; }
-        Alt+Space { spawn "${pkgs.noctalia-shell}/bin/noctalia-shell" "ipc" "call" "launcher" "toggle"; }
     }
   '';
 
