@@ -11,24 +11,13 @@
           pkgs,
           ...
         }: let
-          plugins = pkgs.fetchFromGitHub {
-            owner = "noctalia-dev";
-            repo = "noctalia-plugins";
-            rev = "ea21cb63d063075bc0acd72d8b946ce2c5eef00d";
-            hash = "sha256-M+7SLW+wI3KvDMj8dSrW/uUmpPiYhsXA2jpbbgL5imk=";
-          };
           noctalia = "${pkgs.noctalia-shell}/bin/noctalia-shell";
           recorder = cmd: "${noctalia} ipc call plugin:screen-recorder ${cmd}";
         in {
-          xdg.configFile."noctalia/plugins/screen-recorder" = {
-            source = "${plugins}/screen-recorder";
-            recursive = true;
-          };
-
           programs.noctalia-shell = {
             plugins = {
               version = 2;
-              sources = [];
+              # noctalia downloads enabled plugins that aren't on disk yet
               states.screen-recorder = {
                 enabled = true;
                 sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
@@ -47,18 +36,11 @@
 
           # The plugin never starts the replay buffer on its own, and it loads a while after noctalia starts
           systemd.user.services.replay = {
-            Unit = {
-              Description = "Start noctalia's replay buffer";
-              After = ["noctalia-shell.service"];
-              PartOf = ["graphical-session.target"];
-            };
-            Service = {
-              Type = "oneshot";
-              ExecStart = "${pkgs.writeShellScript "replay-start" ''
-                until ${noctalia} ipc show | ${pkgs.gnugrep}/bin/grep -q "target plugin:screen-recorder"; do sleep 1; done
-                ${recorder "startReplay"}
-              ''}";
-            };
+            Unit.After = ["noctalia-shell.service"];
+            Service.ExecStart = pkgs.writeShellScript "replay" ''
+              until [[ $(${noctalia} ipc show) == *"target plugin:screen-recorder"* ]]; do sleep 1; done
+              ${recorder "startReplay"}
+            '';
             Install.WantedBy = ["graphical-session.target"];
           };
 
