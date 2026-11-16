@@ -6,7 +6,7 @@
     # X11 apps (Steam, games...): niri starts it on demand when it's in PATH
     environment.systemPackages = [pkgs.xwayland-satellite];
 
-    # Holding a key past 300ms sends a spare F-key instead, bound below like any other key
+    # Hold Print for F13 (for keyboards without F13)
     services.keyd = {
       enable = true;
       keyboards.default = {
