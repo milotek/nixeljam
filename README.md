@@ -92,7 +92,7 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 
 | Keys                            | Action                                  |
 | ------------------------------- | --------------------------------------- |
-| `Super + Space`                 | App launcher                            |
+| `Alt + Space`                   | App launcher                            |
 | `Super + Return`                | Terminal (ghostty)                      |
 | `Super + B`                     | Browser (Google Chrome)                 |
 | `Super + V`                     | Clipboard history                       |
@@ -100,18 +100,23 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 | `Super + X`                     | Power menu (lock, log out, reboot, ...) |
 | `Super + Alt + L`               | Lock the screen                         |
 | `Super + Q`                     | Close the window                        |
-| `Super + F`                     | Fullscreen                              |
-| `Super + Shift + F`             | Float / tile the window                 |
+| `Super + F`                     | Maximize the column                     |
+| `Super + Shift + F`             | Fullscreen                              |
+| `Super + M`                     | Maximize to the screen edges            |
+| `Super + Shift + V`             | Float / tile the window                 |
 | `Super + R`                     | Cycle the column width                  |
 | `Super + C`                     | Center the column                       |
-| `Super + O`                     | Overview of all workspaces              |
+| `Super + Space`                 | Overview of all workspaces              |
 | `Super + H/J/K/L` or arrows     | Move focus                              |
 | `Super + Ctrl + H/J/K/L`        | Move the window                         |
 | `Super + Shift + H/L`           | Focus the monitor on the left / right   |
 | `Super + 1..9`                  | Go to a workspace                       |
 | `Super + Shift + 1..9`          | Send the window to a workspace          |
-| `Print`                         | Screenshot (region)                     |
-| `Shift + Print` / `Alt + Print` | Screenshot the screen / the window      |
+| `Super + Scroll left / right`   | Scroll the columns left / right         |
+| `Print` / `Super + Print`       | Screenshot the screen / a region        |
+| `Alt + Print`                   | Screenshot the window                   |
+| Hold `Print`                    | Save the last 30s of replay             |
+| Hold `Super + Print`            | Start / stop recording                  |
 
 ### Management
 
