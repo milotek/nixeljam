@@ -30,14 +30,6 @@
     options = ["nofail" "x-systemd.device-timeout=5s" "x-gvfs-show" "x-gvfs-name=SSD"];
   };
 
-  services.keyd = {
-    enable = true;
-    keyboards.default = {
-      ids = ["*"];
-      settings.main.leftmeta = "overload(meta, M-space)";
-    };
-  };
-
   services.openssh = {
     enable = true;
     settings = {
