@@ -38,6 +38,8 @@
             mouse-scroll-multiplier = "discrete:1";
             keybind = [
               "shift+ctrl+tab=new_tab"
+              "performable:ctrl+c=copy_to_clipboard"
+              "ctrl+v=paste_from_clipboard"
             ];
           };
         };
