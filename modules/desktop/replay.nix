@@ -1,8 +1,17 @@
 # Instant replay and screen recording, through noctalia's screen-recorder plugin (gpu-screen-recorder)
-# Shift+Print saves the last 30s, Mod+Shift+Print starts/stops a recording
+# Holding Print saves the last 30s, holding Mod+Print starts/stops a recording
 {
   flake.modules.nixos.replay = {
     programs.gpu-screen-recorder.enable = true;
+
+    # Hold Print for F13 (for keyboards without F13)
+    services.keyd = {
+      enable = true;
+      keyboards.default = {
+        ids = ["*"];
+        settings.main.sysrq = "timeout(sysrq, 300, f13)";
+      };
+    };
 
     home-manager.sharedModules = [
       (
@@ -46,8 +55,8 @@
 
           xdg.configFile."niri/replay.kdl".text = ''
             binds {
-                Shift+Print { spawn-sh "${recorder "saveReplay"}"; }
-                Mod+Shift+Print { spawn-sh "${recorder "toggle"}"; }
+                F13 { spawn-sh "${recorder "saveReplay"}"; }
+                Mod+F13 { spawn-sh "${recorder "toggle"}"; }
             }
           '';
           xdg.configFile."niri/config.kdl".text = lib.mkAfter ''
