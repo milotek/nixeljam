@@ -6,6 +6,17 @@
     # X11 apps (Steam, games...): niri starts it on demand when it's in PATH
     environment.systemPackages = [pkgs.xwayland-satellite];
 
+    # Holding a key past 300ms sends a spare F-key instead, bound below like any other key
+    services.keyd = {
+      enable = true;
+      keyboards.default = {
+        ids = ["*"];
+        settings.main = {
+          sysrq = "timeout(sysrq, 300, f13)";
+        };
+      };
+    };
+
     # Generic Wayland hints (Chromium/Electron and Firefox), applied on every
     # niri host regardless of the GPU.
     environment.variables = {
@@ -125,6 +136,8 @@
                 Print { screenshot-screen; }
                 Mod+Print { screenshot; }
                 Alt+Print { screenshot-window; }
+                F13 { ${noctalia "plugin:screen-recorder saveReplay"}; }
+                Mod+F13 { ${noctalia "plugin:screen-recorder toggle"}; }
 
                 // Sound
                 XF86AudioRaiseVolume allow-when-locked=true { ${noctalia "volume increase"}; }
