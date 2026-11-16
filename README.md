@@ -115,6 +115,8 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 | `Super + Scroll left / right`   | Scroll the columns left / right         |
 | `Print` / `Super + Print`       | Screenshot the screen / a region        |
 | `Alt + Print`                   | Screenshot the window                   |
+| Hold `Print`                    | Save the last 30s of replay             |
+| Hold `Super + Print`            | Start / stop recording                  |
 
 ### Management
 
@@ -158,7 +160,7 @@ A host lists bundles and single aspects in its `default.nix`:
 | `gui`     | niri, noctalia, ghostty and the desktop apps                        |
 | `homelab` | The self-hosted services in `modules/server`                        |
 
-Aspects you add on their own: `audio`, `bluetooth`, `fonts`, `steam`, `replay`,
+Aspects you add on their own: `audio`, `bluetooth`, `fonts`, `steam`,
 `ollama`, `nvidia`, `amd-graphics`, `systemd-boot` or `lanzaboote`,
 `tuigreet`, `autologin`, `kernel-hardening`, `usbguard`, `vulnix`, `docker`...
 
