@@ -6,6 +6,7 @@
   ...
 }: let
   home = config.home.homeDirectory;
+  noctalia = "${pkgs.noctalia-shell}/bin/noctalia-shell";
 in {
   imports = [inputs.sops-nix.homeManagerModules.sops];
 
@@ -111,6 +112,16 @@ in {
         };
       };
     };
+  };
+
+  # Start the replay buffer once noctalia has loaded the plugin
+  systemd.user.services.replay = {
+    Unit.After = ["noctalia-shell.service"];
+    Service.ExecStart = pkgs.writeShellScript "replay" ''
+      until [[ $(${noctalia} ipc show) == *"target plugin:screen-recorder"* ]]; do sleep 1; done
+      ${noctalia} ipc call plugin:screen-recorder startReplay
+    '';
+    Install.WantedBy = ["graphical-session.target"];
   };
 
   xdg.configFile."niri/config.kdl".text = lib.mkAfter ''
