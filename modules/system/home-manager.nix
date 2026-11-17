@@ -24,7 +24,6 @@
             osConfig,
             ...
           }: {
-            # home.persistence entries are enabled by default, follow the system instead
             home.persistence."/persist".enable = lib.mkDefault osConfig.environment.persistence."/persist".enable;
           }
         )

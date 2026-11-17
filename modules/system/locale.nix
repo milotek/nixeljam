@@ -1,5 +1,3 @@
-# Time zone, language and keyboard layout: hosts set time.timeZone, i18n.defaultLocale,
-# services.xserver.xkb.layout and nixeljam.extraLocale
 {
   flake.modules.nixos.locale = {
     config,
