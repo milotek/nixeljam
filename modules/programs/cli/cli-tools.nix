@@ -1,19 +1,14 @@
-{
+{aspects, ...}: {
+  flake.modules.nixos.cli-tools.imports = [aspects.home-manager];
   flake.modules.nixos.cli-tools.home-manager.sharedModules = [
     (
-      {
-        pkgs,
-        pkgs-unstable,
-        config,
-        lib,
-        ...
-      }: {
+      {pkgs, ...}: {
         home.packages = with pkgs; [
           jless # A pager for JSON
           dua # Tool to conveniently learn about the disk usage of directories
           httpie # Command-line HTTP client, a user-friendly cURL replacement
           imagemagick # Image manipulation tool
-          pkgs-unstable.yt-dlp
+          unstable.yt-dlp
 
           # Just cool
           fastfetch

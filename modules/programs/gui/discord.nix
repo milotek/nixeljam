@@ -1,21 +1,16 @@
 # Discord: chat app
-{
-  flake.modules.nixos.discord.home-manager.sharedModules = [
-    (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }: {
+{aspects, ...}: {
+  flake.modules.nixos.discord = {
+    imports = [aspects.home-manager];
+
+    home-manager.sharedModules = [
+      ({pkgs, ...}: {
         home.packages = [pkgs.discord];
 
-        home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
-          directories = [
-            ".config/discord"
-          ];
-        };
-      }
-    )
-  ];
+        home.persistence."/persist".directories = [
+          ".config/discord"
+        ];
+      })
+    ];
+  };
 }

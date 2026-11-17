@@ -1,7 +1,7 @@
 # SSH configuration
 {
   flake.modules.nixos.ssh = {config, ...}: let
-    username = config.var.username;
+    username = config.nixeljam.username;
   in {
     services.openssh = {
       enable = true;
@@ -42,6 +42,6 @@
       # CHANGEME: "ssh-ed25519 AAAA... you@host"
     ];
 
-    services.cloudflared.tunnels."${config.var.tunnelId}".ingress."ssh.${config.var.domain}" = "ssh://localhost:22";
+    services.cloudflared.tunnels."${config.nixeljam.server.tunnelId}".ingress."ssh.${config.nixeljam.server.domain}" = "ssh://localhost:22";
   };
 }

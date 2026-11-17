@@ -1,14 +1,15 @@
-{
+{config, ...}: let
+  inherit (config.flake.lib) mkContainer;
+in {
   flake.modules.nixos.miniflux = {
     config,
     lib,
     ...
   }: let
-    inherit (import ./_mk-container.nix {inherit lib config;}) mkContainer;
-    domain = config.var.domain;
+    domain = config.nixeljam.server.domain;
   in {
     imports = [
-      (mkContainer {
+      (mkContainer config {
         name = "miniflux";
         hostIp = "10.233.8.1";
         containerIp = "10.233.8.2";
@@ -40,6 +41,6 @@
       mode = "0400";
     };
 
-    services.cloudflared.tunnels."${config.var.tunnelId}".ingress."miniflux.${domain}" = "http://10.233.8.2:8080";
+    services.cloudflared.tunnels."${config.nixeljam.server.tunnelId}".ingress."miniflux.${domain}" = "http://10.233.8.2:8080";
   };
 }

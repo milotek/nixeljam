@@ -70,7 +70,9 @@ git clone https://github.com/<you>/nixeljam ~/.config/nixos
 ```
 
 2. Copy `modules/hosts/computer`, rename it to match your system’s hostname,
-   and update `_variables.nix` with your machine’s settings.
+   and set your hostname, username and git identity at the top of its
+   `default.nix`. Time zone, language and keyboard layout are in
+   `modules/system/locale.nix`.
 3. Replace `_hardware-configuration.nix` with your own
    (`nixos-generate-config --no-filesystems --show-hardware-config`) and set
    your disk in `_disko.nix`.
@@ -144,9 +146,9 @@ for the user.
 - `modules/programs` the apps, one file each (`cli`, `dev`, `gui`, `shell`, `tui`)
 - `modules/server` self-hosted services behind a Cloudflare tunnel
 - `modules/theme` colors, fonts, cursor and icons (Stylix)
-- `modules/hosts/<host>` a machine: the aspects it uses, its variables,
-  hardware and disk layout
-- `modules/lib` helpers, like `mkSandbox` (nixpak) and `mkContainer`
+- `modules/hosts/<host>` a machine: the aspects it uses, its values (hostname,
+  user, git identity), hardware and disk layout
+- `modules/lib` helpers, like `mkSandbox` (nixpak), `mkContainer` and `mime`
 
 ### Bundles
 
@@ -162,7 +164,8 @@ A host lists bundles and single aspects in its `default.nix`:
 
 Aspects you add on their own: `audio`, `bluetooth`, `fonts`, `steam`,
 `ollama`, `nvidia`, `amd-graphics`, `systemd-boot` or `lanzaboote`,
-`tuigreet`, `autologin`, `kernel-hardening`, `usbguard`, `vulnix`, `docker`...
+`tuigreet`, `autologin`, `impermanence`, `kernel-hardening`, `usbguard`,
+`vulnix`, `docker`...
 
 See [EXTENDING](docs/EXTENDING.md) to add an app or write your own aspect.
 

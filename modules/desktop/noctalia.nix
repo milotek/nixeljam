@@ -1,5 +1,10 @@
 # Noctalia is the desktop shell: bar, launcher, notifications, lock screen, OSD and wallpaper
-{inputs, ...}: {
+{
+  aspects,
+  inputs,
+  ...
+}: {
+  flake.modules.nixos.noctalia.imports = [aspects.home-manager];
   flake.modules.nixos.noctalia.home-manager.sharedModules = [
     inputs.noctalia.homeModules.default
     (

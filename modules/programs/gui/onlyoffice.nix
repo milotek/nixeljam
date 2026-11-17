@@ -1,10 +1,20 @@
-# OnlyOffice: office suite
+# OnlyOffice: office suite, default for documents
 {
-  flake.modules.nixos.onlyoffice.home-manager.sharedModules = [
-    (
-      {pkgs, ...}: {
+  aspects,
+  config,
+  ...
+}: let
+  inherit (config.flake.lib) mime;
+in {
+  flake.modules.nixos.onlyoffice = {
+    imports = [aspects.home-manager];
+
+    home-manager.sharedModules = [
+      ({pkgs, ...}: {
         home.packages = [pkgs.onlyoffice-desktopeditors];
-      }
-    )
-  ];
+
+        xdg.mimeApps = mime.defaultFor "onlyoffice-desktopeditors.desktop" mime.types.office;
+      })
+    ];
+  };
 }

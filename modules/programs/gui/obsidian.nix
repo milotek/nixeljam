@@ -1,21 +1,16 @@
 # Obsidian: note taking app
-{
-  flake.modules.nixos.obsidian.home-manager.sharedModules = [
-    (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }: {
+{aspects, ...}: {
+  flake.modules.nixos.obsidian = {
+    imports = [aspects.home-manager];
+
+    home-manager.sharedModules = [
+      ({pkgs, ...}: {
         home.packages = [pkgs.obsidian];
 
-        home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
-          directories = [
-            ".config/obsidian"
-          ];
-        };
-      }
-    )
-  ];
+        home.persistence."/persist".directories = [
+          ".config/obsidian"
+        ];
+      })
+    ];
+  };
 }

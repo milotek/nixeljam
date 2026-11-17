@@ -6,54 +6,29 @@
 #   3. nixos-rebuild switch (this signs the current generation with the new keys)
 #   4. sudo sbctl enroll-keys --microsoft
 #   5. Reboot, re-enable Secure Boot in firmware
-{inputs, ...}: {
+{
+  inputs,
+  aspects,
+  ...
+}: {
   flake.modules.nixos.lanzaboote = {
     pkgs,
     lib,
     ...
   }: {
-    imports = [inputs.lanzaboote.nixosModules.lanzaboote];
+    imports = [
+      inputs.lanzaboote.nixosModules.lanzaboote
+      aspects.boot
+    ];
 
-    boot = {
-      loader = {
-        efi.canTouchEfiVariables = true;
-        systemd-boot = {
-          enable = lib.mkForce false;
-          consoleMode = "auto";
-          configurationLimit = 8;
-        };
-      };
-
-      lanzaboote = {
-        enable = true;
-        pkiBundle = "/var/lib/sbctl";
-      };
-
-      tmp.cleanOnBoot = true;
-      kernelPackages = pkgs.linuxPackages; # _latest, _zen, _hardened, _rt, _rt_latest, etc.
-
-      # Silent boot
-      kernelParams = [
-        "quiet"
-        "splash"
-        "rd.systemd.show_status=false"
-        "rd.udev.log_level=3"
-        "udev.log_priority=3"
-        "boot.shell_on_fail"
-      ];
-      consoleLogLevel = 0;
-      initrd.verbose = false;
+    # lanzaboote replaces systemd-boot
+    boot.loader.systemd-boot.enable = lib.mkForce false;
+    boot.lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
     };
 
     environment.systemPackages = [pkgs.sbctl];
-
-    # To avoid systemd services hanging on shutdown
-    systemd.settings.Manager = {
-      DefaultTimeoutStopSec = "10s";
-    };
-
-    environment.persistence."/persist".directories = [
-      "/var/lib/sbctl"
-    ];
+    environment.persistence."/persist".directories = ["/var/lib/sbctl"]; # Secure Boot keys
   };
 }

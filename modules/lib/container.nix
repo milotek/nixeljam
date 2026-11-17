@@ -1,26 +1,23 @@
-{
-  lib,
-  config,
-}:
-# Returns a NixOS module (attrset), to be used in `imports`.
+# NixOS container helper for the server services (modules/server)
+# Returns a NixOS module (attrset), to be used in `imports`: (mkContainer config {...})
 #
 # Options:
 #   internet          - allow outbound internet access via NAT (default: false)
 #   externalInterface - WAN interface for NAT, required when internet = true
 #   bindMounts        - host paths to mount into the container (see containers.<name>.bindMounts)
-#   config            - NixOS module for the container
-let
+#   nixosConfig       - NixOS module for the container
+{lib, ...}: let
   nginxHardening = {config, ...}:
     lib.mkIf config.services.nginx.enable {
       services.nginx.serverTokens = false;
     };
 in {
-  mkContainer = {
+  flake.lib.mkContainer = osConfig: {
     name,
     hostIp,
     containerIp,
     internet ? false,
-    externalInterface ? config.var.networkInterface,
+    externalInterface ? osConfig.nixeljam.server.networkInterface,
     bindMounts ? {},
     nixosConfig,
   }:

@@ -3,7 +3,7 @@
 # - `njam` - UI wizard to manage the system.
 # - `njam rebuild` - Rebuild the system.
 # - `njam ...` - ... see the script for more commands.
-{
+{aspects, ...}: {
   perSystem = {pkgs, ...}: {
     packages.njam = import ./_package.nix {
       inherit pkgs;
@@ -11,32 +11,21 @@
     };
   };
 
-  flake.modules.nixos.njam.home-manager.sharedModules = [
-    (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }: {
-        options.programs.njam = {
-          enable = lib.mkEnableOption "njam";
-          configDirectory = lib.mkOption {
-            type = lib.types.str;
-            default = "$HOME/.config/nixos";
-            description = "Path to the NixOS configuration directory";
-          };
-        };
+  flake.modules.nixos.njam = {config, ...}: {
+    imports = [
+      aspects.common
+      aspects.home-manager
+    ];
 
-        config = lib.mkIf config.programs.njam.enable {
-          home.packages = [
-            (import ./_package.nix {
-              inherit pkgs;
-              inherit (config.programs.njam) configDirectory;
-            })
-          ];
-        };
-      }
-    )
-  ];
+    home-manager.sharedModules = [
+      ({pkgs, ...}: {
+        home.packages = [
+          (import ./_package.nix {
+            inherit pkgs;
+            inherit (config.nixeljam) configDirectory;
+          })
+        ];
+      })
+    ];
+  };
 }

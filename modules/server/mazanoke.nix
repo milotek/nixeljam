@@ -1,23 +1,23 @@
-{
+{config, ...}: let
+  inherit (config.flake.lib) mkContainer;
+in {
   flake.modules.nixos.mazanoke = {
     config,
     lib,
-    pkgs-unstable,
+    pkgs,
     ...
-  }: let
-    inherit (import ./_mk-container.nix {inherit lib config;}) mkContainer;
-  in {
+  }: {
     imports = [
-      (mkContainer {
+      (mkContainer config {
         name = "mazanoke";
         hostIp = "10.233.7.1";
         containerIp = "10.233.7.2";
         nixosConfig = {...}: let
           version = "1.1.5";
-          mazanoke-pkg = pkgs-unstable.stdenv.mkDerivation {
+          mazanoke-pkg = pkgs.unstable.stdenv.mkDerivation {
             inherit version;
             pname = "mazanoke";
-            src = pkgs-unstable.fetchFromGitHub {
+            src = pkgs.unstable.fetchFromGitHub {
               owner = "civilblur";
               repo = "mazanoke";
               rev = "v${version}";
@@ -50,6 +50,6 @@
       })
     ];
 
-    services.cloudflared.tunnels."${config.var.tunnelId}".ingress."mazanoke.${config.var.domain}" = "http://10.233.7.2:8080";
+    services.cloudflared.tunnels."${config.nixeljam.server.tunnelId}".ingress."mazanoke.${config.nixeljam.server.domain}" = "http://10.233.7.2:8080";
   };
 }

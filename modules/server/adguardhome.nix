@@ -19,6 +19,6 @@
       '';
     };
 
-    services.cloudflared.tunnels."${config.var.tunnelId}".ingress."adguard.${config.var.domain}" = "http://localhost:${toString config.services.adguardhome.port}";
+    services.cloudflared.tunnels."${config.nixeljam.server.tunnelId}".ingress."adguard.${config.nixeljam.server.domain}" = "http://localhost:${toString config.services.adguardhome.port}";
   };
 }

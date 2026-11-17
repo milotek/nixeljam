@@ -1,21 +1,16 @@
 # OBS Studio: screen recording and streaming
-{
-  flake.modules.nixos.obs-studio.home-manager.sharedModules = [
-    (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }: {
+{aspects, ...}: {
+  flake.modules.nixos.obs-studio = {
+    imports = [aspects.home-manager];
+
+    home-manager.sharedModules = [
+      ({pkgs, ...}: {
         home.packages = [pkgs.obs-studio];
 
-        home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
-          directories = [
-            ".config/obs-studio"
-          ];
-        };
-      }
-    )
-  ];
+        home.persistence."/persist".directories = [
+          ".config/obs-studio"
+        ];
+      })
+    ];
+  };
 }
