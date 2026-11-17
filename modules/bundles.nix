@@ -5,11 +5,14 @@
     # System base, on every host
     base.imports = [
       common
+      secrets
       theme
       home-manager
       nix
       users
-      utils
+      networking
+      locale
+      cli-base
     ];
 
     # Terminal environment, on every host

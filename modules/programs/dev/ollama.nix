@@ -6,7 +6,7 @@
     pkgs,
     ...
   }: let
-    impermanence = config.var.impermanenceEnabled or false;
+    impermanence = config.environment.persistence."/persist".enable;
     modelsDir = "/persist/ollama/models";
   in {
     services.ollama = {

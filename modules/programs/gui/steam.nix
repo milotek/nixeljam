@@ -1,10 +1,16 @@
 # Source: https://github.com/Dylouwu/MyNixy/blob/main/nixos/steam.nix
-{
+{aspects, ...}: {
   flake.modules.nixos.steam = {
     config,
     pkgs,
     ...
   }: {
+    imports = [
+      aspects.common
+      aspects.home-manager
+    ];
+    home-manager.sharedModules = [{home.persistence."/persist".directories = [".steam"];}];
+
     programs.steam = {
       enable = true;
       gamescopeSession.enable = true;
@@ -16,7 +22,7 @@
     ];
 
     environment.sessionVariables = {
-      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/${config.var.username}/.steam/root/compatibilitytools.d";
+      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${config.users.users.${config.nixeljam.username}.home}/.steam/root/compatibilitytools.d";
     };
 
     programs.gamemode.enable = true;

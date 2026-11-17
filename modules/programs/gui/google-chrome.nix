@@ -1,21 +1,24 @@
-# Google Chrome: web browser
+# Google Chrome: web browser, default for web pages
 {
-  flake.modules.nixos.google-chrome.home-manager.sharedModules = [
-    (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }: {
+  aspects,
+  config,
+  ...
+}: let
+  inherit (config.flake.lib) mime;
+in {
+  flake.modules.nixos.google-chrome = {
+    imports = [aspects.home-manager];
+
+    home-manager.sharedModules = [
+      ({pkgs, ...}: {
         home.packages = [pkgs.google-chrome];
 
-        home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
-          directories = [
-            ".config/google-chrome"
-          ];
-        };
-      }
-    )
-  ];
+        xdg.mimeApps = mime.defaultFor "google-chrome.desktop" mime.types.browser;
+
+        home.persistence."/persist".directories = [
+          ".config/google-chrome"
+        ];
+      })
+    ];
+  };
 }

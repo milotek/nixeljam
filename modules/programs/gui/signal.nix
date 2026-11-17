@@ -1,21 +1,16 @@
 # Signal: messaging app
-{
-  flake.modules.nixos.signal.home-manager.sharedModules = [
-    (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }: {
+{aspects, ...}: {
+  flake.modules.nixos.signal = {
+    imports = [aspects.home-manager];
+
+    home-manager.sharedModules = [
+      ({pkgs, ...}: {
         home.packages = [pkgs.signal-desktop];
 
-        home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
-          directories = [
-            ".config/Signal"
-          ];
-        };
-      }
-    )
-  ];
+        home.persistence."/persist".directories = [
+          ".config/Signal"
+        ];
+      })
+    ];
+  };
 }

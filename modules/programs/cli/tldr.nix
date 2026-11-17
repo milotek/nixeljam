@@ -1,12 +1,13 @@
 # TLDR provides simplified, example-based help pages for shell commands
 {
+  aspects,
+  inputs,
+  ...
+}: {
+  flake.modules.nixos.tldr.imports = [aspects.home-manager];
   flake.modules.nixos.tldr.home-manager.sharedModules = [
     (
-      {
-        pkgs,
-        inputs,
-        ...
-      }: let
+      {pkgs, ...}: let
         tealdeerCache = pkgs.runCommand "tealdeer-tldr-cache" {} ''
           mkdir -p $out/tldr-pages
           for d in ${inputs.tldr-pages-src}/pages ${inputs.tldr-pages-src}/pages.*; do

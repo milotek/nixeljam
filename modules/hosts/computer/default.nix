@@ -7,6 +7,18 @@
     modules = with aspects; [
       base
 
+      # Host values (modules/hosts/common.nix), locale and keyboard in modules/system/locale.nix
+      {
+        networking.hostName = "computer"; # CHANGEME
+        nixeljam = {
+          username = "user"; # CHANGEME
+          git = {
+            name = "Your Name"; # CHANGEME
+            email = "you@example.com"; # CHANGEME
+          };
+        };
+      }
+
       # inputs.nixos-hardware.nixosModules.<your-model> # CHANGEME: see https://github.com/NixOS/nixos-hardware
       inputs.disko.nixosModules.disko
 
@@ -16,6 +28,7 @@
       bluetooth
       fonts
       systemd-boot # CHANGEME: Replace with lanzaboote to setup secure boot
+      # impermanence # CHANGEME: wipe "/" at boot, see ./_disko.nix
       # kernel-hardening
       # usbguard
 

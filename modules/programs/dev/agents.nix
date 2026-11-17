@@ -1,4 +1,5 @@
 {
+  aspects,
   inputs,
   lib,
   ...
@@ -29,16 +30,14 @@
 in {
   flake.modules.nixos =
     lib.mapAttrs (_: agent: {
+      imports = [aspects.home-manager];
+
       home-manager.sharedModules = [
         (
-          {
-            config,
-            pkgs,
-            ...
-          }: {
+          {pkgs, ...}: {
             home.packages = [inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.${agent.package}];
 
-            home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
+            home.persistence."/persist" = {
               inherit (agent) directories;
               files = agent.files or [];
             };

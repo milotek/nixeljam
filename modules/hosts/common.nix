@@ -3,19 +3,45 @@
   flake.modules.nixos.common = {
     config,
     lib,
-    pkgs,
     ...
   }: {
-    imports = [
-      inputs.impermanence.nixosModules.impermanence
-      inputs.sops-nix.nixosModules.sops
-    ];
+    options.nixeljam = {
+      username = lib.mkOption {
+        type = lib.types.str;
+        description = "Main user of the host";
+      };
 
-    environment.persistence."/persist".enable = lib.mkDefault (config.var.impermanenceEnabled or false);
+      configDirectory = lib.mkOption {
+        type = lib.types.str;
+        default = "${config.users.users.${config.nixeljam.username}.home}/.config/nixos";
+        description = "Path of this repository on the host";
+      };
 
-    _module.args.pkgs-unstable = import inputs.nixpkgs-unstable {
-      inherit (pkgs.stdenv.hostPlatform) system;
-      config.allowUnfree = true;
+      server = {
+        domain = lib.mkOption {type = lib.types.str;};
+        tunnelId = lib.mkOption {
+          type = lib.types.str;
+          description = "Cloudflare tunnel exposing the services";
+        };
+        networkInterface = lib.mkOption {
+          type = lib.types.str;
+          description = "WAN interface (NAT for containers)";
+        };
+      };
     };
+
+    imports = [inputs.impermanence.nixosModules.impermanence];
+
+    config.environment.persistence."/persist".enable = lib.mkDefault false;
+
+    config.nixpkgs.overlays = [
+      # pkgs.unstable.<name>: same package from nixos-unstable
+      (final: _: {
+        unstable = import inputs.nixpkgs-unstable {
+          inherit (final.stdenv.hostPlatform) system;
+          config.allowUnfree = true;
+        };
+      })
+    ];
   };
 }

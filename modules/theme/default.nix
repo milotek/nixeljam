@@ -7,27 +7,28 @@
   }: {
     imports = [inputs.stylix.nixosModules.stylix];
 
-    options.theme = lib.mkOption {
-      type = lib.types.attrs;
-      default = {
-        rounding = 20;
-        bar-height = 36;
-        gaps-in = 8;
-        gaps-out = 8 * 2;
-        active-opacity = 0.96;
-        inactive-opacity = 0.92;
-        blur = false;
-        border-size = 2;
-        animation-speed = "very-fast"; # "very-fast" | "fast" | "medium" | "slow"
-      };
-      description = "Theme configuration options";
+    options.theme = let
+      option = type: default:
+        lib.mkOption {
+          inherit type default;
+        };
+    in {
+      rounding = option lib.types.int 20;
+      bar-height = option lib.types.int 36;
+      gaps-in = option lib.types.int 8;
+      gaps-out = option lib.types.int (8 * 2);
+      active-opacity = option lib.types.float 0.96;
+      inactive-opacity = option lib.types.float 0.92;
+      blur = option lib.types.bool false;
+      border-size = option lib.types.int 2;
+      animation-speed = option (lib.types.enum ["very-fast" "fast" "medium" "slow"]) "very-fast";
     };
 
     config.stylix = {
       enable = true;
 
       # See https://tinted-theming.github.io/tinted-gallery/ for more schemes
-      base16Scheme = {
+      base16Scheme = lib.mkDefault {
         base00 = "0A0A0C"; # Default Background
         base01 = "110F12"; # Lighter Background (Used for status bars, line number and folding marks)
         base02 = "2D2A36"; # Selection Background
@@ -75,10 +76,10 @@
       };
 
       polarity = "dark";
-      image = pkgs.fetchurl {
+      image = lib.mkDefault (pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/anotherhadi/awesome-wallpapers/main/wallpapers/another-one.png";
         sha256 = "sha256-bKke8RNz6qNxHSfLbU5xVVkG3tbFZW1sFjLB1hltcoI=";
-      };
+      });
     };
   };
 }

@@ -1,8 +1,24 @@
 # Nix configuration for NixOS
-{inputs, ...}: {
-  flake.modules.nixos.nix = {config, ...}: let
-    autoGarbageCollector = config.var.autoGarbageCollector;
-  in {
+{
+  aspects,
+  inputs,
+  ...
+}: {
+  flake.modules.nixos.nix = {
+    config,
+    lib,
+    ...
+  }: {
+    imports = [aspects.common];
+
+    # Faster rebuilding
+    documentation = {
+      doc.enable = false;
+      dev.enable = false;
+      info.enable = false;
+      nixos.enable = false;
+    };
+
     nixpkgs.config = {
       allowUnfree = true;
       allowBroken = false;
@@ -34,11 +50,23 @@
         ];
       };
       gc = {
-        automatic = autoGarbageCollector;
+        automatic = lib.mkDefault true;
         persistent = true;
         dates = "weekly";
         options = "--delete-older-than 7d";
       };
+    };
+
+    system.autoUpgrade = {
+      enable = lib.mkDefault false;
+      dates = "04:00";
+      flake = config.nixeljam.configDirectory;
+      flags = [
+        "--update-input"
+        "nixpkgs"
+        "--commit-lock-file"
+      ];
+      allowReboot = false;
     };
   };
 }

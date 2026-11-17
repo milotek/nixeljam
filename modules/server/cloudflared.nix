@@ -3,7 +3,7 @@
 {
   flake.modules.nixos.cloudflared = {
     config,
-    pkgs-unstable,
+    pkgs,
     ...
   }: {
     sops.secrets.cloudflared-token.mode = "0400";
@@ -15,17 +15,17 @@
     # This will create a credentials file & give you the tunnel ID to use below.
     services.cloudflared = {
       enable = true;
-      tunnels."${config.var.tunnelId}" = {
+      tunnels."${config.nixeljam.server.tunnelId}" = {
         credentialsFile = config.sops.secrets."cloudflared-token".path;
         default = "http_status:404";
       };
     };
 
-    environment.systemPackages = with pkgs-unstable; [
+    environment.systemPackages = with pkgs.unstable; [
       cloudflared
     ];
 
-    systemd.services."cloudflared-tunnel-${config.var.tunnelId}" = {
+    systemd.services."cloudflared-tunnel-${config.nixeljam.server.tunnelId}" = {
       wantedBy = ["multi-user.target"];
       after = ["network-online.target" "adguardhome.service"];
       wants = ["network-online.target"];

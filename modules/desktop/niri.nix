@@ -1,6 +1,11 @@
 # Niri is a scrollable-tiling Wayland compositor.
-{
+{aspects, ...}: {
   flake.modules.nixos.niri = {pkgs, ...}: {
+    imports = [
+      aspects.home-manager
+      aspects.theme
+    ];
+
     programs.niri.enable = true;
 
     # X11 apps (Steam, games...): niri starts it on demand when it's in PATH
@@ -34,7 +39,7 @@
           ...
         }: let
           c = config.lib.stylix.colors;
-          inherit (config) theme;
+          inherit (osConfig) theme;
           noctalia = cmd: ''spawn "${pkgs.noctalia-shell}/bin/noctalia-shell" "ipc" "call" ${lib.concatMapStringsSep " " (a: ''"${a}"'') (lib.splitString " " cmd)}'';
           playerctl = "${pkgs.playerctl}/bin/playerctl";
         in {
@@ -42,7 +47,7 @@
             input {
                 keyboard {
                     xkb {
-                        layout "${osConfig.var.keyboardLayout}"
+                        layout "${osConfig.services.xserver.xkb.layout}"
                     }
                     numlock
                 }
