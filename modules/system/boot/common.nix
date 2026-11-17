@@ -1,5 +1,3 @@
-# Boot settings shared by both boot loaders
-# kernel, silent boot, faster shutdown
 {
   flake.modules.nixos.boot = {
     pkgs,

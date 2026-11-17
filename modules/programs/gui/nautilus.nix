@@ -1,4 +1,4 @@
-# Nautilus: file manager, default for folders
+# Nautilus: file manager
 {
   aspects,
   config,

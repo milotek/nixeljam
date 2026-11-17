@@ -1,4 +1,3 @@
-# XDG user directories (Documents, Downloads... plus Notes)
 {
   flake.modules.nixos.desktop.home-manager.sharedModules = [
     ({config, ...}: {

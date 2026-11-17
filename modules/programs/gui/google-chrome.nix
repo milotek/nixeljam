@@ -1,4 +1,4 @@
-# Google Chrome: web browser, default for web pages
+# Google Chrome: web browser
 {
   aspects,
   config,

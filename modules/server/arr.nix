@@ -1,7 +1,7 @@
 # *arr is a collection of media management applications.
 # See https://github.com/rasmus-kirk/nixarr
 # Setup guide: https://nixarr.com/wiki/setup/
-{inputs, ...}: {
+{
   flake.modules.nixos.arr = {
     config,
     pkgs,
@@ -9,8 +9,6 @@
   }: let
     username = config.nixeljam.username;
   in {
-    imports = [inputs.nixarr.nixosModules.default];
-
     # Add my secrets
     sops.secrets = {
       recyclarr = {

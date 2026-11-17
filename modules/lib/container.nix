@@ -1,11 +1,10 @@
-# NixOS container helper for the server services (modules/server)
-# Returns a NixOS module (attrset), to be used in `imports`: (mkContainer config {...})
+# Returns a NixOS module (attrset), to be used in `imports`.
 #
 # Options:
 #   internet          - allow outbound internet access via NAT (default: false)
 #   externalInterface - WAN interface for NAT, required when internet = true
 #   bindMounts        - host paths to mount into the container (see containers.<name>.bindMounts)
-#   nixosConfig       - NixOS module for the container
+#   config            - NixOS module for the container
 {lib, ...}: let
   nginxHardening = {config, ...}:
     lib.mkIf config.services.nginx.enable {

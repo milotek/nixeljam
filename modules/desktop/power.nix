@@ -1,4 +1,3 @@
-# Power profiles (power-profiles-daemon) and battery state
 {
   flake.modules.nixos.desktop = {
     environment.persistence."/persist".directories = [
