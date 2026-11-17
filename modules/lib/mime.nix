@@ -1,5 +1,3 @@
-# MIME types by category, and a helper so each application declares what it opens:
-#   xdg.mimeApps = mime.defaultFor "vlc.desktop" (mime.types.audio ++ mime.types.video);
 {lib, ...}: {
   flake.lib.mime = {
     types = {

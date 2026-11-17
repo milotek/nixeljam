@@ -1,9 +1,3 @@
-# Impermanence: "/" is wiped at boot (tmpfs), what must survive lives in /persist
-# Hosts opt in by importing this aspect (and switching "/" to tmpfs in their disko config).
-# Features declare their own state next to their config:
-#   environment.persistence."/persist".directories = [...];   (system)
-#   home.persistence."/persist".directories = [...];          (home-manager)
-# Both do nothing on hosts without this aspect.
 {aspects, ...}: {
   flake.modules.nixos.impermanence = {
     imports = [

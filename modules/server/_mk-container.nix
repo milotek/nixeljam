@@ -2,8 +2,7 @@
 # Returns a NixOS module (attrset), to be used in `imports`.
 #
 # Options:
-#   internet          - allow outbound internet access via NAT (default: false),
-#                       the host sets its WAN interface in networking.nat.externalInterface
+#   internet          - allow outbound internet access via NAT (default: false)
 #   bindMounts        - host paths to mount into the container (see containers.<name>.bindMounts)
 #   config            - NixOS module for the container
 let
@@ -41,7 +40,6 @@ in {
         };
       }
       // (lib.optionalAttrs internet {
-        # Without it, NixOS masquerades out of every interface instead of failing
         imports = [
           ({config, ...}: {
             assertions = [
