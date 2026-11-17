@@ -75,8 +75,8 @@ creative.imports = [
 
 Host settings live in your host's `_variables.nix`.
 Most are plain NixOS options (`networking.hostName`, `time.timeZone`, `services.xserver.xkb.layout`...).
-The others are typed `nixeljam.*` options, declared by the aspect that uses them: `nixeljam.username` in `modules/hosts/common.nix`, `nixeljam.git` in `modules/programs/dev/git.nix`, `nixeljam.server` in `modules/server/cloudflared.nix`.
+The others are typed `nixeljam.*` options, declared by the aspect that uses them: `nixeljam.username` and `nixeljam.configDirectory` in `modules/hosts/common.nix`, `nixeljam.extraLocale` in `modules/system/locale.nix`, `nixeljam.git` in `modules/programs/dev/git.nix`, `nixeljam.server` in `modules/server/cloudflared.nix`.
 Home-manager modules read them through `osConfig`, for example `osConfig.nixeljam.git.name`.
 
 Packages from nixos-unstable are `pkgs.unstable.<name>`.
-The theme (colors, fonts, gaps) is in `config.theme` and `config.lib.stylix.colors`.
+Colors and fonts come from Stylix (`config.lib.stylix.colors`), window rounding, gaps and borders from `config.theme` (`osConfig.theme` in home-manager modules).

@@ -27,7 +27,7 @@
     config.environment.persistence."/persist".enable = lib.mkDefault false;
 
     config.nixpkgs.overlays = [
-      # pkgs.unstable.<name>: same package from nixos-unstable
+      # An overlay rather than a module argument, so home-manager modules get pkgs.unstable too (useGlobalPkgs)
       (final: _: {
         unstable = import inputs.nixpkgs-unstable {
           inherit (final.stdenv.hostPlatform) system;

@@ -18,7 +18,7 @@
   flake.modules.nixos.git.config.home-manager.sharedModules = [
     (
       {osConfig, ...}: let
-        username = osConfig.nixeljam.git.name;
+        name = osConfig.nixeljam.git.name;
         email = osConfig.nixeljam.git.email;
       in {
         programs = {
@@ -41,7 +41,7 @@
               "docs/superpowers/"
             ];
             settings = {
-              user.name = username;
+              user.name = name;
               user.email = email;
               init.defaultBranch = "main";
               pull.rebase = "true";

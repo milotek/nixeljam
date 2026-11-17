@@ -41,6 +41,17 @@ in {
         };
       }
       // (lib.optionalAttrs internet {
+        # Without it, NixOS masquerades out of every interface instead of failing
+        imports = [
+          ({config, ...}: {
+            assertions = [
+              {
+                assertion = config.networking.nat.externalInterface != null;
+                message = "mkContainer: ${name} needs internet, set networking.nat.externalInterface to the host's WAN interface";
+              }
+            ];
+          })
+        ];
         boot.kernel.sysctl."net.ipv4.ip_forward" = lib.mkDefault true;
         networking.nat = {
           enable = true;
