@@ -1,5 +1,9 @@
 # starship is a minimal, fast, and extremely customizable prompt for any shell!
-{
+{aspects, ...}: {
+  flake.modules.nixos.shell.imports = [
+    aspects.home-manager
+    aspects.theme
+  ];
   flake.modules.nixos.shell.home-manager.sharedModules = [
     (
       {

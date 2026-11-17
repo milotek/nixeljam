@@ -1,14 +1,20 @@
 # Autologin at boot: greetd starts your session directly on the first VT
-{
+{aspects, ...}: {
   flake.modules.nixos.autologin = {
     pkgs,
     config,
     lib,
     ...
   }: {
+    imports = [
+      aspects.tuigreet
+      aspects.niri
+      aspects.users
+    ];
+
     services.greetd.settings.initial_session = {
       command = "${config.programs.niri.package}/bin/niri-session";
-      user = config.var.username;
+      user = config.nixeljam.username;
     };
 
     # Needed so the LUKS passphrase entered at boot is cached in the kernel

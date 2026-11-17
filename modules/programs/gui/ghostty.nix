@@ -1,5 +1,15 @@
 # Ghostty is a terminal emulator
 {
+  aspects,
+  config,
+  ...
+}: let
+  inherit (config.flake.lib) mime;
+in {
+  flake.modules.nixos.ghostty.imports = [
+    aspects.home-manager
+    aspects.theme
+  ];
   flake.modules.nixos.ghostty.home-manager.sharedModules = [
     (
       {
@@ -14,7 +24,19 @@
           hash = "sha256-G/UIr1bKnxn1AcHl/4FL/jou6b7M2VeREslYVELxdmw=";
         };
         c = config.lib.stylix.colors;
+
+        nvim-ghostty = pkgs.makeDesktopItem {
+          name = "nvim-ghostty";
+          desktopName = "Neovim (Ghostty)";
+          exec = ''${pkgs.ghostty}/bin/ghostty +new-window --title="Neovim Editor" -e nvim %F'';
+          terminal = false;
+          categories = ["Development" "TextEditor"];
+          mimeTypes = mime.types.code ++ mime.types.text;
+        };
       in {
+        home.packages = [nvim-ghostty];
+        xdg.mimeApps = mime.defaultFor "nvim-ghostty.desktop" (mime.types.text ++ mime.types.code);
+
         home.sessionVariables = {
           TERMINAL = "ghostty";
           TERM = "ghostty";

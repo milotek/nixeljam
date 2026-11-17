@@ -1,13 +1,10 @@
-{
+{aspects, ...}: {
+  flake.modules.nixos.dev.imports = [aspects.home-manager];
   flake.modules.nixos.dev.home-manager.sharedModules = [
     (
-      {
-        pkgs,
-        pkgs-unstable,
-        ...
-      }: {
+      {pkgs, ...}: {
         home = {
-          packages = with pkgs-unstable;
+          packages = with pkgs.unstable;
             [
               go
               bun

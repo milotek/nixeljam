@@ -1,4 +1,4 @@
-{
+{aspects, ...}: {
   flake.modules.nixos.tuigreet = {
     pkgs,
     config,
@@ -33,6 +33,11 @@
         --power-reboot 'systemctl reboot'
     '';
   in {
+    imports = [
+      aspects.common
+      aspects.theme
+    ];
+
     services.greetd = {
       enable = true;
       settings = {

@@ -1,11 +1,13 @@
 # My shell configuration
-{
+{aspects, ...}: {
+  flake.modules.nixos.shell.imports = [aspects.home-manager];
   flake.modules.nixos.shell.home-manager.sharedModules = [
     (
       {
         pkgs,
         lib,
         config,
+        osConfig,
         ...
       }: {
         home.packages = with pkgs; [
@@ -37,7 +39,7 @@
           ];
 
           history = {
-            path = lib.mkIf (config.var.impermanenceEnabled or false) "/persist${config.home.homeDirectory}/.zsh_history";
+            path = lib.mkIf osConfig.environment.persistence."/persist".enable "/persist${config.home.homeDirectory}/.zsh_history";
             ignoreDups = true;
             findNoDups = true;
             expireDuplicatesFirst = true;

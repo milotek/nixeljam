@@ -1,14 +1,19 @@
 # *arr is a collection of media management applications.
 # See https://github.com/rasmus-kirk/nixarr
 # Setup guide: https://nixarr.com/wiki/setup/
-{
+{aspects, ...}: {
   flake.modules.nixos.arr = {
     config,
-    pkgs-unstable,
+    pkgs,
     ...
   }: let
-    username = config.var.username;
+    username = config.nixeljam.username;
   in {
+    imports = [
+      aspects.cloudflared
+      aspects.users
+    ];
+
     # Add my secrets
     sops.secrets = {
       recyclarr = {
@@ -37,7 +42,7 @@
       jellyfin.enable = true;
       seerr = {
         enable = true;
-        package = pkgs-unstable.seerr;
+        package = pkgs.unstable.seerr;
       };
       prowlarr.enable = true;
       radarr.enable = true;
@@ -64,14 +69,14 @@
       "render"
     ];
 
-    services.cloudflared.tunnels."${config.var.tunnelId}".ingress = {
-      "media.${config.var.domain}" = "http://localhost:8096";
-      "demandemedia.${config.var.domain}" = "http://localhost:5055";
-      "bazarr.${config.var.domain}" = "http://localhost:6767";
-      "prowlarr.${config.var.domain}" = "http://localhost:9696";
-      "radarr.${config.var.domain}" = "http://localhost:7878";
-      "sonarr.${config.var.domain}" = "http://localhost:8989";
-      "transmission.${config.var.domain}" = "http://localhost:9091";
+    services.cloudflared.tunnels."${config.nixeljam.server.tunnelId}".ingress = {
+      "media.${config.nixeljam.server.domain}" = "http://localhost:8096";
+      "demandemedia.${config.nixeljam.server.domain}" = "http://localhost:5055";
+      "bazarr.${config.nixeljam.server.domain}" = "http://localhost:6767";
+      "prowlarr.${config.nixeljam.server.domain}" = "http://localhost:9696";
+      "radarr.${config.nixeljam.server.domain}" = "http://localhost:7878";
+      "sonarr.${config.nixeljam.server.domain}" = "http://localhost:8989";
+      "transmission.${config.nixeljam.server.domain}" = "http://localhost:9091";
     };
   };
 }

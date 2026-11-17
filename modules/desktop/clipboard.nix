@@ -1,5 +1,9 @@
 # Clipboard history: cliphist stores every entry, noctalia's launcher browses it
-{
+{aspects, ...}: {
+  flake.modules.nixos.desktop.imports = [
+    aspects.home-manager
+    aspects.noctalia
+  ];
   flake.modules.nixos.desktop.home-manager.sharedModules = [
     (
       {pkgs, ...}: {

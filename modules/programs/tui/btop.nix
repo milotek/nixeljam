@@ -1,4 +1,5 @@
-{
+{aspects, ...}: {
+  flake.modules.nixos.btop.imports = [aspects.home-manager];
   flake.modules.nixos.btop.home-manager.sharedModules = [
     (
       {pkgs, ...}: let

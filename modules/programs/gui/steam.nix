@@ -1,10 +1,12 @@
 # Source: https://github.com/Dylouwu/MyNixy/blob/main/nixos/steam.nix
-{
+{aspects, ...}: {
   flake.modules.nixos.steam = {
     config,
     pkgs,
     ...
   }: {
+    imports = [aspects.home-manager];
+
     programs.steam = {
       enable = true;
       gamescopeSession.enable = true;
@@ -16,10 +18,16 @@
     ];
 
     environment.sessionVariables = {
-      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/${config.var.username}/.steam/root/compatibilitytools.d";
+      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/${config.nixeljam.username}/.steam/root/compatibilitytools.d";
     };
 
     programs.gamemode.enable = true;
+
+    home-manager.sharedModules = [
+      {
+        home.persistence."/persist".directories = [".steam"];
+      }
+    ];
   };
   # Example of recommanded launch options for your games in Steam :
   # Regular gaming :
