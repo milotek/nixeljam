@@ -1,5 +1,3 @@
-# MIME types by category, and a helper so each application declares what it opens:
-#   home-manager: xdg.mimeApps = config.flake.lib.mime.defaultFor "vlc.desktop" mime.types.video;
 {lib, ...}: {
   flake.lib.mime = {
     types = {

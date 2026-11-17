@@ -1,4 +1,4 @@
-# Git configuration (git, gh, lazygit)
+# Git configuration
 {
   aspects,
   lib,

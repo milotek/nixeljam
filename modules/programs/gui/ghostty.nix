@@ -1,4 +1,4 @@
-# Ghostty is a terminal emulator, it also opens text and code files in Neovim
+# Ghostty is a terminal emulator
 {
   aspects,
   config,
@@ -7,10 +7,7 @@
   inherit (config.flake.lib) mime;
 in {
   flake.modules.nixos.ghostty = {
-    imports = [
-      aspects.home-manager
-      aspects.nvim
-    ];
+    imports = [aspects.home-manager];
 
     home-manager.sharedModules = [
       (

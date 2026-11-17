@@ -1,4 +1,3 @@
-# NetworkManager (wifi, ethernet, VPN connections)
 {
   flake.modules.nixos.networking = {
     networking.networkmanager.enable = true;

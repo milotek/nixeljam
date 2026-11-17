@@ -1,4 +1,4 @@
-# File Roller: archive manager, default for archives
+# File Roller: archive manager
 {
   aspects,
   config,

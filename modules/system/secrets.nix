@@ -1,4 +1,3 @@
-# Secrets (sops-nix), shared by every host
 {
   aspects,
   inputs,

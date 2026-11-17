@@ -1,5 +1,3 @@
-# System services a graphical session relies on: input, keyring, portals,
-# virtual filesystems (trash, mtp...), GSettings, browser profiles in RAM
 {aspects, ...}: {
   flake.modules.nixos.desktop = {pkgs, ...}: {
     imports = [

@@ -1,9 +1,3 @@
-# Impermanence: "/" is wiped at boot (tmpfs), what must survive lives in /persist
-# Hosts opt in by importing this aspect. Features simply declare their state with
-#   environment.persistence."/persist".directories = [...];        (system)
-#   home-manager: home.persistence."/persist".directories = [...]; (home)
-# The impermanence module is loaded on every host (common.nix) with /persist
-# disabled, so those declarations do nothing on hosts without this aspect.
 {aspects, ...}: {
   flake.modules.nixos.impermanence = {
     imports = [
@@ -34,7 +28,6 @@
       ];
     };
 
-    # Home: programs add their own folders (.steam in steam, .config/obsidian in obsidian...)
     home-manager.sharedModules = [
       {
         home.persistence."/persist" = {

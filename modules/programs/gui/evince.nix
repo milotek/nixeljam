@@ -1,4 +1,4 @@
-# Evince: document viewer, default for PDFs
+# Evince: document viewer
 {
   aspects,
   config,

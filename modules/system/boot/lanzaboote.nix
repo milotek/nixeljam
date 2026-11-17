@@ -21,7 +21,6 @@
       aspects.boot
     ];
 
-    # lanzaboote replaces systemd-boot
     boot.loader.systemd-boot.enable = lib.mkForce false;
     boot.lanzaboote = {
       enable = true;
@@ -29,6 +28,6 @@
     };
 
     environment.systemPackages = [pkgs.sbctl];
-    environment.persistence."/persist".directories = ["/var/lib/sbctl"]; # Secure Boot keys
+    environment.persistence."/persist".directories = ["/var/lib/sbctl"];
   };
 }

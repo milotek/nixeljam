@@ -1,4 +1,4 @@
-# OnlyOffice: office suite, default for documents
+# OnlyOffice: office suite
 {
   aspects,
   config,

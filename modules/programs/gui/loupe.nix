@@ -1,4 +1,4 @@
-# Loupe: image viewer, default for images
+# Loupe: image viewer
 {
   aspects,
   config,

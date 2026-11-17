@@ -1,4 +1,3 @@
-# Base command line tools, available to every user (root included)
 {
   flake.modules.nixos.cli-base = {pkgs, ...}: {
     environment = {

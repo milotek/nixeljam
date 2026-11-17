@@ -1,4 +1,3 @@
-# Time zone, language and keyboard layout (hosts can override any of these)
 {
   flake.modules.nixos.locale = {
     config,

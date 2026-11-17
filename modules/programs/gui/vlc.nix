@@ -1,4 +1,4 @@
-# VLC: media player, default for audio and video
+# VLC: video player
 {
   aspects,
   config,

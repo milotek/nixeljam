@@ -35,7 +35,6 @@
     config.environment.persistence."/persist".enable = lib.mkDefault false;
 
     config.nixpkgs.overlays = [
-      # pkgs.unstable.<name>: same package from nixos-unstable
       (final: _: {
         unstable = import inputs.nixpkgs-unstable {
           inherit (final.stdenv.hostPlatform) system;
