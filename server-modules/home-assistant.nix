@@ -12,6 +12,7 @@ in {
     ];
     config = {
       default_config = {};
+      automation = "!include automations.yaml";
       homeassistant = {
         name = "Home";
         unit_system = "metric";
