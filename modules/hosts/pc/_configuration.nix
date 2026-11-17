@@ -5,10 +5,9 @@
 }: {
   imports = [
     ./_hardware-configuration.nix
-    ./_variables.nix
   ];
 
-  home-manager.users."${config.var.username}" = import ./_home.nix;
+  home-manager.users.${config.nixeljam.username} = import ./_home.nix;
 
   hardware.nvidia = {
     powerManagement.finegrained = lib.mkForce false;
@@ -38,7 +37,7 @@
       KbdInteractiveAuthentication = false;
     };
   };
-  users.users.${config.var.username} = {
+  users.users.${config.nixeljam.username} = {
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEX5YUtG4lyBcGJPe2ze+MJZ6Lv/L8evoCR3ASw2fFVo milo@milotek.dev"
     ];
@@ -66,8 +65,8 @@
   ];
 
   stylix = {
-    image = lib.mkForce ./wallpaper.jpg;
-    base16Scheme = lib.mkForce {
+    image = ./wallpaper.jpg;
+    base16Scheme = {
       base00 = "1e1e2e"; # Default Background
       base01 = "181825"; # Lighter Background (Used for status bars, line number and folding marks)
       base02 = "313244"; # Selection Background

@@ -7,6 +7,22 @@
     modules = with aspects; [
       base
 
+      # Host values (modules/hosts/common.nix)
+      {
+        networking.hostName = "pc";
+        nixeljam = {
+          username = "milotek";
+          git = {
+            name = "Milo Tekchandani";
+            email = "milo@milotek.dev";
+          };
+        };
+
+        time.timeZone = "Europe/London";
+        i18n.defaultLocale = "en_GB.UTF-8";
+        services.xserver.xkb.layout = "gb";
+      }
+
       # System
       nvidia
       audio

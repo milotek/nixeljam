@@ -1,6 +1,13 @@
-{inputs, ...}: {
+{
+  aspects,
+  inputs,
+  ...
+}: {
   flake.modules.nixos.roblox = {
-    imports = [inputs.nix-flatpak.nixosModules.nix-flatpak];
+    imports = [
+      inputs.nix-flatpak.nixosModules.nix-flatpak
+      aspects.home-manager
+    ];
 
     services.flatpak = {
       enable = true;
