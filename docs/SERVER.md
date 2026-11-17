@@ -31,3 +31,15 @@ The server hosts several key applications:
 - **Awesome Wallpapers**: Wallpaper browser served via NGINX inside a container.
 - **SSH**: Secure remote access configuration for server management. (via browser too)
 - **Security related stuff**: Cloudflared, Fail2Ban, Firewall, Kernel Hardening
+
+## Host settings
+
+A host using `homelab` sets these in its `_variables.nix`:
+
+```nix
+nixeljam.server = {
+  domain = "example.org"; # services are exposed as <service>.example.org
+  tunnelId = "your-tunnel-id"; # from `cloudflared tunnel create`
+};
+networking.nat.externalInterface = "enp1s0"; # WAN interface, for containers with internet access
+```

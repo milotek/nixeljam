@@ -6,13 +6,20 @@
 #   3. nixos-rebuild switch (this signs the current generation with the new keys)
 #   4. sudo sbctl enroll-keys --microsoft
 #   5. Reboot, re-enable Secure Boot in firmware
-{inputs, ...}: {
+{
+  inputs,
+  aspects,
+  ...
+}: {
   flake.modules.nixos.lanzaboote = {
     pkgs,
     lib,
     ...
   }: {
-    imports = [inputs.lanzaboote.nixosModules.lanzaboote];
+    imports = [
+      inputs.lanzaboote.nixosModules.lanzaboote
+      aspects.common
+    ];
 
     boot = {
       loader = {

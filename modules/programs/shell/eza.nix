@@ -1,5 +1,6 @@
 # Eza is a ls replacement
-{
+{aspects, ...}: {
+  flake.modules.nixos.shell.imports = [aspects.home-manager];
   flake.modules.nixos.shell.home-manager.sharedModules = [
     {
       programs.zsh.initContent = ''

@@ -8,7 +8,7 @@
     ./_variables.nix
   ];
 
-  home-manager.users."${config.var.username}" = import ./_home.nix;
+  home-manager.users."${config.nixeljam.username}" = import ./_home.nix;
 
   hardware.nvidia = {
     powerManagement.finegrained = lib.mkForce false;
@@ -38,7 +38,7 @@
       KbdInteractiveAuthentication = false;
     };
   };
-  users.users.${config.var.username} = {
+  users.users.${config.nixeljam.username} = {
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEX5YUtG4lyBcGJPe2ze+MJZ6Lv/L8evoCR3ASw2fFVo milo@milotek.dev"
     ];
@@ -47,7 +47,6 @@
 
   programs.ydotool.enable = true;
   programs.thunar.enable = true;
-  programs.gpu-screen-recorder.enable = true;
   services.hardware.openrgb.enable = true;
 
   environment.etc."libinput/local-overrides.quirks".text = ''

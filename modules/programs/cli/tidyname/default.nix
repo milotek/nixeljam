@@ -1,4 +1,5 @@
-{
+{aspects, ...}: {
+  flake.modules.nixos.tidyname.imports = [aspects.home-manager];
   flake.modules.nixos.tidyname.home-manager.sharedModules = [
     (
       {pkgs, ...}: {

@@ -6,17 +6,12 @@
   ...
 }: let
   home = config.home.homeDirectory;
-  clips = "${home}/Videos/Recordings/Clips";
-  clipSaved = pkgs.writeShellScript "clip-saved" ''
-    ${pkgs.libnotify}/bin/notify-send -a Clips "Clip saved" "$(basename "$1")"
-  '';
+  noctalia = "${pkgs.noctalia-shell}/bin/noctalia-shell";
+  inherit (inputs.self.lib) mime;
 in {
   imports = [inputs.sops-nix.homeManagerModules.sops];
 
   home = {
-    inherit (config.var) username;
-    homeDirectory = "/home/" + config.var.username;
-
     packages = with pkgs; [
       blender
       godot
@@ -56,6 +51,7 @@ in {
   };
 
   xdg.userDirs.setSessionVariables = true;
+  xdg.mimeApps = mime.defaultFor "onlyoffice-desktopeditors.desktop" mime.types.office;
 
   sops = {
     age.keyFile = "${home}/.config/sops/age/keys.txt";
@@ -69,17 +65,10 @@ in {
 
   programs = {
     home-manager.enable = true;
-    njam = {
-      enable = true;
-      configDirectory = config.var.configDirectory;
-    };
 
     zellij.enable = true;
 
-    ghostty.settings.keybind = [
-      "performable:ctrl+c=copy_to_clipboard"
-      "ctrl+v=paste_from_clipboard"
-    ];
+    noctalia-shell.pluginSettings.screen-recorder.videoSource = "HDMI-A-1";
 
     git = {
       signing = {
@@ -105,7 +94,7 @@ in {
           type = "webdav";
           url = "https://files.tek.rip";
           vendor = "other";
-          user = config.var.username;
+          user = config.home.username;
         };
         secrets.pass = config.sops.secrets.copyparty-password.path;
         mounts."/" = {
@@ -120,25 +109,15 @@ in {
     };
   };
 
+  # Start the replay buffer once noctalia has loaded the plugin
   systemd.user.services.replay = {
-    Unit = {
-      Description = "Instant replay buffer";
-      After = ["graphical-session.target"];
-      PartOf = ["graphical-session.target"];
-    };
-    Service = {
-      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${clips}";
-      ExecStart = "${pkgs.gpu-screen-recorder}/bin/gpu-screen-recorder -w HDMI-A-1 -f 60 -c mp4 -a default_output -r 30 -replay-storage ram -sc ${clipSaved} -o ${clips}";
-      Restart = "on-failure";
-    };
+    Unit.After = ["noctalia-shell.service"];
+    Service.ExecStart = pkgs.writeShellScript "replay" ''
+      until [[ $(${noctalia} ipc show) == *"target plugin:screen-recorder"* ]]; do sleep 1; done
+      ${noctalia} ipc call plugin:screen-recorder startReplay
+    '';
     Install.WantedBy = ["graphical-session.target"];
   };
-
-  xdg.configFile."niri/replay.kdl".text = ''
-    binds {
-        Mod+Print { spawn "systemctl" "--user" "kill" "-s" "SIGUSR1" "replay.service"; }
-    }
-  '';
 
   xdg.configFile."niri/config.kdl".text = lib.mkAfter ''
     output "HDMI-A-1" {
@@ -149,6 +128,5 @@ in {
         mode "2560x1440@143.972"
         position x=2560 y=0
     }
-    include "./replay.kdl"
   '';
 }

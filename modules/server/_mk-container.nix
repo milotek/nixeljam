@@ -1,12 +1,8 @@
-{
-  lib,
-  config,
-}:
+{lib}:
 # Returns a NixOS module (attrset), to be used in `imports`.
 #
 # Options:
 #   internet          - allow outbound internet access via NAT (default: false)
-#   externalInterface - WAN interface for NAT, required when internet = true
 #   bindMounts        - host paths to mount into the container (see containers.<name>.bindMounts)
 #   config            - NixOS module for the container
 let
@@ -20,7 +16,6 @@ in {
     hostIp,
     containerIp,
     internet ? false,
-    externalInterface ? config.var.networkInterface,
     bindMounts ? {},
     nixosConfig,
   }:
@@ -45,10 +40,19 @@ in {
         };
       }
       // (lib.optionalAttrs internet {
+        imports = [
+          ({config, ...}: {
+            assertions = [
+              {
+                assertion = config.networking.nat.externalInterface != null;
+                message = "mkContainer: ${name} needs internet, set networking.nat.externalInterface to the host's WAN interface";
+              }
+            ];
+          })
+        ];
         boot.kernel.sysctl."net.ipv4.ip_forward" = lib.mkDefault true;
         networking.nat = {
           enable = true;
-          externalInterface = externalInterface;
           internalInterfaces = ["ve-${name}"];
         };
         # CONTAINER-FWD (defined by another module) blocks all forwarding by default.

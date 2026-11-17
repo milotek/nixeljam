@@ -92,7 +92,7 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 
 | Keys                            | Action                                  |
 | ------------------------------- | --------------------------------------- |
-| `Super + Space`                 | App launcher                            |
+| `Alt + Space`                   | App launcher                            |
 | `Super + Return`                | Terminal (ghostty)                      |
 | `Super + B`                     | Browser (Google Chrome)                 |
 | `Super + V`                     | Clipboard history                       |
@@ -100,18 +100,23 @@ sudo nixos-rebuild switch --flake ~/.config/nixos#yourhostname
 | `Super + X`                     | Power menu (lock, log out, reboot, ...) |
 | `Super + Alt + L`               | Lock the screen                         |
 | `Super + Q`                     | Close the window                        |
-| `Super + F`                     | Fullscreen                              |
-| `Super + Shift + F`             | Float / tile the window                 |
+| `Super + F`                     | Maximize the column                     |
+| `Super + Shift + F`             | Fullscreen                              |
+| `Super + M`                     | Maximize to the screen edges            |
+| `Super + Shift + V`             | Float / tile the window                 |
 | `Super + R`                     | Cycle the column width                  |
 | `Super + C`                     | Center the column                       |
-| `Super + O`                     | Overview of all workspaces              |
+| `Super + Space`                 | Overview of all workspaces              |
 | `Super + H/J/K/L` or arrows     | Move focus                              |
 | `Super + Ctrl + H/J/K/L`        | Move the window                         |
 | `Super + Shift + H/L`           | Focus the monitor on the left / right   |
 | `Super + 1..9`                  | Go to a workspace                       |
 | `Super + Shift + 1..9`          | Send the window to a workspace          |
-| `Print`                         | Screenshot (region)                     |
-| `Shift + Print` / `Alt + Print` | Screenshot the screen / the window      |
+| `Super + Scroll left / right`   | Scroll the columns left / right         |
+| `Print` / `Super + Print`       | Screenshot the screen / a region        |
+| `Alt + Print`                   | Screenshot the window                   |
+| Hold `Print`                    | Save the last 30s of replay             |
+| Hold `Super + Print`            | Start / stop recording                  |
 
 ### Management
 
@@ -141,7 +146,7 @@ for the user.
 - `modules/theme` colors, fonts, cursor and icons (Stylix)
 - `modules/hosts/<host>` a machine: the aspects it uses, its variables,
   hardware and disk layout
-- `modules/lib` helpers, like `mkSandbox` (nixpak) and `mkContainer`
+- `modules/lib` helpers, like `mkSandbox` (nixpak) and `mime` (default apps)
 
 ### Bundles
 
@@ -157,7 +162,7 @@ A host lists bundles and single aspects in its `default.nix`:
 
 Aspects you add on their own: `audio`, `bluetooth`, `fonts`, `steam`,
 `ollama`, `nvidia`, `amd-graphics`, `systemd-boot` or `lanzaboote`,
-`tuigreet`, `autologin`, `kernel-hardening`, `usbguard`, `vulnix`, `docker`...
+`tuigreet`, `autologin`, `impermanence`, `kernel-hardening`, `usbguard`, `vulnix`, `docker`...
 
 See [EXTENDING](docs/EXTENDING.md) to add an app or write your own aspect.
 

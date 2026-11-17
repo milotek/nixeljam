@@ -1,10 +1,27 @@
 # Niri is a scrollable-tiling Wayland compositor.
-{
+{aspects, ...}: {
   flake.modules.nixos.niri = {pkgs, ...}: {
+    imports = [
+      aspects.home-manager
+      aspects.theme
+      aspects.noctalia
+    ];
+
     programs.niri.enable = true;
 
     # X11 apps (Steam, games...): niri starts it on demand when it's in PATH
     environment.systemPackages = [pkgs.xwayland-satellite];
+
+    # Hold Print for F13 (for keyboards without F13)
+    services.keyd = {
+      enable = true;
+      keyboards.default = {
+        ids = ["*"];
+        settings.main = {
+          sysrq = "timeout(sysrq, 300, f13)";
+        };
+      };
+    };
 
     # Generic Wayland hints (Chromium/Electron and Firefox), applied on every
     # niri host regardless of the GPU.
@@ -23,7 +40,7 @@
           ...
         }: let
           c = config.lib.stylix.colors;
-          inherit (config) theme;
+          inherit (osConfig) theme;
           noctalia = cmd: ''spawn "${pkgs.noctalia-shell}/bin/noctalia-shell" "ipc" "call" ${lib.concatMapStringsSep " " (a: ''"${a}"'') (lib.splitString " " cmd)}'';
           playerctl = "${pkgs.playerctl}/bin/playerctl";
         in {
@@ -31,7 +48,7 @@
             input {
                 keyboard {
                     xkb {
-                        layout "${osConfig.var.keyboardLayout}"
+                        layout "${osConfig.services.xserver.xkb.layout}"
                     }
                     numlock
                 }
@@ -75,7 +92,7 @@
                 // Quick launch
                 Mod+Return { spawn "${pkgs.ghostty}/bin/ghostty" "+new-window"; }
                 Mod+B { spawn "${pkgs.google-chrome}/bin/google-chrome-stable"; }
-                Mod+Space { ${noctalia "launcher toggle"}; }
+                Alt+Space { ${noctalia "launcher toggle"}; }
                 Mod+V { ${noctalia "launcher clipboard"}; }
                 Mod+N { ${noctalia "notifications toggleHistory"}; }
                 Mod+X { ${noctalia "sessionMenu toggle"}; }
@@ -83,11 +100,13 @@
 
                 // Windows
                 Mod+Q repeat=false { close-window; }
-                Mod+F { fullscreen-window; }
-                Mod+Shift+F { toggle-window-floating; }
+                Mod+F { maximize-column; }
+                Mod+Shift+F { fullscreen-window; }
+                Mod+M { maximize-window-to-edges; }
+                Mod+Shift+V { toggle-window-floating; }
                 Mod+R { switch-preset-column-width; }
                 Mod+C { center-column; }
-                Mod+O repeat=false { toggle-overview; }
+                Mod+Space repeat=false { toggle-overview; }
 
                 // Focus
                 Mod+H { focus-column-left; }
@@ -116,11 +135,15 @@
             '') (lib.range 1 9)}
                 Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
                 Mod+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
+                Mod+WheelScrollRight { focus-column-right; }
+                Mod+WheelScrollLeft { focus-column-left; }
 
                 // Screenshots
-                Print { screenshot; }
-                Shift+Print { screenshot-screen; }
+                Print { screenshot-screen; }
+                Mod+Print { screenshot; }
                 Alt+Print { screenshot-window; }
+                F13 { ${noctalia "plugin:screen-recorder saveReplay"}; }
+                Mod+F13 { ${noctalia "plugin:screen-recorder toggle"}; }
 
                 // Sound
                 XF86AudioRaiseVolume allow-when-locked=true { ${noctalia "volume increase"}; }

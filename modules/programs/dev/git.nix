@@ -1,14 +1,25 @@
 # Git configuration
 {
-  flake.modules.nixos.git.home-manager.sharedModules = [
+  aspects,
+  lib,
+  ...
+}: {
+  flake.modules.nixos.git.imports = [aspects.home-manager];
+  flake.modules.nixos.git.options.nixeljam.git = {
+    name = lib.mkOption {
+      type = lib.types.str;
+      description = "Name on your commits";
+    };
+    email = lib.mkOption {
+      type = lib.types.str;
+      description = "Email on your commits";
+    };
+  };
+  flake.modules.nixos.git.config.home-manager.sharedModules = [
     (
-      {
-        config,
-        lib,
-        ...
-      }: let
-        username = config.var.git.username;
-        email = config.var.git.email;
+      {osConfig, ...}: let
+        name = osConfig.nixeljam.git.name;
+        email = osConfig.nixeljam.git.email;
       in {
         programs = {
           gh.enable = true;
@@ -30,7 +41,7 @@
               "docs/superpowers/"
             ];
             settings = {
-              user.name = username;
+              user.name = name;
               user.email = email;
               init.defaultBranch = "main";
               pull.rebase = "true";
@@ -60,7 +71,7 @@
           };
         };
 
-        home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
+        home.persistence."/persist" = {
           directories = [".config/gh"];
         };
       }

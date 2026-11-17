@@ -11,6 +11,7 @@
       inputs.disko.nixosModules.disko
 
       # System
+      # impermanence # CHANGEME: wipe "/" at every boot, see ./_disko.nix
       # nvidia # CHANGEME: Uncomment if you have an Nvidia GPU
       audio
       bluetooth
