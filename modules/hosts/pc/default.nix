@@ -7,7 +7,6 @@
     modules = with aspects; [
       base
 
-      # Host values (modules/hosts/common.nix)
       {
         networking.hostName = "pc";
         nixeljam = {
