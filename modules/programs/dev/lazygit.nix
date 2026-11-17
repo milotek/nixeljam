@@ -1,5 +1,9 @@
 # Lazygit is a simple terminal UI for git commands.
-{
+{aspects, ...}: {
+  flake.modules.nixos.git.imports = [
+    aspects.home-manager
+    aspects.theme
+  ];
   flake.modules.nixos.git.home-manager.sharedModules = [
     (
       {

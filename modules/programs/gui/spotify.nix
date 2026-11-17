@@ -1,16 +1,12 @@
 # Spotify: music player
-{
+{aspects, ...}: {
+  flake.modules.nixos.spotify.imports = [aspects.home-manager];
   flake.modules.nixos.spotify.home-manager.sharedModules = [
     (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }: {
+      {pkgs, ...}: {
         home.packages = [pkgs.spotify];
 
-        home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
+        home.persistence."/persist" = {
           directories = [
             ".config/spotify"
           ];

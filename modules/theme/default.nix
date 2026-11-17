@@ -7,20 +7,22 @@
   }: {
     imports = [inputs.stylix.nixosModules.stylix];
 
-    options.theme = lib.mkOption {
-      type = lib.types.attrs;
-      default = {
-        rounding = 20;
-        bar-height = 36;
-        gaps-in = 8;
-        gaps-out = 8 * 2;
-        active-opacity = 0.96;
-        inactive-opacity = 0.92;
-        blur = false;
-        border-size = 2;
-        animation-speed = "very-fast"; # "very-fast" | "fast" | "medium" | "slow"
+    options.theme = {
+      rounding = lib.mkOption {
+        type = lib.types.int;
+        default = 20;
+        description = "Window corner radius";
       };
-      description = "Theme configuration options";
+      gaps-in = lib.mkOption {
+        type = lib.types.int;
+        default = 8;
+        description = "Gap between windows";
+      };
+      border-size = lib.mkOption {
+        type = lib.types.int;
+        default = 2;
+        description = "Width of the focus ring";
+      };
     };
 
     config.stylix = {

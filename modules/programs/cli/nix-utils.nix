@@ -1,6 +1,13 @@
-{inputs, ...}: {
+{
+  inputs,
+  aspects,
+  ...
+}: {
   flake.modules.nixos.nix-utils = {
-    imports = [inputs.nix-index-database.nixosModules.default];
+    imports = [
+      inputs.nix-index-database.nixosModules.default
+      aspects.home-manager
+    ];
 
     home-manager.sharedModules = [
       (

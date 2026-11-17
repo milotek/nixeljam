@@ -1,6 +1,6 @@
 {
   disko.devices = {
-    # CHANGEME: with impermanenceEnabled = true, uncomment this and remove the /root and /home subvolumes
+    # CHANGEME: with the impermanence aspect (default.nix), uncomment this and remove the /root and /home subvolumes
     # nodev = {
     #   "/" = {
     #     fsType = "tmpfs";

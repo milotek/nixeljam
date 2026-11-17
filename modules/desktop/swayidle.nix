@@ -1,6 +1,11 @@
 # swayidle handles idle management: lock the screen, turn the display off, and
 # suspend after periods of inactivity. noctalia's idle inhibitor pauses it.
-{
+{aspects, ...}: {
+  flake.modules.nixos.desktop.imports = [
+    aspects.home-manager
+    aspects.niri
+    aspects.noctalia
+  ];
   flake.modules.nixos.desktop.home-manager.sharedModules = [
     (
       {

@@ -1,7 +1,9 @@
 # Vulnix scans the Nix store against the NVD CVE feed to find packages with
 # known vulnerabilities.
-{
+{aspects, ...}: {
   flake.modules.nixos.vulnix = {pkgs, ...}: {
+    imports = [aspects.common];
+
     environment.systemPackages = [pkgs.vulnix];
 
     systemd.services.vulnix-scan = {

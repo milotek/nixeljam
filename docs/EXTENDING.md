@@ -32,20 +32,14 @@ Here is a whole app, `modules/programs/gui/blender.nix`:
 
 ```nix
 # Blender: 3D creation suite
-{
+{aspects, ...}: {
+  flake.modules.nixos.blender.imports = [aspects.home-manager];
   flake.modules.nixos.blender.home-manager.sharedModules = [
     (
-      {
-        config,
-        lib,
-        pkgs,
-        ...
-      }: {
+      {pkgs, ...}: {
         home.packages = [pkgs.blender];
 
-        home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
-          directories = [".config/blender"];
-        };
+        home.persistence."/persist".directories = [".config/blender"];
       }
     )
   ];
@@ -56,8 +50,11 @@ Here is a whole app, `modules/programs/gui/blender.nix`:
   `configuration.nix` (services, system packages, hardware...).
 - `home-manager.sharedModules` is the user side, anything you'd write in a
   home-manager config (`programs.*`, `home.packages`, dotfiles...).
-- `home.persistence` only matters with impermanence: it keeps the app's settings
-  across reboots.
+- `imports` lists the aspects this one needs, here `home-manager` for `home-manager.sharedModules`.
+  Importing an aspect several times is fine, it is only loaded once.
+- `home.persistence` only matters on hosts with the `impermanence` aspect: it keeps the app's settings across reboots.
+- An app that opens files declares it with the MIME helper from `modules/lib/mime.nix`:
+  `xdg.mimeApps = mime.defaultFor "blender.desktop" ["model/x-blend"];`
 
 Use it by adding `blender` to your host's `default.nix`, or to a bundle in
 `modules/bundles.nix`. Several files can add to the same aspect: every file in
@@ -76,6 +73,10 @@ creative.imports = [
 
 ## Values
 
-Settings shared across files (username, locale, git identity...) live in
-`config.var`, set in your host's `_variables.nix`. The theme (colors, fonts,
-gaps) is in `config.theme` and `config.lib.stylix.colors`.
+Host settings live in your host's `_variables.nix`.
+Most are plain NixOS options (`networking.hostName`, `time.timeZone`, `services.xserver.xkb.layout`...).
+The others are typed `nixeljam.*` options, declared by the aspect that uses them: `nixeljam.username` in `modules/hosts/common.nix`, `nixeljam.git` in `modules/programs/dev/git.nix`, `nixeljam.server` in `modules/server/cloudflared.nix`.
+Home-manager modules read them through `osConfig`, for example `osConfig.nixeljam.git.name`.
+
+Packages from nixos-unstable are `pkgs.unstable.<name>`.
+The theme (colors, fonts, gaps) is in `config.theme` and `config.lib.stylix.colors`.

@@ -10,6 +10,7 @@
       nix
       users
       utils
+      locale
     ];
 
     # Terminal environment, on every host

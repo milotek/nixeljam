@@ -1,13 +1,14 @@
-{
+{aspects, ...}: {
   flake.modules.nixos.cyberchef = {
     config,
     lib,
-    pkgs-unstable,
+    pkgs,
     ...
   }: let
-    inherit (import ./_mk-container.nix {inherit lib config;}) mkContainer;
+    inherit (import ./_mk-container.nix {inherit lib;}) mkContainer;
   in {
     imports = [
+      aspects.cloudflared
       (mkContainer {
         name = "cyberchef";
         hostIp = "10.233.5.1";
@@ -16,7 +17,7 @@
           services.nginx = {
             enable = true;
             virtualHosts."cyberchef" = {
-              root = "${pkgs-unstable.cyberchef}/share/cyberchef";
+              root = "${pkgs.unstable.cyberchef}/share/cyberchef";
               listen = [
                 {
                   addr = "0.0.0.0";
@@ -31,6 +32,6 @@
       })
     ];
 
-    services.cloudflared.tunnels."${config.var.tunnelId}".ingress."cyberchef.${config.var.domain}" = "http://10.233.5.2:8080";
+    services.cloudflared.tunnels."${config.nixeljam.server.tunnelId}".ingress."cyberchef.${config.nixeljam.server.domain}" = "http://10.233.5.2:8080";
   };
 }

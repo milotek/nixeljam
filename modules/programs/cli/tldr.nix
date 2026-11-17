@@ -1,5 +1,6 @@
 # TLDR provides simplified, example-based help pages for shell commands
-{
+{aspects, ...}: {
+  flake.modules.nixos.tldr.imports = [aspects.home-manager];
   flake.modules.nixos.tldr.home-manager.sharedModules = [
     (
       {

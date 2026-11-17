@@ -1,11 +1,11 @@
-{
+{aspects, ...}: {
   flake.modules.nixos.glance = {
     config,
     lib,
     ...
   }: let
-    inherit (import ../_mk-container.nix {inherit lib config;}) mkContainer;
-    domain = config.var.domain;
+    inherit (import ../_mk-container.nix {inherit lib;}) mkContainer;
+    domain = config.nixeljam.server.domain;
     hostIp = "10.233.12.1";
 
     # Convert 6-char hex color to "H S L" string for glance (integers, no % sign)
@@ -88,6 +88,7 @@
     sops.secrets.adguard-pwd.mode = "0444";
 
     imports = [
+      aspects.cloudflared
       (mkContainer {
         name = "glance";
         hostIp = hostIp;
@@ -152,6 +153,6 @@
       })
     ];
 
-    services.cloudflared.tunnels."${config.var.tunnelId}".ingress."home.${domain}" = "http://10.233.12.2:8080";
+    services.cloudflared.tunnels."${config.nixeljam.server.tunnelId}".ingress."home.${domain}" = "http://10.233.12.2:8080";
   };
 }
