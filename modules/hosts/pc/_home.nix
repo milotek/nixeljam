@@ -11,9 +11,6 @@ in {
   imports = [inputs.sops-nix.homeManagerModules.sops];
 
   home = {
-    inherit (config.var) username;
-    homeDirectory = "/home/" + config.var.username;
-
     packages = with pkgs; [
       blender
       godot
@@ -66,10 +63,6 @@ in {
 
   programs = {
     home-manager.enable = true;
-    njam = {
-      enable = true;
-      configDirectory = config.var.configDirectory;
-    };
 
     zellij.enable = true;
 
@@ -99,7 +92,7 @@ in {
           type = "webdav";
           url = "https://files.tek.rip";
           vendor = "other";
-          user = config.var.username;
+          user = config.home.username;
         };
         secrets.pass = config.sops.secrets.copyparty-password.path;
         mounts."/" = {

@@ -1,33 +1,17 @@
 {
-  config,
-  lib,
-  ...
-}: {
-  config.var = {
-    hostname = "pc";
+  networking.hostName = "pc";
+
+  nixeljam = {
     username = "milotek";
-    configDirectory = "/home/" + config.var.username + "/.config/nixos"; # The path of the nixos configuration directory
-
-    keyboardLayout = "gb";
-
-    timeZone = "Europe/London";
-    defaultLocale = "en_GB.UTF-8";
-    extraLocale = "en_US.UTF-8";
-
     git = {
-      username = "Milo Tekchandani";
+      name = "Milo Tekchandani";
       email = "milo@milotek.dev";
     };
-
-    autoUpgrade = false;
-    autoGarbageCollector = true;
+    extraLocale = "en_US.UTF-8";
   };
 
-  # DON'T TOUCH THIS
-  options = {
-    var = lib.mkOption {
-      type = lib.types.attrs;
-      default = {};
-    };
-  };
+  services.xserver.xkb.layout = "gb";
+
+  time.timeZone = "Europe/London";
+  i18n.defaultLocale = "en_GB.UTF-8";
 }
