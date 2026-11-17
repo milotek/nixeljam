@@ -7,6 +7,7 @@
 }: let
   home = config.home.homeDirectory;
   noctalia = "${pkgs.noctalia-shell}/bin/noctalia-shell";
+  inherit (inputs.self.lib) mime;
 in {
   imports = [inputs.sops-nix.homeManagerModules.sops];
 
@@ -50,6 +51,7 @@ in {
   };
 
   xdg.userDirs.setSessionVariables = true;
+  xdg.mimeApps = mime.defaultFor "onlyoffice-desktopeditors.desktop" mime.types.office;
 
   sops = {
     age.keyFile = "${home}/.config/sops/age/keys.txt";
