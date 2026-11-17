@@ -1,14 +1,13 @@
-{
+{aspects, ...}: {
   flake.modules.nixos.gitea = {
     config,
     pkgs,
-    pkgs-unstable,
     lib,
     ...
   }: let
-    inherit (import ./_mk-container.nix {inherit lib config;}) mkContainer;
-    domain = config.var.domain;
-    catppuccin-gitea = pkgs-unstable.fetchzip {
+    inherit (import ./_mk-container.nix {inherit lib;}) mkContainer;
+    domain = config.nixeljam.server.domain;
+    catppuccin-gitea = pkgs.unstable.fetchzip {
       url = "https://github.com/catppuccin/gitea/releases/download/v1.0.2/catppuccin-gitea.tar.gz";
       sha256 = "sha256-rZHLORwLUfIFcB6K9yhrzr+UwdPNQVSadsw6rg8Q7gs=";
       stripRoot = false;
@@ -69,6 +68,7 @@
     };
   in {
     imports = [
+      aspects.cloudflared
       (mkContainer {
         name = "gitea";
         hostIp = "10.233.11.1";
@@ -136,7 +136,7 @@
       })
     ];
 
-    services.cloudflared.tunnels."${config.var.tunnelId}".ingress."git.${domain}" = giteaUrl;
+    services.cloudflared.tunnels."${config.nixeljam.server.tunnelId}".ingress."git.${domain}" = giteaUrl;
 
     sops.secrets = {
       github-mirror-token = {};

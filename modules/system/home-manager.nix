@@ -1,33 +1,32 @@
 # Home-manager configuration for NixOS
-{inputs, ...}: {
+{
+  inputs,
+  aspects,
+  ...
+}: {
   flake.modules.nixos.home-manager = {
-    config,
-    lib,
-    pkgs-unstable,
-    ...
-  }: {
-    imports = [inputs.home-manager.nixosModules.home-manager];
+    imports = [
+      inputs.home-manager.nixosModules.home-manager
+      aspects.common
+    ];
 
     home-manager = {
       useGlobalPkgs = true;
       useUserPackages = true;
       backupFileExtension = "hm-backup";
       extraSpecialArgs = {
-        inherit inputs pkgs-unstable;
+        inherit inputs;
       };
       sharedModules = [
-        {
-          options = {
-            var = lib.mkOption {
-              type = lib.types.attrs;
-              default = config.var;
-            };
-            theme = lib.mkOption {
-              type = lib.types.attrs;
-              default = config.theme;
-            };
-          };
-        }
+        (
+          {
+            lib,
+            osConfig,
+            ...
+          }: {
+            home.persistence."/persist".enable = lib.mkDefault osConfig.environment.persistence."/persist".enable;
+          }
+        )
       ];
     };
   };

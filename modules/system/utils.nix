@@ -1,28 +1,18 @@
 # Misc
-{
+{aspects, ...}: {
   flake.modules.nixos.utils = {
     pkgs,
     config,
     ...
-  }: let
-    hostname = config.var.hostname;
-    keyboardLayout = config.var.keyboardLayout;
-    configDir = config.var.configDirectory;
-    timeZone = config.var.timeZone;
-    defaultLocale = config.var.defaultLocale;
-    extraLocale = config.var.extraLocale;
-    autoUpgrade = config.var.autoUpgrade;
-  in {
-    networking = {
-      hostName = hostname;
-      networkmanager.enable = true;
-    };
+  }: {
+    imports = [aspects.common];
+
+    networking.networkmanager.enable = true;
 
     systemd.services.NetworkManager-wait-online.enable = false;
     system.autoUpgrade = {
-      enable = autoUpgrade;
       dates = "04:00";
-      flake = "${configDir}";
+      flake = config.nixeljam.configDirectory;
       flags = [
         "--update-input"
         "nixpkgs"
@@ -31,31 +21,14 @@
       allowReboot = false;
     };
 
-    time = {
-      timeZone = timeZone;
-    };
-
-    i18n = {
-      defaultLocale = defaultLocale;
-      extraLocaleSettings = {
-        LC_ADDRESS = extraLocale;
-        LC_IDENTIFICATION = extraLocale;
-        LC_MEASUREMENT = extraLocale;
-        LC_MONETARY = extraLocale;
-        LC_NAME = extraLocale;
-        LC_NUMERIC = extraLocale;
-        LC_PAPER = extraLocale;
-        LC_TELEPHONE = extraLocale;
-        LC_TIME = extraLocale;
-      };
-    };
+    environment.persistence."/persist".directories = [
+      "/etc/NetworkManager/system-connections" # Wifi connections, VPN
+      "/var/lib/upower" # battery calibration state
+    ];
 
     services = {
       libinput.enable = true;
-      xserver = {
-        enable = true;
-        xkb.layout = keyboardLayout;
-      };
+      xserver.enable = true;
       gnome.gnome-keyring.enable = true;
       psd = {
         enable = true;
@@ -78,7 +51,6 @@
       power-profiles-daemon.enable = true;
       udisks2.enable = true;
     };
-    console.keyMap = keyboardLayout;
 
     environment = {
       variables = {
@@ -129,7 +101,5 @@
         pkgs.xdg-desktop-portal-gtk
       ];
     };
-
-    security.rtkit.enable = true;
   };
 }

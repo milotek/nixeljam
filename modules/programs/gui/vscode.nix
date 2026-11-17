@@ -1,16 +1,12 @@
 # VS Code: code editor
-{
+{aspects, ...}: {
+  flake.modules.nixos.vscode.imports = [aspects.home-manager];
   flake.modules.nixos.vscode.home-manager.sharedModules = [
     (
-      {
-        config,
-        lib,
-        pkgs-unstable,
-        ...
-      }: {
-        home.packages = [pkgs-unstable.vscode];
+      {pkgs, ...}: {
+        home.packages = [pkgs.unstable.vscode];
 
-        home.persistence."/persist" = lib.mkIf (config.var.impermanenceEnabled or false) {
+        home.persistence."/persist" = {
           directories = [
             ".config/Code"
             ".vscode"

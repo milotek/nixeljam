@@ -1,6 +1,10 @@
 # Neovim, configured with nvf
 # Also exposed standalone: nix run .#nvim
-{inputs, ...}: let
+{
+  inputs,
+  aspects,
+  ...
+}: let
   modules = [
     ./_options.nix
     ./_languages.nix
@@ -23,6 +27,7 @@ in {
     };
   };
 
+  flake.modules.nixos.nvim.imports = [aspects.home-manager];
   flake.modules.nixos.nvim.home-manager.sharedModules = [
     inputs.nvf.homeManagerModules.default
     (

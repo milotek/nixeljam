@@ -146,7 +146,7 @@ for the user.
 - `modules/theme` colors, fonts, cursor and icons (Stylix)
 - `modules/hosts/<host>` a machine: the aspects it uses, its variables,
   hardware and disk layout
-- `modules/lib` helpers, like `mkSandbox` (nixpak) and `mkContainer`
+- `modules/lib` helpers, like `mkSandbox` (nixpak) and `mime` (default apps)
 
 ### Bundles
 
@@ -162,7 +162,7 @@ A host lists bundles and single aspects in its `default.nix`:
 
 Aspects you add on their own: `audio`, `bluetooth`, `fonts`, `steam`,
 `ollama`, `nvidia`, `amd-graphics`, `systemd-boot` or `lanzaboote`,
-`tuigreet`, `autologin`, `kernel-hardening`, `usbguard`, `vulnix`, `docker`...
+`tuigreet`, `autologin`, `impermanence`, `kernel-hardening`, `usbguard`, `vulnix`, `docker`...
 
 See [EXTENDING](docs/EXTENDING.md) to add an app or write your own aspect.
 

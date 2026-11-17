@@ -1,12 +1,13 @@
-{
+{aspects, ...}: {
   flake.modules.nixos.uptime-kuma = {
     config,
     lib,
     ...
   }: let
-    inherit (import ./_mk-container.nix {inherit lib config;}) mkContainer;
+    inherit (import ./_mk-container.nix {inherit lib;}) mkContainer;
   in {
     imports = [
+      aspects.cloudflared
       (mkContainer {
         name = "uptime-kuma";
         hostIp = "10.233.13.1";
@@ -26,6 +27,6 @@
       })
     ];
 
-    services.cloudflared.tunnels."${config.var.tunnelId}".ingress."uptime.${config.var.domain}" = "http://10.233.13.2:3001";
+    services.cloudflared.tunnels."${config.nixeljam.server.tunnelId}".ingress."uptime.${config.nixeljam.server.domain}" = "http://10.233.13.2:3001";
   };
 }

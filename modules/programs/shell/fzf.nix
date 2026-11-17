@@ -1,5 +1,9 @@
 # Fzf is a general-purpose command-line fuzzy finder.
-{
+{aspects, ...}: {
+  flake.modules.nixos.shell.imports = [
+    aspects.home-manager
+    aspects.theme
+  ];
   flake.modules.nixos.shell.home-manager.sharedModules = [
     (
       {
