@@ -16,18 +16,6 @@
         default = "${config.users.users.${config.nixeljam.username}.home}/.config/nixos";
         description = "Path of this repository on the host";
       };
-
-      server = {
-        domain = lib.mkOption {type = lib.types.str;};
-        tunnelId = lib.mkOption {
-          type = lib.types.str;
-          description = "Cloudflare tunnel exposing the services";
-        };
-        networkInterface = lib.mkOption {
-          type = lib.types.str;
-          description = "WAN interface (NAT for containers)";
-        };
-      };
     };
 
     imports = [inputs.impermanence.nixosModules.impermanence];

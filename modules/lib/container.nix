@@ -2,7 +2,7 @@
 #
 # Options:
 #   internet          - allow outbound internet access via NAT (default: false)
-#   externalInterface - WAN interface for NAT, required when internet = true
+#                       (the host must set networking.nat.externalInterface)
 #   bindMounts        - host paths to mount into the container (see containers.<name>.bindMounts)
 #   config            - NixOS module for the container
 {lib, ...}: let
@@ -16,7 +16,6 @@ in {
     hostIp,
     containerIp,
     internet ? false,
-    externalInterface ? osConfig.nixeljam.server.networkInterface,
     bindMounts ? {},
     nixosConfig,
   }:
@@ -42,9 +41,14 @@ in {
       }
       // (lib.optionalAttrs internet {
         boot.kernel.sysctl."net.ipv4.ip_forward" = lib.mkDefault true;
+        assertions = [
+          {
+            assertion = osConfig.networking.nat.externalInterface != null;
+            message = "mkContainer: container '${name}' has internet access, so set networking.nat.externalInterface to the host's WAN interface";
+          }
+        ];
         networking.nat = {
           enable = true;
-          externalInterface = externalInterface;
           internalInterfaces = ["ve-${name}"];
         };
         # CONTAINER-FWD (defined by another module) blocks all forwarding by default.

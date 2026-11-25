@@ -1,8 +1,10 @@
 # SSH configuration
-{
+{aspects, ...}: {
   flake.modules.nixos.ssh = {config, ...}: let
     username = config.nixeljam.username;
   in {
+    imports = [aspects.cloudflared];
+
     services.openssh = {
       enable = true;
       ports = [22];

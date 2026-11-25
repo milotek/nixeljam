@@ -3,45 +3,59 @@
 {
   flake.modules.nixos.cloudflared = {
     config,
+    lib,
     pkgs,
     ...
   }: {
-    sops.secrets.cloudflared-token.mode = "0400";
-
-    # To setup cloudflared, run:
-    # - `cloudflared tunnel login`
-    # - `cloudflared tunnel create YourTunnelName`
-    #
-    # This will create a credentials file & give you the tunnel ID to use below.
-    services.cloudflared = {
-      enable = true;
-      tunnels."${config.nixeljam.server.tunnelId}" = {
-        credentialsFile = config.sops.secrets."cloudflared-token".path;
-        default = "http_status:404";
+    options.nixeljam.server = {
+      domain = lib.mkOption {
+        type = lib.types.str;
+        description = "Domain the services are exposed under";
+      };
+      tunnelId = lib.mkOption {
+        type = lib.types.str;
+        description = "Cloudflare tunnel exposing the services";
       };
     };
 
-    environment.systemPackages = with pkgs.unstable; [
-      cloudflared
-    ];
+    config = {
+      sops.secrets.cloudflared-token.mode = "0400";
 
-    systemd.services."cloudflared-tunnel-${config.nixeljam.server.tunnelId}" = {
-      wantedBy = ["multi-user.target"];
-      after = ["network-online.target" "adguardhome.service"];
-      wants = ["network-online.target"];
-      requires = ["adguardhome.service"];
-      serviceConfig = {
-        Restart = "on-failure";
-        RestartSec = "5s";
-        StartLimitIntervalSec = 300;
-        StartLimitBurst = 10;
+      # To setup cloudflared, run:
+      # - `cloudflared tunnel login`
+      # - `cloudflared tunnel create YourTunnelName`
+      #
+      # This will create a credentials file & give you the tunnel ID to use below.
+      services.cloudflared = {
+        enable = true;
+        tunnels."${config.nixeljam.server.tunnelId}" = {
+          credentialsFile = config.sops.secrets."cloudflared-token".path;
+          default = "http_status:404";
+        };
       };
-    };
 
-    # At the moment (2025), for support of browser rendering of the tunnels, this line is required:
-    services.openssh.settings.Macs = [
-      "hmac-sha2-256"
-      "hmac-sha2-512"
-    ];
+      environment.systemPackages = with pkgs.unstable; [
+        cloudflared
+      ];
+
+      systemd.services."cloudflared-tunnel-${config.nixeljam.server.tunnelId}" = {
+        wantedBy = ["multi-user.target"];
+        after = ["network-online.target" "adguardhome.service"];
+        wants = ["network-online.target"];
+        requires = ["adguardhome.service"];
+        serviceConfig = {
+          Restart = "on-failure";
+          RestartSec = "5s";
+          StartLimitIntervalSec = 300;
+          StartLimitBurst = 10;
+        };
+      };
+
+      # At the moment (2025), for support of browser rendering of the tunnels, this line is required:
+      services.openssh.settings.Macs = [
+        "hmac-sha2-256"
+        "hmac-sha2-512"
+      ];
+    };
   };
 }

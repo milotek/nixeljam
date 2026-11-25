@@ -7,7 +7,7 @@
   inherit (config.flake.lib) mime;
 in {
   flake.modules.nixos.ghostty = {
-    imports = [aspects.home-manager];
+    imports = [aspects.home-manager aspects.theme];
 
     home-manager.sharedModules = [
       (

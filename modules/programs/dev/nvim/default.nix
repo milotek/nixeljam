@@ -27,7 +27,7 @@ in {
     };
   };
 
-  flake.modules.nixos.nvim.imports = [aspects.home-manager];
+  flake.modules.nixos.nvim.imports = [aspects.home-manager aspects.theme];
   flake.modules.nixos.nvim.home-manager.sharedModules = [
     inputs.nvf.homeManagerModules.default
     (

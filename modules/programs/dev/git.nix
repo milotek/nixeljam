@@ -5,7 +5,7 @@
   ...
 }: {
   flake.modules.nixos.git = {
-    imports = [aspects.home-manager];
+    imports = [aspects.home-manager aspects.theme];
 
     options.nixeljam.git = {
       name = lib.mkOption {
