@@ -15,6 +15,7 @@
             name = "Milo Tekchandani";
             email = "milo@milotek.dev";
           };
+          extraLocale = "en_US.UTF-8";
         };
 
         time.timeZone = "Europe/London";

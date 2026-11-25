@@ -7,6 +7,7 @@
 }: let
   home = config.home.homeDirectory;
   noctalia = "${pkgs.noctalia-shell}/bin/noctalia-shell";
+  inherit (inputs.self.lib) mime;
 in {
   imports = [inputs.sops-nix.homeManagerModules.sops];
 
@@ -51,23 +52,7 @@ in {
 
   xdg.userDirs.setSessionVariables = true;
 
-  xdg.mimeApps = let
-    onlyoffice = lib.genAttrs [
-      "application/vnd.oasis.opendocument.text"
-      "application/vnd.oasis.opendocument.spreadsheet"
-      "application/vnd.oasis.opendocument.presentation"
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-      "application/msword"
-      "application/vnd.ms-excel"
-      "application/vnd.ms-powerpoint"
-      "application/rtf"
-    ] (_: ["onlyoffice-desktopeditors.desktop"]);
-  in {
-    associations.added = onlyoffice;
-    defaultApplications = onlyoffice;
-  };
+  xdg.mimeApps = mime.defaultFor "onlyoffice-desktopeditors.desktop" mime.types.office;
 
   sops = {
     age.keyFile = "${home}/.config/sops/age/keys.txt";
