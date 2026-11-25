@@ -1,5 +1,7 @@
-{
+{aspects, ...}: {
   flake.modules.nixos.desktop = {
+    imports = [aspects.common];
+
     environment.persistence."/persist".directories = [
       "/var/lib/upower" # battery calibration state
       "/var/lib/systemd/backlight" # remembers screen brightness

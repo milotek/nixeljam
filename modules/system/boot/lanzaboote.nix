@@ -17,6 +17,7 @@
     ...
   }: {
     imports = [
+      aspects.common
       inputs.lanzaboote.nixosModules.lanzaboote
       aspects.boot
     ];

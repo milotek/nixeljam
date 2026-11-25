@@ -1,6 +1,6 @@
 # My shell configuration
 {aspects, ...}: {
-  flake.modules.nixos.shell.imports = [aspects.home-manager];
+  flake.modules.nixos.shell.imports = [aspects.common aspects.home-manager aspects.theme];
   flake.modules.nixos.shell.home-manager.sharedModules = [
     (
       {

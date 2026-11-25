@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  aspects,
+  config,
+  ...
+}: let
   inherit (config.flake.lib) mkContainer;
 in {
   flake.modules.nixos.glance = {
@@ -89,6 +93,8 @@ in {
     sops.secrets.adguard-pwd.mode = "0444";
 
     imports = [
+      aspects.cloudflared
+      aspects.theme
       (mkContainer config {
         name = "glance";
         hostIp = hostIp;

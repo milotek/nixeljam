@@ -1,5 +1,5 @@
 # Ollama: local LLM server with CUDA acceleration
-{
+{aspects, ...}: {
   flake.modules.nixos.ollama = {
     config,
     lib,
@@ -9,6 +9,8 @@
     impermanence = config.environment.persistence."/persist".enable;
     modelsDir = "/persist/ollama/models";
   in {
+    imports = [aspects.common];
+
     services.ollama = {
       enable = true;
       package = pkgs.ollama-cuda;

@@ -4,13 +4,16 @@
     lib,
     ...
   }: let
-    extraLocale = "en_US.UTF-8"; # CHANGEME
+    extraLocale = config.nixeljam.extraLocale;
   in {
-    time.timeZone = lib.mkDefault "America/New_York"; # CHANGEME
+    options.nixeljam.extraLocale = lib.mkOption {
+      type = lib.types.str;
+      default = config.i18n.defaultLocale;
+      description = "Locale for formats (dates, numbers, units, currency)";
+    };
 
-    i18n = {
-      defaultLocale = lib.mkDefault "en_US.UTF-8";
-      extraLocaleSettings = lib.mapAttrs (_: lib.mkDefault) {
+    config = {
+      i18n.extraLocaleSettings = lib.mapAttrs (_: lib.mkDefault) {
         LC_ADDRESS = extraLocale;
         LC_IDENTIFICATION = extraLocale;
         LC_MEASUREMENT = extraLocale;
@@ -21,9 +24,8 @@
         LC_TELEPHONE = extraLocale;
         LC_TIME = extraLocale;
       };
-    };
 
-    services.xserver.xkb.layout = lib.mkDefault "us"; # CHANGEME
-    console.keyMap = lib.mkDefault config.services.xserver.xkb.layout;
+      console.keyMap = lib.mkDefault config.services.xserver.xkb.layout;
+    };
   };
 }

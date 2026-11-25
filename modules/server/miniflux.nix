@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  aspects,
+  config,
+  ...
+}: let
   inherit (config.flake.lib) mkContainer;
 in {
   flake.modules.nixos.miniflux = {
@@ -9,6 +13,7 @@ in {
     domain = config.nixeljam.server.domain;
   in {
     imports = [
+      aspects.cloudflared
       (mkContainer config {
         name = "miniflux";
         hostIp = "10.233.8.1";

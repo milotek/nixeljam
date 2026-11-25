@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  aspects,
+  config,
+  ...
+}: let
   inherit (config.flake.lib) mkContainer;
 in {
   flake.modules.nixos.mazanoke = {
@@ -8,6 +12,7 @@ in {
     ...
   }: {
     imports = [
+      aspects.cloudflared
       (mkContainer config {
         name = "mazanoke";
         hostIp = "10.233.7.1";

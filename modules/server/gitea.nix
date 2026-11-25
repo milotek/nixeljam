@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  aspects,
+  config,
+  ...
+}: let
   inherit (config.flake.lib) mkContainer;
 in {
   flake.modules.nixos.gitea = {
@@ -69,6 +73,7 @@ in {
     };
   in {
     imports = [
+      aspects.cloudflared
       (mkContainer config {
         name = "gitea";
         hostIp = "10.233.11.1";

@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  aspects,
+  config,
+  ...
+}: let
   inherit (config.flake.lib) mkContainer;
 in {
   flake.modules.nixos.bentopdf = {
@@ -7,6 +11,7 @@ in {
     ...
   }: {
     imports = [
+      aspects.cloudflared
       (mkContainer config {
         name = "bentopdf";
         hostIp = "10.233.9.1";

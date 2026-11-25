@@ -1,7 +1,9 @@
 # Adguard is a network-wide ad blocker
 # When installed, open localhost:3000 to setup
-{
+{aspects, ...}: {
   flake.modules.nixos.adguardhome = {config, ...}: {
+    imports = [aspects.cloudflared];
+
     services.adguardhome = {
       enable = true;
       port = 3000;
