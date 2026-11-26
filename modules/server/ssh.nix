@@ -1,49 +1,21 @@
-# SSH configuration
 {aspects, ...}: {
   flake.modules.nixos.ssh = {config, ...}: let
     username = config.nixeljam.username;
   in {
-    imports = [aspects.cloudflared];
+    imports = [aspects.users];
 
     services.openssh = {
       enable = true;
-      ports = [22];
-      openFirewall = true;
       settings = {
         PermitRootLogin = "no";
         PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
         AllowUsers = [username];
-        MaxAuthTries = 3;
-        LoginGraceTime = 20;
-        X11Forwarding = false;
-        AllowAgentForwarding = false;
-        AllowTcpForwarding = false;
-        ClientAliveInterval = 300;
-        ClientAliveCountMax = 2;
-        KexAlgorithms = [
-          "curve25519-sha256"
-          "curve25519-sha256@libssh.org"
-          "ecdh-sha2-nistp256"
-          "ecdh-sha2-nistp384"
-          "ecdh-sha2-nistp521"
-        ];
-        Ciphers = [
-          "chacha20-poly1305@openssh.com"
-          "aes256-gcm@openssh.com"
-          "aes128-gcm@openssh.com"
-          "aes256-ctr"
-          "aes192-ctr"
-          "aes128-ctr"
-        ];
-        HostKeyAlgorithms = "ssh-ed25519,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-rsa";
       };
     };
 
-    # Add my public SSH key to my user
-    users.users."${username}".openssh.authorizedKeys.keys = [
+    users.users.${username}.openssh.authorizedKeys.keys = [
       # CHANGEME: "ssh-ed25519 AAAA... you@host"
     ];
-
-    services.cloudflared.tunnels."${config.nixeljam.server.tunnelId}".ingress."ssh.${config.nixeljam.server.domain}" = "ssh://localhost:22";
   };
 }
