@@ -31,6 +31,7 @@
         tunnels."${config.nixeljam.server.tunnelId}" = {
           credentialsFile = config.sops.secrets."cloudflared-token".path;
           default = "http_status:404";
+          ingress."ssh.${config.nixeljam.server.domain}" = lib.mkIf config.services.openssh.enable "ssh://localhost:22";
         };
       };
 
