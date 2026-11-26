@@ -62,6 +62,13 @@
 
     # Server
     nixarr.url = "github:nix-media-server/nixarr";
+    hermes-agent.url = "github:NousResearch/hermes-agent";
+    habits = {
+      url = "github:milotek/habits";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # TODO: back to upstream copyparty once the midi support is merged
+    copyparty-midi.url = "github:milotek/copyparty-midi-support/midi-support";
   };
 
   outputs = inputs:
