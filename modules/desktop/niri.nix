@@ -48,6 +48,7 @@
                 keyboard {
                     xkb {
                         layout "${osConfig.services.xserver.xkb.layout}"
+                        options "fkeys:basic_13-24"
                     }
                     numlock
                 }
@@ -141,8 +142,8 @@
                 Print { screenshot-screen; }
                 Mod+Print { screenshot; }
                 Alt+Print { screenshot-window; }
-                F13 { ${noctalia "plugin:screen-recorder saveReplay"}; }
-                Mod+F13 { ${noctalia "plugin:screen-recorder toggle"}; }
+                F13 repeat=false { ${noctalia "plugin:screen-recorder saveReplay"}; }
+                Mod+F13 repeat=false { ${noctalia "plugin:screen-recorder toggle"}; }
 
                 // Sound
                 XF86AudioRaiseVolume allow-when-locked=true { ${noctalia "volume increase"}; }
