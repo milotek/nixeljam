@@ -115,7 +115,7 @@ in {
       until [[ $(${noctalia} ipc show) == *"target plugin:screen-recorder"* ]]; do sleep 1; done
       ${noctalia} ipc call plugin:screen-recorder startReplay
     '';
-    Install.WantedBy = ["graphical-session.target"];
+    Install.WantedBy = ["noctalia-shell.service"];
   };
 
   xdg.configFile."niri/config.kdl".text = lib.mkAfter ''
