@@ -25,7 +25,7 @@
         LC_TIME = extraLocale;
       };
 
-      console.keyMap = lib.mkDefault config.services.xserver.xkb.layout;
+      console.useXkbConfig = lib.mkDefault true;
     };
   };
 }
