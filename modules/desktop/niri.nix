@@ -42,6 +42,9 @@
           inherit (osConfig) theme;
           noctalia = cmd: ''spawn "${pkgs.noctalia-shell}/bin/noctalia-shell" "ipc" "call" ${lib.concatMapStringsSep " " (a: ''"${a}"'') (lib.splitString " " cmd)}'';
           playerctl = "${pkgs.playerctl}/bin/playerctl";
+          grim = "${pkgs.grim}/bin/grim";
+          slurp = "${pkgs.slurp}/bin/slurp";
+          wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
         in {
           xdg.configFile."niri/config.kdl".text = ''
             input {
@@ -139,8 +142,8 @@
                 Mod+WheelScrollLeft { focus-column-left; }
 
                 // Screenshots
-                Print { screenshot-screen; }
-                Mod+Print { screenshot; }
+                Print { spawn-sh "mkdir -p ~/Pictures/Screenshots; f=~/Pictures/Screenshots/$(date +%F_%H-%M-%S).png; ${slurp} | ${grim} -g - $f && ${wl-copy} -t image/png < $f"; }
+                Mod+Print { screenshot-screen; }
                 Alt+Print { screenshot-window; }
                 F13 repeat=false { ${noctalia "plugin:screen-recorder saveReplay"}; }
                 Mod+F13 repeat=false { ${noctalia "plugin:screen-recorder toggle"}; }
